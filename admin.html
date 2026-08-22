@@ -1,0 +1,2183 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة التحكم والإدارة | أنوبيس ترافيل - ANUBIS TRAVEL</title>
+  <meta name="description" content="لوحة تحكم إدارة الحجوزات والرحلات والعملاء - أنوبيس ترافيل (إدارة / جهاد حسين)">
+  <meta name="theme-color" content="#070503">
+
+  <!-- Google Fonts: Cairo, Amiri, Cinzel Decorative, Cinzel -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;400;600;700;800;900&family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       1. ROOT DESIGN SYSTEM & PHARAONIC LUXURY TOKENS
+       ========================================================================== */
+    :root {
+      --bg-void: #070503;
+      --bg-dark: #0d0b08;
+      --bg-surface: #140f0a;
+      --bg-card: rgba(22, 17, 11, 0.94);
+      --bg-card-hover: rgba(32, 25, 16, 0.98);
+      --bg-glass: rgba(18, 14, 9, 0.85);
+
+      --gold-100: #fff5cc;
+      --gold-200: #fae48c;
+      --gold-primary: #d4af37;
+      --gold-dark: #96781b;
+      --gold-gradient: linear-gradient(135deg, #fae48c 0%, #d4af37 50%, #96781b 100%);
+      --gold-gradient-subtle: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(150, 120, 27, 0.05) 100%);
+
+      --cyan-accent: #38ef7d;
+      --cyan-glow: rgba(56, 239, 125, 0.25);
+      --status-confirmed: #38ef7d;
+      --status-pending: #f5d34c;
+      --status-completed: #209cee;
+      --status-cancelled: #ff4757;
+
+      --text-white: #ffffff;
+      --text-gold: #f7e099;
+      --text-parchment: #ede3d1;
+      --text-muted: #a69883;
+      --text-dim: #6e6456;
+
+      --border-gold: rgba(212, 175, 55, 0.28);
+      --border-gold-strong: rgba(212, 175, 55, 0.65);
+      --border-subtle: rgba(212, 175, 55, 0.12);
+
+      --shadow-stone: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(212, 175, 55, 0.06);
+      --shadow-gold-glow: 0 0 25px rgba(212, 175, 55, 0.25);
+
+      --font-body: 'Cairo', system-ui, -apple-system, sans-serif;
+      --font-title-en: 'Cinzel Decorative', 'Cinzel', serif;
+      --font-pharaonic: 'Amiri', serif;
+
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+
+      --transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 15px;
+      background-color: var(--bg-void);
+      color: var(--text-parchment);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+    }
+
+    body {
+      background-color: var(--bg-void);
+      min-height: 100vh;
+      line-height: 1.6;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.1) 0%, transparent 55%),
+        radial-gradient(circle at 10% 40%, rgba(150, 120, 27, 0.06) 0%, transparent 40%);
+      background-attachment: fixed;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Golden Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-void);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--gold-gradient);
+      border-radius: var(--radius-full);
+    }
+
+    button {
+      cursor: pointer;
+      font-family: inherit;
+      border: none;
+      background: none;
+      outline: none;
+    }
+
+    input, select, textarea {
+      font-family: inherit;
+      outline: none;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* ==========================================================================
+       2. TOP BAR & NAVIGATION
+       ========================================================================== */
+    .admin-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(13, 11, 8, 0.95);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border-gold);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+    }
+
+    .admin-brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .admin-logo-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-sm);
+      background: radial-gradient(circle, rgba(212, 175, 55, 0.25) 0%, rgba(20, 16, 11, 0.9) 70%);
+      border: 1px solid var(--gold-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .admin-logo-badge svg {
+      width: 26px;
+      height: 26px;
+      fill: var(--gold-primary);
+    }
+
+    .admin-brand-texts {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .admin-brand-en {
+      font-family: var(--font-title-en);
+      font-size: 1.15rem;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      background: var(--gold-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.1;
+    }
+
+    .admin-brand-ar {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .admin-brand-ar .badge {
+      background: rgba(56, 239, 125, 0.15);
+      color: var(--cyan-accent);
+      border: 1px solid rgba(56, 239, 125, 0.3);
+      padding: 0 6px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-new-booking {
+      padding: 9px 18px;
+      border-radius: var(--radius-full);
+      background: var(--gold-gradient);
+      color: #0d0b08;
+      font-weight: 800;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.35);
+      transition: var(--transition-smooth);
+    }
+    .btn-new-booking:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
+    }
+
+    .btn-home-link {
+      padding: 8px 14px;
+      border-radius: var(--radius-full);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-gold);
+      color: var(--text-parchment);
+      font-size: 0.85rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition-smooth);
+    }
+    .btn-home-link:hover {
+      background: rgba(212, 175, 55, 0.15);
+      border-color: var(--gold-primary);
+      color: var(--text-gold);
+    }
+
+    /* ==========================================================================
+       3. MAIN LAYOUT & NAVIGATION TABS
+       ========================================================================== */
+    .admin-main-container {
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px 20px 80px;
+      flex: 1;
+    }
+
+    /* Navigation Bar Tabs */
+    .admin-nav-tabs {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg-card);
+      padding: 8px 12px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-gold);
+      margin-bottom: 25px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      box-shadow: var(--shadow-stone);
+    }
+    .admin-nav-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .tab-btn {
+      padding: 10px 20px;
+      border-radius: var(--radius-md);
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      transition: var(--transition-smooth);
+      border: 1px solid transparent;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-gold);
+      background: rgba(212, 175, 55, 0.08);
+    }
+
+    .tab-btn.active {
+      color: #070503;
+      background: var(--gold-gradient);
+      font-weight: 800;
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.35);
+    }
+
+    .tab-badge {
+      padding: 2px 7px;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      background: rgba(0, 0, 0, 0.3);
+      color: inherit;
+    }
+
+    /* ==========================================================================
+       4. TAB CONTENT SECTIONS
+       ========================================================================== */
+    .tab-pane {
+      display: none;
+      animation: fadeIn 0.35s ease-in-out;
+    }
+    .tab-pane.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ==========================================================================
+       5. DASHBOARD VIEW (KPI METRICS & RECENT SCHEDULE)
+       ========================================================================== */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+
+    .kpi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-md);
+      padding: 20px 18px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-stone);
+      transition: var(--transition-smooth);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .kpi-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--gold-primary);
+      box-shadow: var(--shadow-gold-glow);
+    }
+
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 4px;
+      background: var(--gold-gradient);
+    }
+
+    .kpi-icon-bubble {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: rgba(212, 175, 55, 0.12);
+      border: 1px solid var(--border-gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .kpi-details {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .kpi-title {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .kpi-value {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.2;
+      margin: 2px 0;
+    }
+
+    .kpi-sub {
+      font-size: 0.75rem;
+      color: var(--cyan-accent);
+    }
+
+    /* Dashboard 2-Column Split */
+    .dashboard-layout-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 22px;
+      margin-bottom: 30px;
+    }
+
+    .content-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-stone);
+    }
+
+    .box-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .box-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--text-gold);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Today's Schedule List */
+    .today-trips-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .trip-card-row {
+      background: rgba(14, 11, 8, 0.85);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      transition: var(--transition-smooth);
+    }
+
+    .trip-card-row:hover {
+      border-color: var(--gold-primary);
+      background: rgba(24, 19, 13, 0.95);
+    }
+
+    .trip-info-main {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .trip-time-badge {
+      background: rgba(212, 175, 55, 0.15);
+      border: 1px solid var(--border-gold);
+      color: var(--gold-200);
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-weight: 800;
+      font-size: 0.85rem;
+      text-align: center;
+      min-width: 75px;
+    }
+
+    .trip-dest {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .trip-client-sub {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 2px;
+    }
+
+    .status-badge {
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 800;
+    }
+    .status-confirmed { background: rgba(56, 239, 125, 0.15); color: #38ef7d; border: 1px solid rgba(56, 239, 125, 0.4); }
+    .status-pending { background: rgba(245, 211, 76, 0.15); color: #f5d34c; border: 1px solid rgba(245, 211, 76, 0.4); }
+    .status-completed { background: rgba(32, 156, 238, 0.15); color: #209cee; border: 1px solid rgba(32, 156, 238, 0.4); }
+    .status-cancelled { background: rgba(255, 71, 87, 0.15); color: #ff4757; border: 1px solid rgba(255, 71, 87, 0.4); }
+
+    .trip-actions-quick {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-icon-action {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border-subtle);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-parchment);
+      transition: var(--transition-smooth);
+    }
+    .btn-icon-action:hover {
+      background: var(--gold-primary);
+      color: #070503;
+      border-color: var(--gold-primary);
+      transform: scale(1.1);
+    }
+    .btn-icon-action.wa-action:hover {
+      background: #25D366;
+      color: #fff;
+      border-color: #25D366;
+    }
+
+    /* Fleet Distribution Breakdown */
+    .fleet-stat-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .fleet-stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .fleet-stat-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .fleet-progress-bar {
+      width: 100%;
+      height: 7px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .fleet-progress-fill {
+      height: 100%;
+      background: var(--gold-gradient);
+      border-radius: 4px;
+    }
+
+    /* ==========================================================================
+       6. INTERACTIVE BOOKINGS CALENDAR
+       ========================================================================== */
+    .calendar-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-stone);
+    }
+
+    .calendar-header-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 22px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .calendar-month-title {
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: var(--text-gold);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .calendar-nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cal-nav-btn {
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-full);
+      color: var(--text-parchment);
+      font-weight: 700;
+      font-size: 0.85rem;
+      transition: var(--transition-smooth);
+    }
+    .cal-nav-btn:hover {
+      background: var(--gold-primary);
+      color: #070503;
+    }
+
+    /* Calendar Grid Table */
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+    }
+
+    .cal-day-header {
+      text-align: center;
+      padding: 10px 4px;
+      font-weight: 800;
+      font-size: 0.85rem;
+      color: var(--gold-primary);
+      background: rgba(14, 11, 8, 0.8);
+      border-radius: var(--radius-sm);
+    }
+
+    .cal-cell {
+      min-height: 105px;
+      background: rgba(15, 12, 8, 0.85);
+      border: 1px solid rgba(212, 175, 55, 0.15);
+      border-radius: var(--radius-sm);
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 4px;
+      transition: var(--transition-smooth);
+      position: relative;
+      cursor: pointer;
+    }
+
+    .cal-cell:hover {
+      border-color: var(--gold-primary);
+      background: rgba(30, 24, 15, 0.95);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+
+    .cal-cell.other-month {
+      opacity: 0.3;
+    }
+
+    .cal-cell.is-today {
+      border: 2px solid var(--gold-primary);
+      background: rgba(212, 175, 55, 0.08);
+    }
+
+    .cal-cell-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    .cal-day-number {
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: #ffffff;
+    }
+
+    .cal-cell.is-today .cal-day-number {
+      color: var(--gold-200);
+      background: var(--gold-dark);
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+    }
+
+    .cal-events-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      overflow: hidden;
+    }
+
+    .cal-event-pill {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 6px;
+      border-radius: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: block;
+      color: #fff;
+    }
+    .cal-event-pill.confirmed { background: rgba(56, 239, 125, 0.35); border-right: 3px solid #38ef7d; }
+    .cal-event-pill.pending { background: rgba(245, 211, 76, 0.35); border-right: 3px solid #f5d34c; color: #f7e099; }
+    .cal-event-pill.completed { background: rgba(32, 156, 238, 0.35); border-right: 3px solid #209cee; }
+    .cal-event-pill.cancelled { background: rgba(255, 71, 87, 0.35); border-right: 3px solid #ff4757; }
+
+    /* ==========================================================================
+       7. BOOKINGS MANAGEMENT DATA TABLE
+       ========================================================================== */
+    .filter-search-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 20px;
+      background: rgba(14, 11, 8, 0.85);
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-gold);
+    }
+
+    .filters-left-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toolbar-input, .toolbar-select {
+      padding: 9px 14px;
+      background: rgba(8, 6, 4, 0.95);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-md);
+      color: var(--text-parchment);
+      font-size: 0.85rem;
+      font-family: inherit;
+    }
+
+    .toolbar-input:focus, .toolbar-select:focus {
+      border-color: var(--gold-primary);
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+    }
+
+    .admin-table-responsive {
+      width: 100%;
+      overflow-x: auto;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-gold);
+      box-shadow: var(--shadow-stone);
+    }
+
+    .admin-data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: right;
+      background: var(--bg-card);
+      min-width: 860px;
+    }
+
+    .admin-data-table th {
+      background: rgba(10, 8, 5, 0.98);
+      color: var(--gold-200);
+      font-weight: 800;
+      font-size: 0.88rem;
+      padding: 14px 16px;
+      border-bottom: 2px solid var(--border-gold);
+      white-space: nowrap;
+    }
+
+    .admin-data-table td {
+      padding: 14px 16px;
+      font-size: 0.9rem;
+      color: var(--text-parchment);
+      border-bottom: 1px solid var(--border-subtle);
+      vertical-align: middle;
+    }
+
+    .admin-data-table tr:hover {
+      background: rgba(212, 175, 55, 0.05);
+    }
+
+    .table-client-cell {
+      display: flex;
+      flex-direction: column;
+    }
+    .table-client-name {
+      font-weight: 800;
+      color: #ffffff;
+    }
+    .table-client-phone {
+      font-size: 0.8rem;
+      color: var(--cyan-accent);
+      direction: ltr;
+      text-align: right;
+    }
+
+    .table-actions-cell {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ==========================================================================
+       8. CLIENTS CRM DIRECTORY
+       ========================================================================== */
+    .clients-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+    }
+
+    .client-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      box-shadow: var(--shadow-stone);
+      transition: var(--transition-smooth);
+      position: relative;
+    }
+
+    .client-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--gold-primary);
+      box-shadow: var(--shadow-gold-glow);
+    }
+
+    .client-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .client-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--gold-gradient);
+      color: #070503;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    .client-card-name {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .client-card-phone {
+      font-size: 0.85rem;
+      color: var(--cyan-accent);
+      direction: ltr;
+      display: inline-block;
+      margin-top: 2px;
+    }
+
+    .client-vip-badge {
+      background: rgba(212, 175, 55, 0.2);
+      border: 1px solid var(--gold-primary);
+      color: var(--gold-200);
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+    }
+
+    .client-stats-row {
+      display: flex;
+      justify-content: space-around;
+      background: rgba(10, 8, 5, 0.7);
+      padding: 10px;
+      border-radius: var(--radius-sm);
+      margin: 12px 0;
+      text-align: center;
+    }
+
+    .client-stat-number {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text-gold);
+    }
+
+    .client-stat-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .client-actions-footer {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .btn-client-action {
+      flex: 1;
+      padding: 8px 12px;
+      border-radius: var(--radius-full);
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: var(--transition-smooth);
+    }
+    .btn-client-wa {
+      background: rgba(37, 211, 102, 0.15);
+      border: 1px solid #25D366;
+      color: #38ef7d;
+    }
+    .btn-client-wa:hover {
+      background: #25D366;
+      color: #070503;
+    }
+    .btn-client-call {
+      background: rgba(212, 175, 55, 0.15);
+      border: 1px solid var(--border-gold);
+      color: var(--gold-200);
+    }
+    .btn-client-call:hover {
+      background: var(--gold-primary);
+      color: #070503;
+    }
+
+    /* ==========================================================================
+       9. MODAL POPUPS (ADD/EDIT BOOKING & DAY DETAILS)
+       ========================================================================== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      animation: fadeIn 0.25s ease-out;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-box {
+      background: var(--bg-surface);
+      border: 2px solid var(--gold-primary);
+      border-radius: var(--radius-lg);
+      max-width: 620px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 28px 24px;
+      box-shadow: var(--shadow-stone);
+      position: relative;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-gold);
+    }
+
+    .modal-title {
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: var(--text-gold);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .modal-close-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      transition: var(--transition-smooth);
+    }
+    .modal-close-btn:hover {
+      background: var(--status-cancelled);
+      color: #fff;
+    }
+
+    .modal-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-group-full {
+      grid-column: 1 / -1;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-gold);
+      margin-bottom: 6px;
+    }
+
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      padding: 10px 14px;
+      background: rgba(10, 8, 5, 0.95);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-md);
+      color: var(--text-parchment);
+      font-size: 0.9rem;
+      font-family: inherit;
+    }
+
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--gold-primary);
+      box-shadow: 0 0 12px rgba(212, 175, 55, 0.35);
+    }
+
+    .modal-footer-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .btn-modal-cancel {
+      padding: 10px 20px;
+      border-radius: var(--radius-full);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+
+    .btn-modal-save {
+      padding: 10px 24px;
+      border-radius: var(--radius-full);
+      background: var(--gold-gradient);
+      color: #070503;
+      font-weight: 800;
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.35);
+    }
+
+    /* ==========================================================================
+       10. MOBILE RESPONSIVE MEDIA QUERIES
+       ========================================================================== */
+    @media (max-width: 768px) {
+      .admin-header {
+        padding: 10px 14px;
+      }
+      .admin-main-container {
+        padding: 14px 12px 90px;
+      }
+      .dashboard-layout-grid {
+        grid-template-columns: 1fr;
+      }
+      .modal-form-grid {
+        grid-template-columns: 1fr;
+      }
+      .cal-grid {
+        gap: 4px;
+      }
+      .cal-cell {
+        min-height: 80px;
+        padding: 4px;
+      }
+      .cal-day-header {
+        font-size: 0.72rem;
+        padding: 6px 2px;
+      }
+      .cal-day-number {
+        font-size: 0.8rem;
+      }
+      .btn-new-booking span {
+        display: none;
+      }
+      .btn-new-booking {
+        padding: 8px 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================================================
+       1. ADMIN HEADER
+       ========================================================================== -->
+  <header class="admin-header">
+    <div class="admin-brand-group">
+      <div class="admin-logo-badge">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 2C9.24 2 7 4.24 7 7C7 9.07 8.27 10.84 10.08 11.61L10.08 13L6 13C5.45 13 5 13.45 5 14C5 14.55 5.45 15 6 15L10 15L10 21C10 21.55 10.45 22 11 22C11.55 22 12 21.55 12 21L12 15L14 15L14 21C14 21.55 14.45 22 15 22C15.55 22 16 21.55 16 21L16 15L20 15C20.55 15 21 14.55 21 14C21 13.45 20.55 13 20 13L15.92 13L15.92 11.61C17.73 10.84 19 9.07 19 7C19 4.24 16.76 2 12 2Z"/>
+        </svg>
+      </div>
+      <div class="admin-brand-texts">
+        <span class="admin-brand-en">ANUBIS TRAVEL</span>
+        <span class="admin-brand-ar">
+          إدارة / جهاد حسين
+          <span class="badge">لوحة التحكم VIP</span>
+        </span>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button class="btn-new-booking" onclick="openNewBookingModal()">
+        <span>+ حجز رحلة جديدة</span>
+        <strong>➕</strong>
+      </button>
+      <a href="index.html" class="btn-home-link" title="الرجوع لصفحة الأسعار والموقع">
+        <span>الموقع الرئيسي</span> 🏠
+      </a>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       2. MAIN WRAPPER & TAB NAVIGATION
+       ========================================================================== */ -->
+  <main class="admin-main-container">
+
+    <!-- Navigation Tabs -->
+    <div class="admin-nav-tabs">
+      <button class="tab-btn active" onclick="switchTab('dashboard')">
+        <span>📊 لوحة المؤشرات (Dashboard)</span>
+      </button>
+      <button class="tab-btn" onclick="switchTab('calendar')">
+        <span>📅 تقويم الرحلات (Calendar)</span>
+        <span class="tab-badge" id="badge-cal-count">0</span>
+      </button>
+      <button class="tab-btn" onclick="switchTab('bookings')">
+        <span>📋 سجل الحجوزات (Bookings)</span>
+        <span class="tab-badge" id="badge-book-count">0</span>
+      </button>
+      <button class="tab-btn" onclick="switchTab('clients')">
+        <span>👥 دليل العملاء (Clients CRM)</span>
+        <span class="tab-badge" id="badge-client-count">0</span>
+      </button>
+    </div>
+
+    <!-- ==========================================================================
+         TAB 1: DASHBOARD OVERVIEW
+         ========================================================================== -->
+    <div class="tab-pane active" id="pane-dashboard">
+      <!-- KPI Stats Grid -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-icon-bubble">📅</div>
+          <div class="kpi-details">
+            <span class="kpi-title">رحلات اليوم</span>
+            <span class="kpi-value" id="kpi-today-count">0</span>
+            <span class="kpi-sub">رحلات مجدولة لليوم</span>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon-bubble">⏳</div>
+          <div class="kpi-details">
+            <span class="kpi-title">طلبات قيد التأكيد</span>
+            <span class="kpi-value" id="kpi-pending-count" style="color: #f5d34c;">0</span>
+            <span class="kpi-sub">تتطلب رد وتأكيد</span>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon-bubble">👥</div>
+          <div class="kpi-details">
+            <span class="kpi-title">العملاء المسجلين</span>
+            <span class="kpi-value" id="kpi-clients-count">0</span>
+            <span class="kpi-sub">عميل في قاعدة البيانات</span>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon-bubble">💰</div>
+          <div class="kpi-details">
+            <span class="kpi-title">الإيراد المتوقع (الشهر)</span>
+            <span class="kpi-value" id="kpi-revenue" style="color: var(--cyan-accent); font-size: 1.5rem;">0 ج.م</span>
+            <span class="kpi-sub">إجمالي قيمة الرحلات</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2-Column Split: Today's Schedule & Fleet Breakdown -->
+      <div class="dashboard-layout-grid">
+        <!-- Today & Upcoming Schedule -->
+        <div class="content-box">
+          <div class="box-header">
+            <h2 class="box-title">
+              <span>🚗</span> جدول رحلات اليوم والغد
+            </h2>
+            <button class="btn-home-link" style="font-size: 0.8rem;" onclick="switchTab('bookings')">عرض الكل ➔</button>
+          </div>
+          <div class="today-trips-list" id="today-trips-container">
+            <!-- Dynamic Content Injected by JS -->
+          </div>
+        </div>
+
+        <!-- Fleet Breakdown & Quick Tools -->
+        <div class="content-box">
+          <div class="box-header">
+            <h2 class="box-title">
+              <span>🚘</span> توزيع أسطول السيارات
+            </h2>
+          </div>
+          <div class="fleet-stat-list" id="fleet-stats-container">
+            <!-- Dynamic Fleet Stats -->
+          </div>
+
+          <div style="margin-top: 25px; padding-top: 15px; border-top: 1px solid var(--border-subtle); display: flex; flex-direction: column; gap: 8px;">
+            <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-gold);">نسخ احتياطي للبيانات:</span>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn-home-link" style="flex: 1; justify-content: center;" onclick="exportDataBackup()">📥 تصدير JSON</button>
+              <button class="btn-home-link" style="flex: 1; justify-content: center;" onclick="resetDemoData()">🔄 استعادة التجريبي</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================================================
+         TAB 2: INTERACTIVE CALENDAR
+         ========================================================================== -->
+    <div class="tab-pane" id="pane-calendar">
+      <div class="calendar-container">
+        <div class="calendar-header-bar">
+          <h2 class="calendar-month-title">
+            <span>🗓️</span> <span id="cal-month-name">أغسطس 2026</span>
+          </h2>
+          <div class="calendar-nav-controls">
+            <button class="cal-nav-btn" onclick="prevMonth()">الشهر السابق ⇦</button>
+            <button class="cal-nav-btn" onclick="goToToday()">اليوم</button>
+            <button class="cal-nav-btn" onclick="nextMonth()">⇨ الشهر القادم</button>
+          </div>
+        </div>
+
+        <div class="cal-grid">
+          <div class="cal-day-header">السبت</div>
+          <div class="cal-day-header">الأحد</div>
+          <div class="cal-day-header">الإثنين</div>
+          <div class="cal-day-header">الثلاثاء</div>
+          <div class="cal-day-header">الأربعاء</div>
+          <div class="cal-day-header">الخميس</div>
+          <div class="cal-day-header">الجمعة</div>
+        </div>
+
+        <div class="cal-grid" id="cal-cells-grid" style="margin-top: 8px;">
+          <!-- Calendar Days Injected by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================================================
+         TAB 3: BOOKINGS MANAGEMENT TABLE
+         ========================================================================== -->
+    <div class="tab-pane" id="pane-bookings">
+      <div class="filter-search-toolbar">
+        <div class="filters-left-group">
+          <input type="text" id="booking-search" class="toolbar-input" placeholder="🔍 بحث باسم العميل أو الرحلة..." oninput="renderBookingsTable()">
+          <select id="booking-status-filter" class="toolbar-select" onchange="renderBookingsTable()">
+            <option value="all">جميع الحالات</option>
+            <option value="confirmed">مؤكدة 🟢</option>
+            <option value="pending">قيد الانتظار 🟡</option>
+            <option value="completed">مكتملة 🔵</option>
+            <option value="cancelled">ملغاة 🔴</option>
+          </select>
+        </div>
+
+        <button class="btn-new-booking" onclick="openNewBookingModal()">+ حجز جديد</button>
+      </div>
+
+      <div class="admin-table-responsive">
+        <table class="admin-data-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>العميل / الهاتف</th>
+              <th>الرحلة والمزار</th>
+              <th>السيارة</th>
+              <th>التاريخ والوقت</th>
+              <th>مكان الانطلاق</th>
+              <th>السعر</th>
+              <th>الحالة</th>
+              <th>إجراءات</th>
+            </tr>
+          </thead>
+          <tbody id="bookings-table-body">
+            <!-- Bookings Injected by JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ==========================================================================
+         TAB 4: CLIENTS CRM
+         ========================================================================== -->
+    <div class="tab-pane" id="pane-clients">
+      <div class="filter-search-toolbar">
+        <div class="filters-left-group">
+          <input type="text" id="client-search" class="toolbar-input" placeholder="🔍 بحث عن عميل بالاسم أو الهاتف..." oninput="renderClients()">
+        </div>
+        <button class="btn-new-booking" onclick="openNewClientModal()">+ إضافة عميل جديد</button>
+      </div>
+
+      <div class="clients-grid" id="clients-container">
+        <!-- Client cards injected by JS -->
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ==========================================================================
+       MODAL 1: NEW / EDIT BOOKING
+       ========================================================================== -->
+  <div class="modal-overlay" id="booking-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-booking-title">➕ تسجيل حجز رحلة جديدة</h3>
+        <button class="modal-close-btn" onclick="closeBookingModal()">✕</button>
+      </div>
+
+      <form id="booking-form" onsubmit="saveBooking(event)">
+        <input type="hidden" id="form-booking-id">
+
+        <div class="modal-form-grid">
+          <div>
+            <label class="form-label" for="form-client-name">اسم العميل:</label>
+            <input type="text" id="form-client-name" class="form-input" placeholder="أحمد محمد" required>
+          </div>
+
+          <div>
+            <label class="form-label" for="form-client-phone">رقم الهاتف / الواتساب:</label>
+            <input type="tel" id="form-client-phone" class="form-input" placeholder="010XXXXXXXX" required>
+          </div>
+
+          <div class="form-group-full">
+            <label class="form-label" for="form-trip-dest">الرحلة أو المزار السياحي:</label>
+            <select id="form-trip-dest" class="form-select" required>
+              <optgroup label="المزارات واليوميات (القاهرة والجيزة)">
+                <option value="هرم - ممفيس - سقارة">هرم - ممفيس - سقارة</option>
+                <option value="هرم - ممفيس - سقارة - دهشور">هرم - ممفيس - سقارة - دهشور</option>
+                <option value="يومية بلد (3 مزارات)">يومية بلد (3 مزارات)</option>
+                <option value="يومية بلد (4 مزارات)">يومية بلد (4 مزارات)</option>
+                <option value="نصف يومية داخل القاهرة">نصف يومية داخل القاهرة</option>
+                <option value="سهرة عشاء نيلية">سهرة عشاء نيلية</option>
+                <option value="مطار القاهرة الدولي (سفر أو استقبال)">مطار القاهرة (سفر أو استقبال)</option>
+                <option value="مطار سفنكس الدولي (سفر أو استقبال)">مطار سفنكس (سفر أو استقبال)</option>
+              </optgroup>
+              <optgroup label="رحلات الأوفردي (Overday)">
+                <option value="أوفردي الإسكندرية">أوفردي الإسكندرية</option>
+                <option value="أوفردي الفيوم ووادي الريان">أوفردي الفيوم ووادي الريان</option>
+                <option value="أوفردي العين السخنة">أوفردي العين السخنة</option>
+                <option value="أوفردي المنيا وتل العمارنة">أوفردي المنيا وتل العمارنة</option>
+                <option value="توصيلة الإسكندرية (وان واي)">توصيلة الإسكندرية (وان واي)</option>
+                <option value="توصيلة الأقصر والصعيد">توصيلة الأقصر ومحافظات الصعيد</option>
+              </optgroup>
+              <optgroup label="السياحة والمحافظات (متعددة الأيام)">
+                <option value="الغردقة والجونة">الغردقة والجونة</option>
+                <option value="شرم الشيخ ودهب">شرم الشيخ ودهب</option>
+                <option value="الواحات البحرية والصحراء البيضاء (2 يوم)">الواحات البحرية والصحراء البيضاء (2 يوم)</option>
+                <option value="واحة سيوة (3 أيام / 2 ليلة)">واحة سيوة (3 أيام / 2 ليلة)</option>
+                <option value="الإسكندرية ومطروح (2 يوم / 1 ليلة)">الإسكندرية ومطروح (2 يوم / 1 ليلة)</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <div>
+            <label class="form-label" for="form-vehicle-type">نوع السيارة:</label>
+            <select id="form-vehicle-type" class="form-select" required>
+              <option value="ملاكي فاخر (سيدان)">ملاكي فاخر (سيدان)</option>
+              <option value="7 راكب عائلي (SUV)">7 راكب عائلي (SUV)</option>
+              <option value="إتش وان VIP (فان)">إتش وان VIP (فان)</option>
+              <option value="هاي إس سياحي">هاي إس سياحي</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="form-label" for="form-booking-status">حالة الحجز:</label>
+            <select id="form-booking-status" class="form-select" required>
+              <option value="confirmed">مؤكد 🟢</option>
+              <option value="pending">قيد الانتظار 🟡</option>
+              <option value="completed">مكتمل 🔵</option>
+              <option value="cancelled">ملغي 🔴</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="form-label" for="form-trip-date">تاريخ الرحلة:</label>
+            <input type="date" id="form-trip-date" class="form-input" required>
+          </div>
+
+          <div>
+            <label class="form-label" for="form-trip-time">وقت الانطلاق:</label>
+            <input type="time" id="form-trip-time" class="form-input" required value="08:00">
+          </div>
+
+          <div>
+            <label class="form-label" for="form-pickup-loc">نقطة الركوب / التجمع:</label>
+            <input type="text" id="form-pickup-loc" class="form-input" placeholder="فندق الفورسيزونز / المعادي" required>
+          </div>
+
+          <div>
+            <label class="form-label" for="form-trip-price">السعر المتفق عليه (ج.م):</label>
+            <input type="number" id="form-trip-price" class="form-input" placeholder="1500" required>
+          </div>
+
+          <div class="form-group-full">
+            <label class="form-label" for="form-trip-notes">ملاحظات إضافية / اسم السائق:</label>
+            <textarea id="form-trip-notes" class="form-textarea" rows="2" placeholder="عدد الركاب 4، لغة الإرشاد المطلوبة، اسم السائق..."></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer-actions">
+          <button type="button" class="btn-modal-cancel" onclick="closeBookingModal()">إلغاء</button>
+          <button type="submit" class="btn-modal-save">حفظ الحجز ✔</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL 2: NEW / EDIT CLIENT
+       ========================================================================== -->
+  <div class="modal-overlay" id="client-modal">
+    <div class="modal-box" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3 class="modal-title">👤 إضافة عميل جديد</h3>
+        <button class="modal-close-btn" onclick="closeClientModal()">✕</button>
+      </div>
+
+      <form id="client-form" onsubmit="saveClient(event)">
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          <div>
+            <label class="form-label" for="cform-name">اسم العميل:</label>
+            <input type="text" id="cform-name" class="form-input" placeholder="د. خالد عبدالله" required>
+          </div>
+          <div>
+            <label class="form-label" for="cform-phone">رقم الهاتف / الواتساب:</label>
+            <input type="tel" id="cform-phone" class="form-input" placeholder="010XXXXXXXX" required>
+          </div>
+          <div>
+            <label class="form-label" for="cform-type">فئة العميل:</label>
+            <select id="cform-type" class="form-select">
+              <option value="VIP">عميل مميز VIP ⭐</option>
+              <option value="Corporate">شركات ووفود 🏢</option>
+              <option value="Regular">عميل فردي 👤</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label" for="cform-notes">ملاحظات عن العميل:</label>
+            <textarea id="cform-notes" class="form-textarea" rows="2" placeholder="يفضل سيارات إتش وان، دقة المواعيد..."></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer-actions">
+          <button type="button" class="btn-modal-cancel" onclick="closeClientModal()">إلغاء</button>
+          <button type="submit" class="btn-modal-save">حفظ العميل ✔</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       JAVASCRIPT DATA MANAGEMENT & LOGIC
+       ========================================================================== -->
+  <script>
+    // --------------------------------------------------------------------------
+    // 1. DEFAULT SEED DATA (Realistic Bookings for Anubis Travel)
+    // --------------------------------------------------------------------------
+    const DEFAULT_BOOKINGS = [
+      {
+        id: "BK-1001",
+        clientName: "د. خالد عبدالله (السعودية)",
+        phone: "01091501160",
+        destination: "هرم - ممفيس - سقارة - دهشور",
+        vehicle: "إتش وان VIP (فان)",
+        date: new Date().toISOString().split('T')[0],
+        time: "08:30",
+        pickup: "فندق ماريوت الزمالك",
+        price: 2800,
+        status: "confirmed",
+        notes: "وفد عائلي 5 أفراد مع حقائب"
+      },
+      {
+        id: "BK-1002",
+        clientName: "م. طارق المهندس",
+        phone: "01012345678",
+        destination: "مطار القاهرة الدولي (سفر أو استقبال)",
+        vehicle: "ملاكي فاخر (سيدان)",
+        date: new Date().toISOString().split('T')[0],
+        time: "14:00",
+        pickup: "صالة وصول مبنى 3",
+        price: 750,
+        status: "confirmed",
+        notes: "استقبال بلافتة الاسم"
+      },
+      {
+        id: "BK-1003",
+        clientName: "شركة أوراسكوم للسياحة",
+        phone: "01234567890",
+        destination: "أوفردي الإسكندرية",
+        vehicle: "هاي إس سياحي",
+        date: new Date(Date.now() + 86400000).toISOString().split('T')[0],
+        time: "07:00",
+        pickup: "التجمع الخامس",
+        price: 3800,
+        status: "confirmed",
+        notes: "مجموعة 12 فرد - قلعة قايتباي والمنتزه"
+      },
+      {
+        id: "BK-1004",
+        clientName: "أ/ سارة النجار",
+        phone: "01198765432",
+        destination: "سهرة عشاء نيلية",
+        vehicle: "ملاكي فاخر (سيدان)",
+        date: new Date(Date.now() + 86400000).toISOString().split('T')[0],
+        time: "19:30",
+        pickup: "المعادي دجلة",
+        price: 900,
+        status: "pending",
+        notes: "باخرة نايل كروزر"
+      },
+      {
+        id: "BK-1005",
+        clientName: "فوج سياحي إيطالي (Marco)",
+        phone: "01091501160",
+        destination: "واحة سيوة (3 أيام / 2 ليلة)",
+        vehicle: "هاي إس سياحي",
+        date: new Date(Date.now() + 172800000).toISOString().split('T')[0],
+        time: "06:00",
+        pickup: "فندق كمبنسكي القاهرة الجديدة",
+        price: 16500,
+        status: "confirmed",
+        notes: "برنامج مبيت كامل مع سفاري بحر الرمال"
+      }
+    ];
+
+    const DEFAULT_CLIENTS = [
+      {
+        id: "CL-101",
+        name: "د. خالد عبدالله",
+        phone: "01091501160",
+        type: "VIP",
+        tripsCount: 4,
+        notes: "عميل دائم من الرياض، يفضل إتش وان"
+      },
+      {
+        id: "CL-102",
+        name: "م. طارق المهندس",
+        phone: "01012345678",
+        type: "Regular",
+        tripsCount: 2,
+        notes: "رحلات مطار منتظمة"
+      },
+      {
+        id: "CL-103",
+        name: "شركة أوراسكوم للسياحة",
+        phone: "01234567890",
+        type: "Corporate",
+        tripsCount: 7,
+        notes: "حجوزات وفود هاي إس شهرية"
+      }
+    ];
+
+    // LocalStorage keys
+    const STORAGE_BOOKINGS_KEY = "anubis_travel_bookings_v1";
+    const STORAGE_CLIENTS_KEY = "anubis_travel_clients_v1";
+
+    let bookings = [];
+    let clients = [];
+    let currentCalendarDate = new Date();
+
+    // --------------------------------------------------------------------------
+    // 2. DATA INITIALIZATION & LOCALSTORAGE
+    // --------------------------------------------------------------------------
+    function loadData() {
+      const savedBookings = localStorage.getItem(STORAGE_BOOKINGS_KEY);
+      if (savedBookings) {
+        try {
+          bookings = JSON.parse(savedBookings);
+        } catch (e) {
+          bookings = DEFAULT_BOOKINGS;
+        }
+      } else {
+        bookings = DEFAULT_BOOKINGS;
+        saveBookingsToStorage();
+      }
+
+      const savedClients = localStorage.getItem(STORAGE_CLIENTS_KEY);
+      if (savedClients) {
+        try {
+          clients = JSON.parse(savedClients);
+        } catch (e) {
+          clients = DEFAULT_CLIENTS;
+        }
+      } else {
+        clients = DEFAULT_CLIENTS;
+        saveClientsToStorage();
+      }
+    }
+
+    function saveBookingsToStorage() {
+      localStorage.setItem(STORAGE_BOOKINGS_KEY, JSON.stringify(bookings));
+    }
+
+    function saveClientsToStorage() {
+      localStorage.setItem(STORAGE_CLIENTS_KEY, JSON.stringify(clients));
+    }
+
+    // --------------------------------------------------------------------------
+    // 3. TAB SWITCHING
+    // --------------------------------------------------------------------------
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+      const pane = document.getElementById(`pane-${tabId}`);
+      if (pane) pane.classList.add('active');
+
+      const tabs = document.querySelectorAll('.tab-btn');
+      tabs.forEach(btn => {
+        if (btn.getAttribute('onclick').includes(tabId)) {
+          btn.classList.add('active');
+        }
+      });
+
+      if (tabId === 'calendar') {
+        renderCalendar();
+      } else if (tabId === 'bookings') {
+        renderBookingsTable();
+      } else if (tabId === 'clients') {
+        renderClients();
+      } else if (tabId === 'dashboard') {
+        renderDashboard();
+      }
+    }
+
+    // --------------------------------------------------------------------------
+    // 4. RENDER DASHBOARD
+    // --------------------------------------------------------------------------
+    function renderDashboard() {
+      const todayStr = new Date().toISOString().split('T')[0];
+      const todayTrips = bookings.filter(b => b.date === todayStr);
+      const pendingTrips = bookings.filter(b => b.status === 'pending');
+
+      // KPIs
+      document.getElementById('kpi-today-count').textContent = todayTrips.length;
+      document.getElementById('kpi-pending-count').textContent = pendingTrips.length;
+      document.getElementById('kpi-clients-count').textContent = clients.length;
+
+      const totalRevenue = bookings.reduce((sum, b) => sum + (Number(b.price) || 0), 0);
+      document.getElementById('kpi-revenue').textContent = totalRevenue.toLocaleString('ar-EG') + " ج.م";
+
+      // Badges in tabs
+      document.getElementById('badge-cal-count').textContent = bookings.length;
+      document.getElementById('badge-book-count').textContent = bookings.length;
+      document.getElementById('badge-client-count').textContent = clients.length;
+
+      // Today's list
+      const container = document.getElementById('today-trips-container');
+      container.innerHTML = '';
+
+      if (todayTrips.length === 0) {
+        container.innerHTML = `
+          <div style="text-align: center; padding: 30px 10px; color: var(--text-muted);">
+            <div style="font-size: 2rem; margin-bottom: 8px;">🌴</div>
+            <p>لا توجد رحلات مجدولة لليوم حتى الآن.</p>
+            <button class="btn-new-booking" style="margin-top: 12px;" onclick="openNewBookingModal()">+ إضافة حجز لليوم</button>
+          </div>
+        `;
+      } else {
+        todayTrips.forEach(trip => {
+          const row = document.createElement('div');
+          row.className = 'trip-card-row';
+          row.innerHTML = `
+            <div class="trip-info-main">
+              <div class="trip-time-badge">⏰ ${trip.time}</div>
+              <div>
+                <div class="trip-dest">${trip.destination}</div>
+                <div class="trip-client-sub">
+                  <span>👤 ${trip.clientName}</span>
+                  <span>🚗 ${trip.vehicle}</span>
+                  <span>📍 ${trip.pickup}</span>
+                </div>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span class="status-badge status-${trip.status}">${getStatusLabel(trip.status)}</span>
+              <strong style="color: var(--text-gold); font-size: 1.05rem;">${Number(trip.price).toLocaleString()} ج.م</strong>
+              <div class="trip-actions-quick">
+                <a href="https://wa.me/20${trip.phone.replace(/^0+/, '')}?text=${encodeURIComponent('مرحباً أ/ ' + trip.clientName + '، نؤكد لكم تفاصيل رحلتكم مع أنوبيس ترافيل لـ ' + trip.destination + ' اليوم الساعة ' + trip.time)}" target="_blank" class="btn-icon-action wa-action" title="واتساب للعميل">📱</a>
+                <button class="btn-icon-action" onclick="openEditBooking('${trip.id}')" title="تعديل">✏️</button>
+              </div>
+            </div>
+          `;
+          container.appendChild(row);
+        });
+      }
+
+      // Fleet breakdown calculation
+      const fleetStats = {
+        "ملاكي فاخر (سيدان)": 0,
+        "7 راكب عائلي (SUV)": 0,
+        "إتش وان VIP (فان)": 0,
+        "هاي إس سياحي": 0
+      };
+
+      bookings.forEach(b => {
+        if (fleetStats[b.vehicle] !== undefined) {
+          fleetStats[b.vehicle]++;
+        } else {
+          fleetStats["ملاكي فاخر (سيدان)"]++;
+        }
+      });
+
+      const totalBookingsCount = bookings.length || 1;
+      const fleetContainer = document.getElementById('fleet-stats-container');
+      fleetContainer.innerHTML = '';
+
+      for (const [vehicleName, count] of Object.entries(fleetStats)) {
+        const percent = Math.round((count / totalBookingsCount) * 100);
+        const item = document.createElement('div');
+        item.className = 'fleet-stat-item';
+        item.innerHTML = `
+          <div class="fleet-stat-header">
+            <span>${vehicleName}</span>
+            <span style="color: var(--gold-primary);">${count} رحلة (${percent}%)</span>
+          </div>
+          <div class="fleet-progress-bar">
+            <div class="fleet-progress-fill" style="width: ${percent}%;"></div>
+          </div>
+        `;
+        fleetContainer.appendChild(item);
+      }
+    }
+
+    // --------------------------------------------------------------------------
+    // 5. RENDER CALENDAR
+    // --------------------------------------------------------------------------
+    const AR_MONTH_NAMES = [
+      "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
+      "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"
+    ];
+
+    function renderCalendar() {
+      const year = currentCalendarDate.getFullYear();
+      const month = currentCalendarDate.getMonth();
+
+      document.getElementById('cal-month-name').textContent = `${AR_MONTH_NAMES[month]} ${year}`;
+
+      const grid = document.getElementById('cal-cells-grid');
+      grid.innerHTML = '';
+
+      const firstDayOfMonth = new Date(year, month, 1);
+      const lastDayOfMonth = new Date(year, month + 1, 0);
+
+      // In Egypt/Arab culture, Saturday is 6 in JS (0=Sun, 6=Sat)
+      // We want Saturday to be index 0
+      let startDayOffset = (firstDayOfMonth.getDay() + 1) % 7; 
+
+      const totalDays = lastDayOfMonth.getDate();
+      const prevMonthLastDay = new Date(year, month, 0).getDate();
+
+      const todayStr = new Date().toISOString().split('T')[0];
+
+      // Previous month filler days
+      for (let i = startDayOffset - 1; i >= 0; i--) {
+        const cell = document.createElement('div');
+        cell.className = 'cal-cell other-month';
+        cell.innerHTML = `
+          <div class="cal-cell-header">
+            <span class="cal-day-number">${prevMonthLastDay - i}</span>
+          </div>
+        `;
+        grid.appendChild(cell);
+      }
+
+      // Current month days
+      for (let day = 1; day <= totalDays; day++) {
+        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const dayBookings = bookings.filter(b => b.date === dateStr);
+
+        const isToday = dateStr === todayStr;
+        const cell = document.createElement('div');
+        cell.className = `cal-cell ${isToday ? 'is-today' : ''}`;
+        cell.onclick = () => openDayBookingsModal(dateStr, dayBookings);
+
+        let eventsHtml = '';
+        dayBookings.slice(0, 3).forEach(b => {
+          eventsHtml += `<span class="cal-event-pill ${b.status}" title="${b.time} - ${b.destination}">⏰ ${b.time} ${b.destination}</span>`;
+        });
+        if (dayBookings.length > 3) {
+          eventsHtml += `<span style="font-size: 0.7rem; color: var(--gold-primary); font-weight: 800;">+ ${dayBookings.length - 3} رحلات أخرى</span>`;
+        }
+
+        cell.innerHTML = `
+          <div class="cal-cell-header">
+            <span class="cal-day-number">${day}</span>
+            ${dayBookings.length > 0 ? `<span style="font-size: 0.7rem; color: var(--cyan-accent);">● ${dayBookings.length}</span>` : ''}
+          </div>
+          <div class="cal-events-list">
+            ${eventsHtml}
+          </div>
+        `;
+        grid.appendChild(cell);
+      }
+    }
+
+    function prevMonth() {
+      currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1);
+      renderCalendar();
+    }
+    function nextMonth() {
+      currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1);
+      renderCalendar();
+    }
+    function goToToday() {
+      currentCalendarDate = new Date();
+      renderCalendar();
+    }
+
+    // --------------------------------------------------------------------------
+    // 6. RENDER BOOKINGS TABLE
+    // --------------------------------------------------------------------------
+    function renderBookingsTable() {
+      const tbody = document.getElementById('bookings-table-body');
+      tbody.innerHTML = '';
+
+      const query = (document.getElementById('booking-search').value || '').trim().toLowerCase();
+      const statusFilter = document.getElementById('booking-status-filter').value;
+
+      const filtered = bookings.filter(b => {
+        const matchesQuery = !query || 
+          b.clientName.toLowerCase().includes(query) || 
+          b.destination.toLowerCase().includes(query) || 
+          b.phone.includes(query) ||
+          b.pickup.toLowerCase().includes(query);
+
+        const matchesStatus = statusFilter === 'all' || b.status === statusFilter;
+        return matchesQuery && matchesStatus;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="9" style="text-align: center; padding: 40px; color: var(--text-muted);">
+              لا توجد نتائج مطابقة لبحثك.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      filtered.forEach((b, index) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="font-weight: 700; color: var(--text-dim);">${index + 1}</td>
+          <td>
+            <div class="table-client-cell">
+              <span class="table-client-name">${b.clientName}</span>
+              <span class="table-client-phone">${b.phone}</span>
+            </div>
+          </td>
+          <td style="font-weight: 800; color: #ffffff;">${b.destination}</td>
+          <td><span style="font-size: 0.85rem; color: var(--text-parchment);">${b.vehicle}</span></td>
+          <td>
+            <div style="font-weight: 700;">📅 ${b.date}</div>
+            <div style="font-size: 0.8rem; color: var(--text-gold);">⏰ ${b.time}</div>
+          </td>
+          <td style="font-size: 0.85rem;">${b.pickup}</td>
+          <td style="font-weight: 800; color: var(--gold-200);">${Number(b.price).toLocaleString()} ج.م</td>
+          <td>
+            <select class="toolbar-select" style="padding: 4px 8px; font-size: 0.8rem;" onchange="updateBookingStatus('${b.id}', this.value)">
+              <option value="confirmed" ${b.status === 'confirmed' ? 'selected' : ''}>مؤكد 🟢</option>
+              <option value="pending" ${b.status === 'pending' ? 'selected' : ''}>قيد الانتظار 🟡</option>
+              <option value="completed" ${b.status === 'completed' ? 'selected' : ''}>مكتمل 🔵</option>
+              <option value="cancelled" ${b.status === 'cancelled' ? 'selected' : ''}>ملغي 🔴</option>
+            </select>
+          </td>
+          <td>
+            <div class="table-actions-cell">
+              <a href="https://wa.me/20${b.phone.replace(/^0+/, '')}?text=${encodeURIComponent('السلام عليكم أ/ ' + b.clientName + '، نؤكد لكم تفاصيل حجز رحلتكم مع أنوبيس ترافيل:\n📍 الوجهة: ' + b.destination + '\n📅 التاريخ: ' + b.date + ' (الساعة ' + b.time + ')\n🚗 نوع السيارة: ' + b.vehicle + '\n💰 السعر: ' + b.price + ' ج.م\nنشكركم لاختياركم أنوبيس ترافيل!')}" target="_blank" class="btn-icon-action wa-action" title="إرسال تأكيد واتساب">📱</a>
+              <button class="btn-icon-action" onclick="openEditBooking('${b.id}')" title="تعديل">✏️</button>
+              <button class="btn-icon-action" onclick="deleteBooking('${b.id}')" title="حذف" style="color: var(--status-cancelled);">🗑️</button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function updateBookingStatus(id, newStatus) {
+      const target = bookings.find(b => b.id === id);
+      if (target) {
+        target.status = newStatus;
+        saveBookingsToStorage();
+        renderDashboard();
+      }
+    }
+
+    function deleteBooking(id) {
+      if (confirm("هل أنت متأكد من حذف هذا الحجز نهائياً؟")) {
+        bookings = bookings.filter(b => b.id !== id);
+        saveBookingsToStorage();
+        renderBookingsTable();
+        renderDashboard();
+      }
+    }
+
+    // --------------------------------------------------------------------------
+    // 7. RENDER CLIENTS CRM
+    // --------------------------------------------------------------------------
+    function renderClients() {
+      const container = document.getElementById('clients-container');
+      container.innerHTML = '';
+
+      const query = (document.getElementById('client-search').value || '').trim().toLowerCase();
+      const filtered = clients.filter(c => {
+        return !query || c.name.toLowerCase().includes(query) || c.phone.includes(query);
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-muted);">
+            لا يوجد عملاء مطابقين للبحث.
+          </div>
+        `;
+        return;
+      }
+
+      filtered.forEach(c => {
+        const firstLetter = c.name ? c.name.trim().charAt(0) : 'ع';
+        const card = document.createElement('div');
+        card.className = 'client-card';
+        card.innerHTML = `
+          <div class="client-header">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div class="client-avatar">${firstLetter}</div>
+              <div>
+                <div class="client-card-name">${c.name}</div>
+                <span class="client-card-phone">${c.phone}</span>
+              </div>
+            </div>
+            <span class="client-vip-badge">${c.type || 'VIP ⭐'}</span>
+          </div>
+
+          <p style="font-size: 0.82rem; color: var(--text-muted); min-height: 38px;">
+            ${c.notes || 'لا توجد ملاحظات مسجلة.'}
+          </p>
+
+          <div class="client-stats-row">
+            <div>
+              <div class="client-stat-number">${c.tripsCount || 1}</div>
+              <div class="client-stat-label">رحلات منفذة</div>
+            </div>
+            <div>
+              <div class="client-stat-number" style="color: var(--cyan-accent);">ممتاز</div>
+              <div class="client-stat-label">تقييم العميل</div>
+            </div>
+          </div>
+
+          <div class="client-actions-footer">
+            <a href="https://wa.me/20${c.phone.replace(/^0+/, '')}" target="_blank" class="btn-client-action btn-client-wa">
+              <span>واتساب</span> 📱
+            </a>
+            <a href="tel:${c.phone}" class="btn-client-action btn-client-call">
+              <span>اتصال</span> 📞
+            </a>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // --------------------------------------------------------------------------
+    // 8. MODAL HANDLERS
+    // --------------------------------------------------------------------------
+    function openNewBookingModal(prefilledDate = null) {
+      document.getElementById('booking-modal').classList.add('active');
+      document.getElementById('modal-booking-title').textContent = '➕ تسجيل حجز رحلة جديدة';
+      document.getElementById('form-booking-id').value = '';
+      document.getElementById('booking-form').reset();
+
+      if (prefilledDate) {
+        document.getElementById('form-trip-date').value = prefilledDate;
+      } else {
+        document.getElementById('form-trip-date').value = new Date().toISOString().split('T')[0];
+      }
+    }
+
+    function openEditBooking(id) {
+      const b = bookings.find(item => item.id === id);
+      if (!b) return;
+
+      document.getElementById('booking-modal').classList.add('active');
+      document.getElementById('modal-booking-title').textContent = '✏️ تعديل تفاصيل الحجز';
+      document.getElementById('form-booking-id').value = b.id;
+      document.getElementById('form-client-name').value = b.clientName;
+      document.getElementById('form-client-phone').value = b.phone;
+      document.getElementById('form-trip-dest').value = b.destination;
+      document.getElementById('form-vehicle-type').value = b.vehicle;
+      document.getElementById('form-booking-status').value = b.status;
+      document.getElementById('form-trip-date').value = b.date;
+      document.getElementById('form-trip-time').value = b.time;
+      document.getElementById('form-pickup-loc').value = b.pickup;
+      document.getElementById('form-trip-price').value = b.price;
+      document.getElementById('form-trip-notes').value = b.notes || '';
+    }
+
+    function closeBookingModal() {
+      document.getElementById('booking-modal').classList.remove('active');
+    }
+
+    function saveBooking(event) {
+      event.preventDefault();
+      const id = document.getElementById('form-booking-id').value;
+
+      const bookingData = {
+        id: id || `BK-${Date.now().toString().slice(-4)}`,
+        clientName: document.getElementById('form-client-name').value.trim(),
+        phone: document.getElementById('form-client-phone').value.trim(),
+        destination: document.getElementById('form-trip-dest').value,
+        vehicle: document.getElementById('form-vehicle-type').value,
+        status: document.getElementById('form-booking-status').value,
+        date: document.getElementById('form-trip-date').value,
+        time: document.getElementById('form-trip-time').value,
+        pickup: document.getElementById('form-pickup-loc').value.trim(),
+        price: Number(document.getElementById('form-trip-price').value),
+        notes: document.getElementById('form-trip-notes').value.trim()
+      };
+
+      if (id) {
+        // Edit existing
+        const index = bookings.findIndex(b => b.id === id);
+        if (index !== -1) bookings[index] = bookingData;
+      } else {
+        // Create new
+        bookings.unshift(bookingData);
+
+        // Auto-save client if not exists
+        const existingClient = clients.find(c => c.phone === bookingData.phone);
+        if (!existingClient) {
+          clients.push({
+            id: `CL-${Date.now().toString().slice(-3)}`,
+            name: bookingData.clientName,
+            phone: bookingData.phone,
+            type: "VIP",
+            tripsCount: 1,
+            notes: `حجز رحلة: ${bookingData.destination}`
+          });
+          saveClientsToStorage();
+        } else {
+          existingClient.tripsCount = (existingClient.tripsCount || 1) + 1;
+          saveClientsToStorage();
+        }
+      }
+
+      saveBookingsToStorage();
+      closeBookingModal();
+
+      renderDashboard();
+      renderBookingsTable();
+      renderCalendar();
+      alert('تم حفظ الحجز بنجاح! ✔');
+    }
+
+    function openDayBookingsModal(dateStr, dayBookings) {
+      if (dayBookings.length === 0) {
+        openNewBookingModal(dateStr);
+      } else {
+        // Switch to bookings tab filtered by date
+        switchTab('bookings');
+        document.getElementById('booking-search').value = dateStr;
+        renderBookingsTable();
+      }
+    }
+
+    // Client modal
+    function openNewClientModal() {
+      document.getElementById('client-modal').classList.add('active');
+      document.getElementById('client-form').reset();
+    }
+    function closeClientModal() {
+      document.getElementById('client-modal').classList.remove('active');
+    }
+    function saveClient(e) {
+      e.preventDefault();
+      const newClient = {
+        id: `CL-${Date.now().toString().slice(-3)}`,
+        name: document.getElementById('cform-name').value.trim(),
+        phone: document.getElementById('cform-phone').value.trim(),
+        type: document.getElementById('cform-type').value,
+        tripsCount: 1,
+        notes: document.getElementById('cform-notes').value.trim()
+      };
+      clients.unshift(newClient);
+      saveClientsToStorage();
+      closeClientModal();
+      renderClients();
+      renderDashboard();
+      alert('تم حفظ العميل بنجاح!');
+    }
+
+    // --------------------------------------------------------------------------
+    // 9. BACKUP & UTILITIES
+    // --------------------------------------------------------------------------
+    function exportDataBackup() {
+      const data = {
+        exportedAt: new Date().toISOString(),
+        business: "ANUBIS TRAVEL (أنوبيس ترافيل)",
+        manager: "إدارة / جهاد حسين",
+        bookings: bookings,
+        clients: clients
+      };
+
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Anubis_Travel_Backup_${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function resetDemoData() {
+      if (confirm("هل تريد استعادة البيانات التجريبية الأولية؟")) {
+        bookings = DEFAULT_BOOKINGS;
+        clients = DEFAULT_CLIENTS;
+        saveBookingsToStorage();
+        saveClientsToStorage();
+        renderDashboard();
+        renderCalendar();
+        renderBookingsTable();
+        renderClients();
+        alert('تمت استعادة البيانات بنجاح!');
+      }
+    }
+
+    function getStatusLabel(status) {
+      switch (status) {
+        case 'confirmed': return 'مؤكد 🟢';
+        case 'pending': return 'قيد الانتظار 🟡';
+        case 'completed': return 'مكتمل 🔵';
+        case 'cancelled': return 'ملغي 🔴';
+        default: return status;
+      }
+    }
+
+    // --------------------------------------------------------------------------
+    // 10. INITIALIZE
+    // --------------------------------------------------------------------------
+    document.addEventListener('DOMContentLoaded', () => {
+      loadData();
+      renderDashboard();
+    });
+  </script>
+</body>
+</html>
