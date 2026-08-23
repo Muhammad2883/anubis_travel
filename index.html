@@ -8,15 +8,20 @@
   <meta name="keywords" content="أنوبيس ترافيل, Anubis Travel, ليموزين مصر, نقل سياحي, مزارات الأهرامات, رحلات اليوم الواحد, جهاد حسين, 01091501160">
   <meta name="theme-color" content="#0a0806">
   
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="anubis-logo.png">
+  <link rel="apple-touch-icon" href="anubis-logo.png">
+  
   <!-- Open Graph / Facebook / WhatsApp -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="أنوبيس ترافيل | ANUBIS TRAVEL - ليموزين وسياحة فاخرة">
   <meta property="og:description" content="إدارة / جهاد حسين - ت: 01091501160. أسعار رحلات اليوميات والمزارات والسياحة الفاخرة بأحدث أسطول سيارات.">
+  <meta property="og:image" content="anubis-logo.png">
   
-  <!-- Google Fonts: Cairo, Amiri, Cinzel Decorative, Cinzel, Reem Kufi -->
+  <!-- Google Fonts: Cairo, Amiri, Cinzel Decorative, Cinzel, Reem Kufi, Outfit -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@300;400;600;700;800;900&family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@600;700;800&family=Reem+Kufi:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@300;400;600;700;800;900&family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=Reem+Kufi:wght@500;700&display=swap" rel="stylesheet">
   
   <!-- GSAP Animation Library CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -64,6 +69,7 @@
       --font-pharaonic: 'Amiri', serif;
       --font-title-en: 'Cinzel Decorative', 'Cinzel', serif;
       --font-kufi: 'Reem Kufi', sans-serif;
+      --font-latin: 'Outfit', 'Cinzel', sans-serif;
       
       --radius-sm: 8px;
       --radius-md: 14px;
@@ -72,6 +78,38 @@
       
       --transition-smooth: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       --transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* LTR Support Styles */
+    html[dir="ltr"] {
+      --font-body: 'Outfit', 'Segoe UI', system-ui, sans-serif;
+    }
+
+    html[dir="ltr"] .table-search-input {
+      padding: 12px 16px 12px 42px;
+      text-align: left;
+    }
+
+    html[dir="ltr"] .search-icon-svg {
+      right: auto;
+      left: 14px;
+    }
+
+    html[dir="ltr"] .note-body ul {
+      padding-right: 0;
+      padding-left: 20px;
+    }
+
+    html[dir="ltr"] .service-cell {
+      text-align: left;
+    }
+
+    html[dir="ltr"] .table-header-info {
+      text-align: left;
+    }
+
+    html[dir="ltr"] .brand-titles {
+      text-align: left;
     }
 
     /* ==========================================================================
@@ -148,8 +186,8 @@
     #intro-splash {
       position: fixed;
       inset: 0;
-      z-index: 99999;
-      background-color: #060402;
+      background: #050403;
+      z-index: 999999;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -161,18 +199,24 @@
     .intro-bg-canvas {
       position: absolute;
       inset: 0;
+      width: 100%;
+      height: 100%;
       opacity: 0.6;
-      pointer-events: none;
     }
 
     .intro-sun-disk {
       position: absolute;
-      width: 400px;
-      height: 400px;
+      width: 320px;
+      height: 320px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(212, 175, 55, 0.35) 0%, rgba(212, 175, 55, 0.05) 50%, transparent 70%);
+      background: radial-gradient(circle, rgba(212, 175, 55, 0.25) 0%, rgba(150, 120, 27, 0.08) 50%, transparent 70%);
       filter: blur(25px);
-      animation: pulseSun 4s infinite alternate ease-in-out;
+      animation: pulseGlow 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulseGlow {
+      0% { transform: scale(0.9); opacity: 0.6; }
+      100% { transform: scale(1.15); opacity: 1; }
     }
 
     .intro-content {
@@ -182,88 +226,86 @@
       flex-direction: column;
       align-items: center;
       text-align: center;
-      padding: 20px;
+      padding: 0 20px;
     }
 
-    .intro-scarab-svg {
+    .intro-logo-img {
       width: 130px;
       height: 130px;
-      filter: drop-shadow(0 0 25px rgba(212, 175, 55, 0.8));
+      border-radius: 50%;
+      border: 2px solid var(--gold-primary);
       margin-bottom: 20px;
-      transform-origin: center;
+      filter: drop-shadow(0 0 25px rgba(212, 175, 55, 0.7));
+      box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
+      object-fit: cover;
+      transition: var(--transition-bounce);
     }
 
     .intro-title-en {
       font-family: var(--font-title-en);
-      font-size: clamp(2rem, 5vw, 3.8rem);
-      letter-spacing: 6px;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      letter-spacing: 4px;
+      color: var(--gold-200);
       background: var(--gold-gradient);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       margin-bottom: 8px;
-      text-shadow: 0 0 35px rgba(212, 175, 55, 0.4);
-      font-weight: 900;
+      text-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
     }
 
     .intro-title-ar {
-      font-family: var(--font-pharaonic);
-      font-size: clamp(1.4rem, 3.5vw, 2.2rem);
-      color: var(--text-gold);
-      margin-bottom: 6px;
-      font-weight: 700;
+      font-family: var(--font-body);
+      font-size: clamp(1.4rem, 3.5vw, 2rem);
+      font-weight: 800;
+      color: var(--text-parchment);
+      margin-bottom: 12px;
+      letter-spacing: 1px;
     }
 
     .intro-subtitle {
       font-size: 1rem;
       color: var(--text-muted);
-      letter-spacing: 2px;
-      margin-bottom: 25px;
+      max-width: 450px;
+      line-height: 1.6;
+      margin-bottom: 30px;
     }
 
     .intro-loader-line {
       width: 220px;
       height: 3px;
-      background: rgba(212, 175, 55, 0.2);
-      border-radius: 4px;
-      position: relative;
+      background: rgba(212, 175, 55, 0.15);
+      border-radius: var(--radius-full);
       overflow: hidden;
-      margin-top: 15px;
+      position: relative;
+      margin-bottom: 24px;
     }
 
     .intro-loader-progress {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
       width: 0%;
+      height: 100%;
       background: var(--gold-gradient);
       box-shadow: 0 0 12px var(--gold-primary);
     }
 
     .intro-skip-btn {
-      margin-top: 30px;
       padding: 8px 22px;
-      font-size: 0.85rem;
-      color: var(--gold-primary);
       border: 1px solid var(--border-gold);
       border-radius: var(--radius-full);
-      background: rgba(212, 175, 55, 0.08);
-      transition: var(--transition-smooth);
+      color: var(--gold-200);
+      font-size: 0.85rem;
       letter-spacing: 1px;
+      background: rgba(212, 175, 55, 0.05);
+      transition: var(--transition-smooth);
     }
     .intro-skip-btn:hover {
       background: rgba(212, 175, 55, 0.2);
-      color: var(--gold-100);
       border-color: var(--gold-primary);
-    }
-
-    @keyframes pulseSun {
-      0% { transform: scale(0.9); opacity: 0.5; }
-      100% { transform: scale(1.15); opacity: 0.9; }
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+      transform: translateY(-2px);
     }
 
     /* ==========================================================================
-       4. BACKGROUND CANVAS & FLOATING HIEROGLYPHS
+       4. AMBIENT BACKGROUND PARTICLES & GLYPHS
        ========================================================================== */
     #stars-canvas {
       position: fixed;
@@ -272,7 +314,6 @@
       height: 100%;
       pointer-events: none;
       z-index: 0;
-      opacity: 0.75;
     }
 
     .floating-glyphs-layer {
@@ -285,59 +326,55 @@
 
     .bg-glyph {
       position: absolute;
-      color: rgba(212, 175, 55, 0.07);
       font-family: var(--font-pharaonic);
+      font-size: 5rem;
+      color: rgba(212, 175, 55, 0.03);
       user-select: none;
       filter: blur(1px);
+      animation: floatGlyph 20s infinite linear;
     }
 
-    .glyph-1 { top: 12%; right: 5%; font-size: 8rem; animation: levitateGlyph 18s infinite ease-in-out; }
-    .glyph-2 { top: 40%; left: 3%; font-size: 10rem; animation: levitateGlyph 24s infinite ease-in-out reverse; }
-    .glyph-3 { bottom: 15%; right: 8%; font-size: 9rem; animation: levitateGlyph 20s infinite ease-in-out 3s; }
-    .glyph-4 { bottom: 30%; left: 7%; font-size: 7rem; animation: levitateGlyph 16s infinite ease-in-out 1s; }
+    .glyph-1 { top: 15%; left: 8%; animation-duration: 26s; }
+    .glyph-2 { top: 60%; right: 6%; animation-duration: 32s; }
+    .glyph-3 { top: 85%; left: 15%; animation-duration: 22s; }
+    .glyph-4 { top: 35%; right: 12%; animation-duration: 28s; }
 
-    @keyframes levitateGlyph {
-      0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.04; }
-      50% { transform: translateY(-35px) rotate(6deg); opacity: 0.09; }
+    @keyframes floatGlyph {
+      0% { transform: translateY(0) rotate(0deg); opacity: 0.02; }
+      50% { opacity: 0.05; }
+      100% { transform: translateY(-80px) rotate(15deg); opacity: 0.02; }
     }
 
     /* ==========================================================================
-       5. MAIN WRAPPER & CONTAINER
+       5. MAIN PAGE LAYOUT & CONTAINER
        ========================================================================== */
     .page-wrapper {
       position: relative;
       z-index: 2;
-      width: 100%;
-      max-width: 1380px;
+      max-width: 1280px;
       margin: 0 auto;
       padding: 0 20px 80px;
     }
 
     /* ==========================================================================
-       6. NAVIGATION & TOP BAR
+       6. TOP STICKY NAVIGATION BAR
        ========================================================================== */
     .top-nav {
       position: sticky;
       top: 15px;
       z-index: 1000;
-      margin: 15px 0 35px;
-      padding: 14px 24px;
-      background: var(--bg-card);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      border: 1px solid var(--border-gold);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-stone);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 15px;
+      padding: 12px 24px;
+      background: rgba(18, 14, 9, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(212, 175, 55, 0.1);
+      margin: 15px 0 35px;
       transition: var(--transition-smooth);
-    }
-
-    .top-nav:hover {
-      border-color: var(--border-gold-strong);
-      box-shadow: var(--shadow-gold-glow);
     }
 
     .brand-container {
@@ -347,23 +384,40 @@
     }
 
     .brand-icon-wrapper {
-      position: relative;
-      width: 52px;
-      height: 52px;
-      border-radius: var(--radius-md);
-      background: radial-gradient(circle, rgba(212, 175, 55, 0.25) 0%, rgba(20, 16, 11, 0.9) 70%);
-      border: 1px solid var(--gold-primary);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--gold-gradient-subtle);
+      border: 1.5px solid var(--gold-primary);
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
-      animation: floatBadge 6s infinite ease-in-out;
+      box-shadow: 0 0 18px rgba(212, 175, 55, 0.35);
+      overflow: hidden;
+      flex-shrink: 0;
     }
 
-    .brand-icon-svg {
-      width: 32px;
-      height: 32px;
-      fill: var(--gold-primary);
+    .brand-logo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      border-radius: 50%;
+      transition: var(--transition-smooth);
+    }
+    .brand-icon-wrapper:hover .brand-logo-img {
+      transform: scale(1.08);
+    }
+
+    .footer-logo-img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 2px solid var(--gold-primary);
+      box-shadow: 0 0 25px rgba(212, 175, 55, 0.45);
+      margin: 0 auto 16px;
+      display: block;
+      object-fit: cover;
     }
 
     .brand-titles {
@@ -373,8 +427,8 @@
 
     .brand-name-en {
       font-family: var(--font-title-en);
-      font-size: 1.35rem;
-      font-weight: 900;
+      font-size: 1.25rem;
+      font-weight: 800;
       letter-spacing: 2px;
       background: var(--gold-gradient);
       -webkit-background-clip: text;
@@ -383,130 +437,131 @@
     }
 
     .brand-name-ar {
-      font-size: 0.95rem;
+      font-size: 0.88rem;
       font-weight: 700;
       color: var(--text-parchment);
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
     }
 
-    .brand-name-ar .manager-badge {
-      background: rgba(212, 175, 55, 0.15);
+    .manager-badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      padding: 2px 8px;
+      background: rgba(212, 175, 55, 0.12);
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      border-radius: var(--radius-full);
       color: var(--gold-200);
-      font-size: 0.75rem;
-      padding: 1px 8px;
-      border-radius: var(--radius-sm);
-      border: 1px solid rgba(212, 175, 55, 0.3);
+      font-weight: 600;
     }
 
     .nav-actions {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
+    }
+
+    .lang-switch-btn {
+      padding: 7px 14px;
+      border-radius: var(--radius-full);
+      font-size: 0.85rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(212, 175, 55, 0.12);
+      border: 1px solid var(--border-gold-strong);
+      color: var(--gold-200);
+      transition: var(--transition-bounce);
+    }
+    .lang-switch-btn:hover {
+      background: var(--gold-gradient);
+      color: #0d0b08;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
     }
 
     .nav-call-btn, .nav-wa-btn {
+      padding: 8px 16px;
+      border-radius: var(--radius-full);
+      font-size: 0.85rem;
+      font-weight: 700;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 10px 20px;
-      border-radius: var(--radius-full);
-      font-weight: 700;
-      font-size: 0.95rem;
+      gap: 6px;
       transition: var(--transition-bounce);
-      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
     }
 
     .nav-call-btn {
-      background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(150, 120, 27, 0.4) 100%);
-      color: var(--gold-100);
+      background: rgba(212, 175, 55, 0.08);
       border: 1px solid var(--border-gold);
+      color: var(--text-parchment);
     }
     .nav-call-btn:hover {
-      transform: translateY(-3px) scale(1.03);
+      background: rgba(212, 175, 55, 0.2);
       border-color: var(--gold-primary);
-      box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
-      color: #fff;
+      color: var(--gold-100);
+      transform: translateY(-2px);
     }
 
     .nav-wa-btn {
-      background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+      background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
       color: #ffffff;
-      border: 1px solid rgba(255, 255, 255, 0.2);
       box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
     }
     .nav-wa-btn:hover {
-      transform: translateY(-3px) scale(1.03);
-      box-shadow: 0 6px 25px rgba(37, 211, 102, 0.5);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5);
     }
 
     /* ==========================================================================
-       7. HERO SECTION & ANTI-GRAVITY FLOATING BANNER
+       7. HERO SECTION (ROYAL PHARAONIC INTRO)
        ========================================================================== */
     .hero-section {
-      position: relative;
-      margin: 20px 0 50px;
-      padding: 50px 30px;
-      border-radius: var(--radius-lg);
-      background: linear-gradient(145deg, rgba(30, 24, 16, 0.9) 0%, rgba(15, 12, 8, 0.95) 100%);
-      border: 1px solid var(--border-gold);
-      box-shadow: var(--shadow-floating);
-      overflow: hidden;
       text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .hero-section::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image: 
-        radial-gradient(circle at 50% -20%, rgba(212, 175, 55, 0.25) 0%, transparent 65%),
-        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5 L35 15 L45 15 L37 22 L40 32 L30 26 L20 32 L23 22 L15 15 L25 15 Z' fill='%23d4af37' fill-opacity='0.025'/%3E%3C/svg%3E");
-      pointer-events: none;
+      padding: 30px 10px 45px;
+      position: relative;
     }
 
     .hero-cartouche-badge {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      padding: 6px 22px;
-      background: rgba(212, 175, 55, 0.1);
-      border: 1px solid var(--gold-primary);
+      padding: 6px 20px;
+      background: var(--gold-gradient-subtle);
+      border: 1px solid var(--border-gold-strong);
       border-radius: var(--radius-full);
       color: var(--gold-200);
-      font-size: 0.95rem;
+      font-size: 0.88rem;
       font-weight: 700;
       margin-bottom: 22px;
-      box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
-      animation: floatBadge 5s infinite ease-in-out;
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
+      letter-spacing: 0.5px;
     }
 
     .hero-title {
       font-size: clamp(2.2rem, 5.5vw, 3.8rem);
       font-weight: 900;
       line-height: 1.25;
-      margin-bottom: 16px;
-      color: #ffffff;
-      text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+      margin-bottom: 18px;
+      color: var(--text-white);
+      letter-spacing: -0.5px;
     }
 
-    .hero-title .gold-gradient-text {
+    .gold-gradient-text {
       background: var(--gold-gradient);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       display: inline-block;
-      filter: drop-shadow(0 2px 10px rgba(212,175,55,0.4));
+      filter: drop-shadow(0 2px 10px rgba(212, 175, 55, 0.3));
     }
 
     .hero-subtitle {
-      max-width: 800px;
-      font-size: clamp(1.05rem, 2.2vw, 1.3rem);
-      color: var(--text-parchment);
-      margin-bottom: 35px;
+      max-width: 780px;
+      margin: 0 auto 28px;
+      font-size: 1.12rem;
+      color: var(--text-muted);
       line-height: 1.8;
     }
 
@@ -514,253 +569,308 @@
       display: inline-flex;
       align-items: center;
       gap: 12px;
-      background: linear-gradient(135deg, rgba(35, 28, 18, 0.95) 0%, rgba(20, 16, 10, 0.95) 100%);
-      padding: 10px 26px;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border-gold-strong);
+      padding: 10px 24px;
+      background: rgba(24, 19, 13, 0.9);
+      border: 1px solid var(--gold-primary);
+      border-radius: var(--radius-full);
+      box-shadow: 0 0 25px rgba(212, 175, 55, 0.25);
       margin-bottom: 35px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.6);
     }
 
     .hero-manager-pill .avatar-scarab {
-      width: 28px;
-      height: 28px;
+      width: 24px;
+      height: 24px;
       fill: var(--gold-primary);
     }
 
     .hero-manager-pill .name {
-      font-size: 1.15rem;
       font-weight: 800;
       color: var(--gold-100);
+      font-size: 1.05rem;
     }
 
     .hero-manager-pill .phone {
-      font-family: var(--font-body);
-      font-size: 1.15rem;
-      font-weight: 800;
+      font-family: var(--font-latin);
+      font-weight: 700;
       color: var(--cyan-accent);
+      font-size: 1.05rem;
       direction: ltr;
-      letter-spacing: 1px;
     }
 
-    /* Floating Key Stat Cards */
+    /* Hero Stats Grid */
     .hero-stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 18px;
-      width: 100%;
-      max-width: 1080px;
-      margin-top: 15px;
+      gap: 16px;
+      max-width: 1060px;
+      margin: 0 auto;
     }
 
     .stat-card {
-      background: var(--bg-glass);
-      backdrop-filter: blur(10px);
+      background: var(--bg-card);
       border: 1px solid var(--border-gold);
       border-radius: var(--radius-md);
-      padding: 20px 16px;
+      padding: 18px 16px;
       text-align: center;
-      transition: var(--transition-bounce);
+      transition: var(--transition-smooth);
+      box-shadow: var(--shadow-stone);
       position: relative;
       overflow: hidden;
     }
-
-    .stat-card:nth-child(1) { animation: floatCard1 6s infinite ease-in-out; }
-    .stat-card:nth-child(2) { animation: floatCard2 7s infinite ease-in-out 1s; }
-    .stat-card:nth-child(3) { animation: floatCard1 6.5s infinite ease-in-out 2s; }
-    .stat-card:nth-child(4) { animation: floatCard2 8s infinite ease-in-out 1.5s; }
-
     .stat-card:hover {
-      transform: translateY(-8px) scale(1.03) !important;
+      transform: translateY(-4px);
       border-color: var(--gold-primary);
-      box-shadow: var(--shadow-gold-glow);
+      box-shadow: 0 10px 25px rgba(212, 175, 55, 0.25);
       background: var(--bg-card-hover);
     }
 
     .stat-icon {
-      width: 36px;
-      height: 36px;
-      margin: 0 auto 10px;
+      width: 32px;
+      height: 32px;
       fill: var(--gold-primary);
+      margin: 0 auto 10px;
+      display: block;
     }
 
     .stat-title {
-      font-size: 1.1rem;
+      font-size: 1.02rem;
       font-weight: 800;
-      color: var(--text-gold);
+      color: var(--gold-200);
       margin-bottom: 4px;
     }
 
     .stat-desc {
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       color: var(--text-muted);
-    }
-
-    /* Anti-Gravity Floating Animations */
-    @keyframes floatCard1 {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-10px) rotate(0.4deg); }
-    }
-    @keyframes floatCard2 {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-12px) rotate(-0.4deg); }
-    }
-    @keyframes floatBadge {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-5px); }
+      line-height: 1.4;
     }
 
     /* ==========================================================================
-       8. VEHICLE FLEET SHOWCASE
+       8. SECTION HEADINGS (STONE TABLET INSCRIPTIONS)
        ========================================================================== */
     .section-header {
       text-align: center;
-      margin: 60px 0 35px;
+      margin: 50px 0 30px;
       position: relative;
     }
 
     .section-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 700;
       color: var(--gold-primary);
       text-transform: uppercase;
       letter-spacing: 2px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .section-title {
-      font-size: clamp(1.8rem, 3.8vw, 2.6rem);
+      font-size: clamp(1.6rem, 3.5vw, 2.3rem);
       font-weight: 900;
-      color: #ffffff;
-      margin-bottom: 12px;
-      display: flex;
+      color: var(--text-parchment);
+      display: inline-flex;
       align-items: center;
-      justify-content: center;
       gap: 12px;
-    }
-
-    .section-title svg {
-      width: 32px;
-      height: 32px;
-      fill: var(--gold-primary);
+      justify-content: center;
     }
 
     .section-subtitle {
-      font-size: 1.05rem;
+      font-size: 0.98rem;
       color: var(--text-muted);
-      max-width: 650px;
-      margin: 0 auto;
+      max-width: 620px;
+      margin: 8px auto 0;
+      line-height: 1.6;
     }
 
+    /* ==========================================================================
+       9. FLEET CATEGORIES SHOWCASE
+       ========================================================================== */
     .fleet-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 22px;
-      margin-bottom: 50px;
+      gap: 20px;
+      margin-bottom: 45px;
     }
 
     .fleet-card {
       background: var(--bg-card);
-      backdrop-filter: blur(12px);
       border: 1px solid var(--border-gold);
       border-radius: var(--radius-lg);
-      padding: 26px 22px;
+      padding: 26px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       text-align: center;
-      transition: var(--transition-bounce);
       position: relative;
       overflow: hidden;
       box-shadow: var(--shadow-stone);
+      transition: var(--transition-bounce);
     }
-
-    .fleet-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: var(--gold-gradient);
-      opacity: 0.6;
-      transition: var(--transition-smooth);
-    }
-
     .fleet-card:hover {
-      transform: translateY(-10px);
+      transform: translateY(-8px);
       border-color: var(--gold-primary);
-      box-shadow: var(--shadow-gold-glow);
-    }
-    .fleet-card:hover::before {
-      opacity: 1;
-      height: 5px;
+      box-shadow: var(--shadow-floating);
+      background: var(--bg-card-hover);
     }
 
     .fleet-icon-bubble {
-      width: 72px;
-      height: 72px;
-      margin: 0 auto 18px;
+      width: 68px;
+      height: 68px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(212, 175, 55, 0.25) 0%, rgba(20, 16, 11, 0.8) 80%);
+      background: var(--gold-gradient-subtle);
       border: 1px solid var(--gold-primary);
       display: flex;
       align-items: center;
       justify-content: center;
+      margin-bottom: 16px;
       box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
     }
 
     .fleet-icon-svg {
-      width: 38px;
-      height: 38px;
+      width: 34px;
+      height: 34px;
       fill: var(--gold-200);
     }
 
     .fleet-name {
-      font-size: 1.35rem;
+      font-size: 1.3rem;
       font-weight: 800;
-      color: var(--text-gold);
-      margin-bottom: 6px;
+      color: var(--gold-100);
+      margin-bottom: 4px;
     }
 
     .fleet-en-name {
-      font-family: var(--font-title-en);
-      font-size: 0.85rem;
-      color: var(--text-dim);
-      letter-spacing: 1px;
-      margin-bottom: 14px;
+      font-family: var(--font-latin);
+      font-size: 0.78rem;
+      letter-spacing: 1.5px;
+      color: var(--gold-primary);
+      font-weight: 700;
+      margin-bottom: 12px;
     }
 
     .fleet-specs {
       display: flex;
+      flex-wrap: wrap;
       justify-content: center;
-      gap: 12px;
-      margin-bottom: 16px;
+      gap: 6px;
+      margin-bottom: 14px;
     }
 
     .spec-pill {
-      background: rgba(212, 175, 55, 0.08);
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      background: rgba(255, 255, 255, 0.04);
       border: 1px solid var(--border-subtle);
-      padding: 4px 12px;
       border-radius: var(--radius-full);
-      font-size: 0.8rem;
       color: var(--text-parchment);
+      font-weight: 600;
     }
 
     .fleet-desc {
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       color: var(--text-muted);
       line-height: 1.5;
     }
 
     /* ==========================================================================
-       9. MASTER PRICING TABLES SECTION (THE 3 STONE TABLES)
+       10. INTERACTIVE INSTANT TRIP CALCULATOR (PROMINENT AT TOP)
        ========================================================================== */
-    .pricing-tables-wrapper {
-      margin: 40px 0 60px;
+    .calculator-section {
+      background: radial-gradient(circle at 50% 0%, rgba(35, 28, 18, 0.95) 0%, rgba(18, 14, 9, 0.98) 100%);
+      border: 2px solid var(--gold-primary);
+      border-radius: var(--radius-lg);
+      padding: 35px 28px;
+      margin: 15px 0 45px;
+      box-shadow: 0 0 40px rgba(212, 175, 55, 0.25), var(--shadow-stone);
+      position: relative;
+      overflow: hidden;
     }
 
-    /* Interactive Filter & Search Bar */
+    .calculator-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 18px;
+      margin: 24px 0 26px;
+    }
+
+    .calc-input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      text-align: inherit;
+    }
+
+    .calc-label {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--gold-200);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .calc-select, .calc-input {
+      padding: 12px 16px;
+      background: rgba(10, 8, 5, 0.95);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-md);
+      color: var(--text-parchment);
+      font-family: inherit;
+      font-size: 0.92rem;
+      outline: none;
+      transition: var(--transition-smooth);
+      cursor: pointer;
+    }
+    .calc-select:focus, .calc-input:focus {
+      border-color: var(--gold-primary);
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.35);
+    }
+    .calc-select option, .calc-select optgroup {
+      background: #140f0a;
+      color: #ede3d1;
+    }
+
+    .calc-result-box {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-md);
+      padding: 18px 22px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .calc-summary-text {
+      font-size: 1rem;
+      color: var(--text-parchment);
+      line-height: 1.6;
+    }
+    .calc-summary-text strong {
+      color: var(--gold-200);
+    }
+
+    .calc-direct-book-btn {
+      padding: 14px 28px;
+      border-radius: var(--radius-full);
+      background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 1.02rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.35);
+      transition: var(--transition-bounce);
+    }
+    .calc-direct-book-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(37, 211, 102, 0.55);
+    }
+
+    /* ==========================================================================
+       11. MASTER PRICING TABLES SECTION
+       ========================================================================== */
     .tables-filter-bar {
       display: flex;
       flex-wrap: wrap;
@@ -768,10 +878,10 @@
       justify-content: space-between;
       gap: 16px;
       background: var(--bg-card);
-      padding: 16px 24px;
-      border-radius: var(--radius-lg);
       border: 1px solid var(--border-gold);
-      margin-bottom: 35px;
+      border-radius: var(--radius-lg);
+      padding: 14px 20px;
+      margin-bottom: 30px;
       box-shadow: var(--shadow-stone);
     }
 
@@ -782,46 +892,46 @@
     }
 
     .filter-tab-btn {
-      padding: 9px 18px;
+      padding: 8px 18px;
       border-radius: var(--radius-full);
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 700;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
       color: var(--text-muted);
-      border: 1px solid transparent;
-      background: rgba(255, 255, 255, 0.03);
       transition: var(--transition-smooth);
     }
-
     .filter-tab-btn:hover {
-      color: var(--text-gold);
-      background: rgba(212, 175, 55, 0.1);
+      background: rgba(212, 175, 55, 0.15);
+      color: var(--gold-100);
+      border-color: var(--border-gold);
     }
-
     .filter-tab-btn.active {
-      color: #0d0b08;
       background: var(--gold-gradient);
-      font-weight: 800;
+      color: #0c0906;
+      border-color: var(--gold-primary);
       box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
     }
 
     .table-search-box {
       position: relative;
       min-width: 260px;
+      flex: 1;
+      max-width: 380px;
     }
 
     .table-search-input {
       width: 100%;
-      padding: 10px 42px 10px 16px;
-      background: rgba(10, 8, 6, 0.85);
+      padding: 11px 40px 11px 16px;
+      background: rgba(10, 8, 5, 0.9);
       border: 1px solid var(--border-gold);
       border-radius: var(--radius-full);
       color: var(--text-parchment);
-      font-size: 0.9rem;
       font-family: inherit;
+      font-size: 0.88rem;
       outline: none;
       transition: var(--transition-smooth);
     }
-
     .table-search-input:focus {
       border-color: var(--gold-primary);
       box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
@@ -838,33 +948,29 @@
       pointer-events: none;
     }
 
-    /* Individual Stone Table Container */
+    /* Stone Table Cards */
     .stone-table-card {
       background: var(--bg-card);
-      backdrop-filter: blur(16px);
       border: 1px solid var(--border-gold);
       border-radius: var(--radius-lg);
-      margin-bottom: 45px;
-      box-shadow: var(--shadow-stone);
+      margin-bottom: 35px;
       overflow: hidden;
+      box-shadow: var(--shadow-stone);
       transition: var(--transition-smooth);
-      position: relative;
     }
-
     .stone-table-card:hover {
       border-color: var(--border-gold-strong);
       box-shadow: var(--shadow-gold-glow);
     }
 
     .table-card-header {
-      padding: 24px 30px;
-      background: linear-gradient(90deg, rgba(35, 28, 18, 0.9) 0%, rgba(20, 16, 10, 0.9) 100%);
+      padding: 20px 24px;
+      background: linear-gradient(135deg, rgba(30, 24, 16, 0.9) 0%, rgba(15, 11, 7, 0.95) 100%);
       border-bottom: 1px solid var(--border-gold);
       display: flex;
-      flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      gap: 15px;
+      gap: 14px;
     }
 
     .table-header-info {
@@ -876,107 +982,96 @@
     .table-header-icon {
       width: 42px;
       height: 42px;
-      border-radius: var(--radius-md);
-      background: rgba(212, 175, 55, 0.15);
+      border-radius: 10px;
+      background: var(--gold-gradient-subtle);
       border: 1px solid var(--border-gold);
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-shrink: 0;
     }
 
     .table-header-icon svg {
-      width: 24px;
-      height: 24px;
+      width: 22px;
+      height: 22px;
       fill: var(--gold-primary);
     }
 
     .table-header-title {
-      font-size: 1.4rem;
+      font-size: 1.22rem;
       font-weight: 800;
-      color: var(--text-gold);
+      color: var(--gold-100);
       margin-bottom: 2px;
     }
 
     .table-header-desc {
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       color: var(--text-muted);
     }
 
     .table-badge-count {
-      padding: 6px 14px;
+      padding: 4px 12px;
       border-radius: var(--radius-full);
       background: rgba(212, 175, 55, 0.1);
       border: 1px solid var(--border-gold);
       color: var(--gold-200);
-      font-size: 0.85rem;
+      font-size: 0.78rem;
       font-weight: 700;
+      white-space: nowrap;
     }
 
-    /* Table Responsive Scroll Wrapper */
     .table-responsive {
       width: 100%;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
-      position: relative;
     }
 
-    /* Modern Egyptian Pharaonic Stone Table */
+    /* Pharaonic Luxury Data Table */
     .pharaonic-table {
       width: 100%;
       border-collapse: collapse;
-      text-align: right;
-      min-width: 720px;
+      text-align: inherit;
     }
 
     .pharaonic-table thead th {
-      background: rgba(15, 12, 8, 0.95);
+      background: rgba(12, 9, 6, 0.95);
       color: var(--gold-200);
+      font-size: 0.88rem;
       font-weight: 800;
-      font-size: 0.95rem;
-      padding: 18px 20px;
-      border-bottom: 2px solid var(--border-gold-strong);
+      padding: 14px 16px;
+      border-bottom: 2px solid var(--border-gold);
       white-space: nowrap;
-      letter-spacing: 0.5px;
-    }
-
-    .pharaonic-table thead th:first-child {
-      width: 32%;
+      text-align: inherit;
     }
 
     .pharaonic-table thead th .th-sub {
       display: block;
-      font-size: 0.75rem;
-      font-family: var(--font-title-en);
-      color: var(--text-dim);
-      font-weight: 600;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-weight: normal;
       margin-top: 2px;
+      font-family: var(--font-latin);
     }
 
     .pharaonic-table tbody tr {
       border-bottom: 1px solid var(--border-subtle);
       transition: var(--transition-smooth);
     }
-
-    .pharaonic-table tbody tr:last-child {
-      border-bottom: none;
-    }
-
     .pharaonic-table tbody tr:hover {
-      background: rgba(212, 175, 55, 0.08);
+      background: rgba(212, 175, 55, 0.06);
     }
 
     .pharaonic-table tbody td {
-      padding: 16px 20px;
-      font-size: 0.95rem;
+      padding: 14px 16px;
+      font-size: 0.9rem;
       color: var(--text-parchment);
       vertical-align: middle;
     }
 
-    /* Service Column */
     .service-cell {
       display: flex;
-      align-items: center;
-      gap: 12px;
+      align-items: flex-start;
+      gap: 10px;
     }
 
     .service-bullet {
@@ -984,209 +1079,87 @@
       height: 8px;
       border-radius: 50%;
       background: var(--gold-primary);
-      box-shadow: 0 0 8px var(--gold-primary);
+      margin-top: 6px;
       flex-shrink: 0;
+      box-shadow: 0 0 8px var(--gold-primary);
     }
 
     .service-text {
       font-weight: 700;
-      color: #ffffff;
-      font-size: 1.02rem;
+      color: var(--text-white);
+      margin-bottom: 2px;
     }
 
     .service-detail {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--text-muted);
-      margin-top: 2px;
+      line-height: 1.4;
     }
 
-    /* Vehicle Price Pill Style */
     .price-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(212, 175, 55, 0.18);
-      border-radius: var(--radius-sm);
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-gold);
+      color: var(--gold-100);
+      font-size: 0.85rem;
       font-weight: 700;
-      color: var(--text-gold);
-      font-size: 0.92rem;
-      transition: var(--transition-smooth);
       white-space: nowrap;
-    }
-
-    .price-pill:hover {
-      background: rgba(212, 175, 55, 0.15);
-      border-color: var(--gold-primary);
-      transform: scale(1.04);
-      color: #fff;
     }
 
     .price-tag-badge {
       display: inline-block;
-      font-size: 0.72rem;
-      color: var(--gold-dark);
-      margin-right: 2px;
-    }
-
-    /* Row Action Quick Book Button */
-    .row-book-btn {
-      padding: 6px 14px;
-      border-radius: var(--radius-full);
-      background: rgba(37, 211, 102, 0.12);
-      border: 1px solid rgba(37, 211, 102, 0.4);
-      color: #38ef7d;
-      font-size: 0.82rem;
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      background: rgba(56, 239, 125, 0.12);
+      border: 1px solid rgba(56, 239, 125, 0.4);
+      color: var(--cyan-accent);
+      font-size: 0.8rem;
       font-weight: 700;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      transition: var(--transition-bounce);
       white-space: nowrap;
     }
 
-    .row-book-btn:hover {
-      background: #25D366;
-      color: #070503;
-      border-color: #25D366;
-      box-shadow: 0 0 15px rgba(37, 211, 102, 0.5);
-      transform: scale(1.05);
-    }
-
-    /* ==========================================================================
-       10. INTERACTIVE TRIP ESTIMATOR & BOOKING WIZARD
-       ========================================================================== */
-    .calculator-section {
-      margin: 50px 0;
-      background: linear-gradient(135deg, rgba(28, 22, 14, 0.95) 0%, rgba(16, 12, 8, 0.95) 100%);
-      border: 1px solid var(--gold-primary);
-      border-radius: var(--radius-lg);
-      padding: 35px 30px;
-      box-shadow: var(--shadow-floating);
-      position: relative;
-    }
-
-    .calculator-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-      margin: 25px 0 30px;
-    }
-
-    .calc-input-group {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .calc-label {
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--text-gold);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .calc-select, .calc-input {
-      padding: 12px 16px;
-      background: rgba(10, 8, 5, 0.9);
-      border: 1px solid var(--border-gold);
-      border-radius: var(--radius-md);
-      color: var(--text-parchment);
-      font-family: inherit;
-      font-size: 0.95rem;
-      outline: none;
-      transition: var(--transition-smooth);
-    }
-
-    .calc-select:focus, .calc-input:focus {
-      border-color: var(--gold-primary);
-      box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
-    }
-
-    .calc-result-box {
-      background: rgba(12, 9, 6, 0.85);
-      border: 1px solid var(--border-gold);
-      border-radius: var(--radius-md);
-      padding: 20px 24px;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-    }
-
-    .calc-summary-text {
-      font-size: 1.05rem;
-      color: var(--text-parchment);
-    }
-
-    .calc-summary-text strong {
-      color: var(--gold-200);
-    }
-
-    .calc-direct-book-btn {
-      padding: 14px 28px;
+    .row-book-btn {
+      padding: 6px 14px;
       border-radius: var(--radius-full);
-      background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-      color: #ffffff;
+      background: var(--gold-gradient);
+      color: #0c0906;
       font-weight: 800;
-      font-size: 1.05rem;
+      font-size: 0.8rem;
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
-      transition: var(--transition-bounce);
+      gap: 4px;
+      box-shadow: 0 2px 10px rgba(212, 175, 55, 0.3);
+      transition: var(--transition-smooth);
+      white-space: nowrap;
     }
-
-    .calc-direct-book-btn:hover {
-      transform: translateY(-3px) scale(1.03);
-      box-shadow: 0 6px 30px rgba(37, 211, 102, 0.6);
+    .row-book-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.5);
     }
 
     /* ==========================================================================
-       11. IMPORTANT NOTES & POLICY BOXES
+       12. NOTES & POLICIES SECTION
        ========================================================================== */
-    .notes-section {
-      margin: 50px 0 60px;
-    }
-
     .notes-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 24px;
+      gap: 22px;
+      margin-bottom: 45px;
     }
 
     .note-box {
       background: var(--bg-card);
-      backdrop-filter: blur(14px);
       border: 1px solid var(--border-gold);
       border-radius: var(--radius-lg);
-      padding: 28px 24px;
-      position: relative;
-      overflow: hidden;
+      padding: 24px 20px;
       box-shadow: var(--shadow-stone);
       transition: var(--transition-smooth);
     }
-
     .note-box:hover {
-      border-color: var(--border-gold-strong);
-      transform: translateY(-5px);
-      box-shadow: var(--shadow-gold-glow);
-    }
-
-    .note-box.warning-theme {
-      border-right: 4px solid var(--gold-primary);
-    }
-
-    .note-box.overtime-theme {
-      border-right: 4px solid var(--cyan-accent);
-    }
-
-    .note-box.vip-theme {
-      border-right: 4px solid #f7d070;
+      border-color: var(--gold-primary);
+      transform: translateY(-4px);
     }
 
     .note-header {
@@ -1197,10 +1170,10 @@
     }
 
     .note-icon-bubble {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: rgba(212, 175, 55, 0.12);
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--gold-gradient-subtle);
       border: 1px solid var(--border-gold);
       display: flex;
       align-items: center;
@@ -1209,91 +1182,58 @@
     }
 
     .note-icon-bubble svg {
-      width: 24px;
-      height: 24px;
+      width: 22px;
+      height: 22px;
       fill: var(--gold-primary);
     }
 
     .note-title {
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       font-weight: 800;
-      color: var(--text-gold);
+      color: var(--gold-100);
     }
 
     .note-body {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       color: var(--text-parchment);
-      line-height: 1.75;
+      line-height: 1.7;
     }
 
     .note-body ul {
-      list-style: none;
-      margin-top: 10px;
+      padding-right: 20px;
+      margin-top: 8px;
     }
 
-    .note-body ul li {
-      position: relative;
-      padding-right: 20px;
-      margin-bottom: 8px;
+    .note-body li {
+      margin-bottom: 6px;
       color: var(--text-muted);
     }
 
-    .note-body ul li::before {
-      content: '✦';
-      position: absolute;
-      right: 0;
-      top: 0;
-      color: var(--gold-primary);
-      font-size: 0.8rem;
-    }
-
     .rate-highlight {
-      display: inline-block;
-      padding: 3px 10px;
-      background: rgba(56, 239, 125, 0.15);
-      border: 1px solid var(--cyan-accent);
-      border-radius: var(--radius-sm);
-      color: var(--cyan-accent);
+      color: var(--gold-200);
       font-weight: 800;
-      margin: 0 4px;
     }
 
     /* ==========================================================================
-       12. INTERACTIVE QR CODE & SHARE CARTOUCHE
+       13. QR CODE STUDIO & SHARING
        ========================================================================== */
     .qr-share-section {
-      margin: 60px 0 80px;
-      display: flex;
-      justify-content: center;
+      margin-bottom: 40px;
     }
 
     .qr-cartouche-card {
-      max-width: 680px;
-      width: 100%;
-      background: linear-gradient(145deg, rgba(32, 25, 16, 0.95) 0%, rgba(16, 12, 8, 0.98) 100%);
+      background: radial-gradient(circle at 50% 0%, rgba(30, 24, 16, 0.95) 0%, rgba(14, 10, 6, 0.98) 100%);
       border: 2px solid var(--gold-primary);
       border-radius: var(--radius-lg);
-      padding: 35px 30px;
+      padding: 35px 24px;
       text-align: center;
-      position: relative;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 35px rgba(212, 175, 55, 0.25);
-      animation: floatBadge 8s infinite ease-in-out;
+      box-shadow: 0 0 35px rgba(212, 175, 55, 0.2);
     }
-
-    .qr-cartouche-card::before, .qr-cartouche-card::after {
-      content: '𓂀';
-      position: absolute;
-      top: 15px;
-      font-size: 1.5rem;
-      color: var(--gold-dark);
-    }
-    .qr-cartouche-card::before { right: 20px; }
-    .qr-cartouche-card::after { left: 20px; }
 
     .qr-title {
       font-size: 1.5rem;
-      font-weight: 800;
-      color: var(--text-gold);
+      font-weight: 900;
+      color: var(--gold-100);
       margin-bottom: 6px;
     }
 
@@ -1309,7 +1249,6 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
-      text-align: right;
     }
 
     .qr-control-row {
@@ -1342,11 +1281,6 @@
       display: none;
       direction: ltr;
       text-align: left;
-    }
-
-    .qr-custom-input:focus, .qr-select:focus {
-      border-color: var(--gold-primary);
-      box-shadow: 0 0 12px rgba(212, 175, 55, 0.3);
     }
 
     .qr-style-pills {
@@ -1382,22 +1316,19 @@
       box-shadow: 0 0 25px rgba(212, 175, 55, 0.35);
       margin-bottom: 22px;
       position: relative;
-      transition: var(--transition-smooth);
     }
 
     .qr-frame-outer.bw-theme {
       background: #ffffff;
       border-color: #d4af37;
-      box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
     }
 
     .qr-image {
-      width: 190px;
-      height: 190px;
+      width: 180px;
+      height: 180px;
       display: block;
       border-radius: var(--radius-sm);
       border: 1px solid rgba(212, 175, 55, 0.4);
-      transition: var(--transition-smooth);
     }
 
     .qr-actions-row {
@@ -1451,100 +1382,100 @@
     }
 
     /* ==========================================================================
-       13. FOOTER
+       14. FOOTER (CLEAN, NO ADMIN BUTTON)
        ========================================================================== */
     .footer {
       border-top: 1px solid var(--border-gold);
-      padding: 40px 20px 30px;
-      background: rgba(8, 6, 4, 0.95);
+      padding: 40px 20px 90px;
       text-align: center;
+      background: #080604;
       position: relative;
       z-index: 2;
     }
 
     .footer-brand {
       font-family: var(--font-title-en);
-      font-size: 1.6rem;
+      font-size: 1.5rem;
+      letter-spacing: 3px;
       background: var(--gold-gradient);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 8px;
-      letter-spacing: 2px;
-      font-weight: 900;
+      margin-bottom: 6px;
     }
 
     .footer-manager {
-      font-size: 1.1rem;
-      font-weight: 800;
+      font-size: 0.95rem;
       color: var(--gold-100);
+      font-weight: 700;
       margin-bottom: 6px;
     }
 
     .footer-phone {
-      font-size: 1.25rem;
-      font-weight: 800;
+      font-family: var(--font-latin);
+      font-size: 1.1rem;
       color: var(--cyan-accent);
-      direction: ltr;
+      font-weight: 700;
       display: inline-block;
-      margin-bottom: 20px;
-      letter-spacing: 1px;
+      margin-bottom: 16px;
+      direction: ltr;
     }
 
     .footer-copy {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: var(--text-dim);
     }
 
     /* ==========================================================================
-       14. FLOATING SPEED-DIAL QUICK ACTION BAR (MOBILE & DESKTOP)
+       15. FLOATING SPEED-DIAL QUICK BAR
        ========================================================================== */
     .floating-speed-bar {
       position: fixed;
-      bottom: 20px;
+      bottom: 16px;
       left: 50%;
       transform: translateX(-50%);
-      z-index: 999;
+      z-index: 10000;
       display: flex;
       align-items: center;
-      gap: 12px;
-      background: rgba(18, 14, 9, 0.92);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
+      gap: 10px;
       padding: 8px 16px;
-      border-radius: var(--radius-full);
+      background: rgba(14, 10, 6, 0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border: 1px solid var(--gold-primary);
-      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.8), 0 0 25px rgba(212, 175, 55, 0.35);
-      transition: var(--transition-smooth);
+      border-radius: var(--radius-full);
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.8), 0 0 20px rgba(212, 175, 55, 0.25);
     }
 
     .float-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
       padding: 9px 18px;
       border-radius: var(--radius-full);
+      font-size: 0.88rem;
       font-weight: 800;
-      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       transition: var(--transition-bounce);
       white-space: nowrap;
     }
 
     .float-wa {
-      background: #25D366;
-      color: #070503;
-      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+      background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.35);
     }
     .float-wa:hover {
-      transform: scale(1.06);
-      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.55);
     }
 
     .float-call {
       background: var(--gold-gradient);
-      color: #070503;
+      color: #0c0906;
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.35);
     }
     .float-call:hover {
-      transform: scale(1.06);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(212, 175, 55, 0.55);
     }
 
     .float-top {
@@ -1565,43 +1496,6 @@
     }
 
     /* ==========================================================================
-       15. PRINT OPTIMIZATION
-       ========================================================================== */
-    @media print {
-      body {
-        background: #fff !important;
-        color: #000 !important;
-      }
-      #intro-splash, #stars-canvas, .floating-glyphs-layer, .floating-speed-bar, .tables-filter-bar, .calculator-section, .intro-skip-btn {
-        display: none !important;
-      }
-      .page-wrapper {
-        max-width: 100% !important;
-        padding: 0 !important;
-      }
-      .stone-table-card {
-        box-shadow: none !important;
-        border: 1px solid #000 !important;
-        break-inside: avoid;
-        margin-bottom: 25px !important;
-      }
-      .pharaonic-table thead th {
-        background: #eee !important;
-        color: #000 !important;
-        border-bottom: 2px solid #000 !important;
-      }
-      .pharaonic-table tbody td {
-        color: #000 !important;
-        border-bottom: 1px solid #ddd !important;
-      }
-      .price-pill {
-        background: none !important;
-        border: 1px solid #999 !important;
-        color: #000 !important;
-      }
-    }
-
-    /* ==========================================================================
        16. ULTRA-PREMIUM MOBILE RESPONSIVE DESIGN SYSTEM
        ========================================================================== */
     @media (max-width: 768px) {
@@ -1614,546 +1508,83 @@
         overflow-x: hidden;
       }
 
-      /* Compact Luxury Mobile Navbar */
       .top-nav {
         top: 8px;
         margin: 8px 0 20px;
-        padding: 10px 14px;
+        padding: 10px 12px;
         border-radius: var(--radius-md);
-        flex-direction: row;
-        justify-content: space-between;
-        gap: 8px;
-      }
-
-      .brand-container {
-        flex-direction: row;
-        gap: 10px;
-        text-align: right;
       }
 
       .brand-icon-wrapper {
-        width: 40px;
-        height: 40px;
-        border-radius: 10px;
+        width: 38px;
+        height: 38px;
       }
-
-      .brand-icon-svg {
-        width: 22px;
-        height: 22px;
-      }
-
-      .brand-name-en {
-        font-size: 1.05rem;
-        letter-spacing: 1px;
-      }
-
-      .brand-name-ar {
-        font-size: 0.8rem;
-      }
-
-      .brand-name-ar .manager-badge {
-        font-size: 0.68rem;
-        padding: 1px 5px;
-      }
+      .brand-name-en { font-size: 1.05rem; }
+      .brand-name-ar { font-size: 0.8rem; }
+      .manager-badge { font-size: 0.68rem; padding: 1px 6px; }
 
       .nav-actions {
         gap: 6px;
       }
-
-      .nav-call-btn, .nav-wa-btn {
-        padding: 7px 11px;
-        font-size: 0.78rem;
-        border-radius: var(--radius-full);
+      .nav-call-btn span {
+        display: none;
       }
-
-      .nav-call-btn span, .nav-wa-btn span {
-        display: none; /* Hide text on small screens, keep icons */
-      }
-
-      .nav-call-btn svg, .nav-wa-btn svg {
-        width: 16px;
-        height: 16px;
-        margin: 0;
-      }
-
-      /* Hero Mobile Optimization */
-      .hero-section {
-        margin: 10px 0 30px;
-        padding: 28px 14px 22px;
-        border-radius: var(--radius-md);
-      }
-
-      .hero-cartouche-badge {
-        padding: 4px 14px;
-        font-size: 0.78rem;
-        margin-bottom: 15px;
+      .nav-call-btn {
+        padding: 8px;
       }
 
       .hero-title {
-        font-size: 1.85rem;
-        line-height: 1.25;
-        margin-bottom: 12px;
+        font-size: 2rem;
       }
-
       .hero-subtitle {
-        font-size: 0.92rem;
-        line-height: 1.65;
-        margin-bottom: 22px;
-      }
-
-      .hero-manager-pill {
-        flex-direction: row;
-        padding: 8px 16px;
-        gap: 8px;
-        margin-bottom: 22px;
-      }
-
-      .hero-manager-pill .avatar-scarab {
-        width: 20px;
-        height: 20px;
-      }
-
-      .hero-manager-pill .name {
         font-size: 0.95rem;
       }
 
-      .hero-manager-pill .phone {
-        font-size: 0.95rem;
-      }
-
-      /* Stats Grid: Clean 2x2 Grid */
       .hero-stats-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 10px;
-        margin-top: 10px;
       }
-
       .stat-card {
-        padding: 14px 10px;
-        border-radius: var(--radius-sm);
+        padding: 12px 8px;
       }
 
-      .stat-icon {
-        width: 26px;
-        height: 26px;
-        margin-bottom: 6px;
-      }
-
-      .stat-title {
-        font-size: 0.88rem;
-        margin-bottom: 2px;
-      }
-
-      .stat-desc {
-        font-size: 0.72rem;
-        line-height: 1.35;
-      }
-
-      /* Section Headers */
-      .section-header {
-        margin: 35px 0 20px;
-      }
-
-      .section-eyebrow {
-        font-size: 0.8rem;
-        margin-bottom: 6px;
-      }
-
-      .section-title {
-        font-size: 1.45rem;
-        gap: 8px;
-      }
-
-      .section-title svg {
-        width: 22px;
-        height: 22px;
-      }
-
-      .section-subtitle {
-        font-size: 0.88rem;
-      }
-
-      /* Fleet Showcase Mobile */
-      .fleet-grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
-        margin-bottom: 30px;
-      }
-
-      .fleet-card {
-        padding: 20px 16px;
-        border-radius: var(--radius-md);
-      }
-
-      .fleet-icon-bubble {
-        width: 56px;
-        height: 56px;
-        margin-bottom: 12px;
-      }
-
-      .fleet-icon-svg {
-        width: 28px;
-        height: 28px;
-      }
-
-      .fleet-name {
-        font-size: 1.15rem;
-      }
-
-      .fleet-desc {
-        font-size: 0.82rem;
-      }
-
-      /* Filter & Search Bar Mobile */
-      .tables-filter-bar {
-        padding: 12px 14px;
-        gap: 12px;
-        border-radius: var(--radius-md);
-        margin-bottom: 25px;
-      }
-
-      .filter-tabs-group {
-        display: flex;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        white-space: nowrap;
-        width: 100%;
-        padding-bottom: 4px;
-        gap: 6px;
-      }
-
-      .filter-tabs-group::-webkit-scrollbar {
-        display: none;
-      }
-
-      .filter-tab-btn {
-        padding: 7px 13px;
-        font-size: 0.8rem;
-        flex-shrink: 0;
-      }
-
-      .table-search-box {
-        width: 100%;
-        min-width: unset;
-      }
-
-      .table-search-input {
-        font-size: 0.85rem;
-        padding: 9px 36px 9px 12px;
-      }
-
-      /* Table Cards Mobile Presentation (Mobile Card Transformation) */
-      .stone-table-card {
-        border-radius: var(--radius-md);
-        margin-bottom: 28px;
-      }
-
-      .table-card-header {
-        padding: 16px 14px;
-        gap: 10px;
-      }
-
-      .table-header-info {
-        gap: 10px;
-      }
-
-      .table-header-icon {
-        width: 34px;
-        height: 34px;
-        border-radius: 8px;
-      }
-
-      .table-header-icon svg {
-        width: 18px;
-        height: 18px;
-      }
-
-      .table-header-title {
-        font-size: 1.12rem;
-      }
-
-      .table-header-desc {
-        font-size: 0.78rem;
-      }
-
-      .table-badge-count {
-        font-size: 0.75rem;
-        padding: 4px 10px;
-        align-self: flex-start;
-      }
-
-      /* Mobile Native Pharaonic Table Card Layout */
-      .table-responsive {
-        overflow: visible;
-        padding: 10px;
-      }
-
-      .pharaonic-table {
-        min-width: unset;
-        width: 100%;
-        display: block;
-      }
-
-      .pharaonic-table thead {
-        display: none; /* Hide traditional desktop column headers */
-      }
-
-      .pharaonic-table tbody {
-        display: flex;
-        flex-direction: column;
-        gap: 14px;
-        width: 100%;
-      }
-
-      .pharaonic-table tbody tr {
-        display: flex;
-        flex-direction: column;
-        background: rgba(22, 17, 11, 0.95);
-        border: 1px solid var(--border-gold);
-        border-radius: var(--radius-md);
-        padding: 14px 12px;
-        gap: 8px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-      }
-
-      .pharaonic-table tbody tr:hover {
-        background: rgba(30, 24, 15, 0.98);
-        border-color: var(--gold-primary);
-      }
-
-      .pharaonic-table tbody td {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 4px 0;
-        border: none;
-        font-size: 0.88rem;
-      }
-
-      /* Service Title Cell (Top of the Card) */
-      .pharaonic-table tbody td:first-child {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        width: 100%;
-        padding-bottom: 8px;
-        border-bottom: 1px solid rgba(212, 175, 55, 0.15);
-        margin-bottom: 4px;
-      }
-
-      .service-text {
-        font-size: 1rem;
-        color: var(--text-gold);
-      }
-
-      .service-detail {
-        font-size: 0.78rem;
-        line-height: 1.4;
-        margin-top: 2px;
-      }
-
-      /* Vehicle Row Badges with Pseudo Labels */
-      #table-cairo tbody td:nth-child(2)::before,
-      #table-overday tbody td:nth-child(2)::before {
-        content: "🚗 ملاكي (1-3):";
-        font-weight: 700;
-        color: var(--text-parchment);
-        font-size: 0.82rem;
-      }
-
-      #table-cairo tbody td:nth-child(3)::before,
-      #table-overday tbody td:nth-child(3)::before {
-        content: "🚐 7 راكب عائلي:";
-        font-weight: 700;
-        color: var(--text-parchment);
-        font-size: 0.82rem;
-      }
-
-      #table-cairo tbody td:nth-child(4)::before,
-      #table-overday tbody td:nth-child(4)::before {
-        content: "⭐ إتش وان VIP:";
-        font-weight: 700;
-        color: var(--text-parchment);
-        font-size: 0.82rem;
-      }
-
-      #table-cairo tbody td:nth-child(5)::before,
-      #table-overday tbody td:nth-child(5)::before {
-        content: "🚌 هاي إس سياحي:";
-        font-weight: 700;
-        color: var(--text-parchment);
-        font-size: 0.82rem;
-      }
-
-      /* Table 3 Multi-Day Labels */
-      #table-multiday tbody td:nth-child(2)::before {
-        content: "⏱️ مدة البرنامج:";
-        font-weight: 700;
-        color: var(--text-parchment);
-        font-size: 0.82rem;
-      }
-
-      #table-multiday tbody td:nth-child(3)::before {
-        content: "🚗 ملاكي فاخر:";
-        font-weight: 700;
-        color: var(--text-parchment);
-        font-size: 0.82rem;
-      }
-
-      #table-multiday tbody td:nth-child(4)::before {
-        content: "🚐 7 راكب عائلي:";
-        font-weight: 700;
-        color: var(--text-parchment);
-        font-size: 0.82rem;
-      }
-
-      #table-multiday tbody td:nth-child(5)::before {
-        content: "⭐ إتش وان VIP:";
-        font-weight: 700;
-        color: var(--text-parchment);
-        font-size: 0.82rem;
-      }
-
-      #table-multiday tbody td:nth-child(6)::before {
-        content: "🚌 هاي إس سياحي:";
-        font-weight: 700;
-        color: var(--text-parchment);
-        font-size: 0.82rem;
-      }
-
-      .price-pill {
-        padding: 4px 10px;
-        font-size: 0.82rem;
-      }
-
-      /* Full Width Row Book Button on Mobile */
-      .pharaonic-table tbody td:last-child {
-        width: 100%;
-        margin-top: 6px;
-        padding-top: 8px;
-        border-top: 1px solid rgba(212, 175, 55, 0.15);
-      }
-
-      .pharaonic-table tbody td:last-child .row-book-btn {
-        width: 100%;
-        justify-content: center;
-        padding: 9px 14px;
-        font-size: 0.88rem;
-      }
-
-      /* Calculator Mobile Optimization */
       .calculator-section {
-        padding: 24px 14px;
-        border-radius: var(--radius-md);
-        margin: 30px 0;
+        padding: 20px 14px;
+        margin: 15px 0 30px;
       }
-
       .calculator-grid {
         grid-template-columns: 1fr;
-        gap: 14px;
-        margin: 18px 0 20px;
+        gap: 12px;
       }
-
-      .calc-select, .calc-input {
-        padding: 11px 14px;
-        font-size: 0.9rem;
-      }
-
       .calc-result-box {
-        padding: 16px 14px;
         flex-direction: column;
         align-items: stretch;
         text-align: center;
-        gap: 14px;
       }
-
-      .calc-summary-text {
-        font-size: 0.92rem;
-        line-height: 1.5;
-      }
-
       .calc-direct-book-btn {
         width: 100%;
         justify-content: center;
-        padding: 12px 18px;
-        font-size: 0.95rem;
       }
 
-      /* Policy Notes Mobile */
-      .notes-grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
+      .tables-filter-bar {
+        padding: 12px 14px;
+      }
+      .table-search-box {
+        max-width: 100%;
       }
 
-      .note-box {
-        padding: 20px 16px;
-        border-radius: var(--radius-md);
-      }
-
-      .note-title {
-        font-size: 1.05rem;
-      }
-
-      .note-body {
-        font-size: 0.86rem;
-        line-height: 1.65;
-      }
-
-      /* QR Studio Mobile */
-      .qr-cartouche-card {
-        padding: 26px 16px;
-        border-radius: var(--radius-md);
-      }
-
-      .qr-title {
-        font-size: 1.25rem;
-      }
-
-      .qr-subtitle {
-        font-size: 0.82rem;
-        margin-bottom: 16px;
-      }
-
-      .qr-image {
-        width: 160px;
-        height: 160px;
-      }
-
-      .qr-actions-row {
-        flex-direction: column;
-        width: 100%;
-        gap: 8px;
-      }
-
-      .qr-btn {
-        width: 100%;
-        justify-content: center;
-        padding: 10px 16px;
-        font-size: 0.85rem;
-      }
-
-      /* Sticky Mobile Speed Dial Bar */
       .floating-speed-bar {
-        width: 95%;
+        width: 94%;
         max-width: 440px;
         bottom: 10px;
         padding: 6px 10px;
-        gap: 8px;
-        box-shadow: 0 6px 25px rgba(0,0,0,0.9);
+        gap: 6px;
       }
-
       .float-btn {
         flex: 1;
         justify-content: center;
-        font-size: 0.8rem;
+        font-size: 0.78rem;
         padding: 8px 10px;
-        gap: 6px;
-      }
-
-      .float-top {
-        width: 36px;
-        height: 36px;
-        flex-shrink: 0;
       }
     }
   </style>
@@ -2168,40 +1599,18 @@
     <div class="intro-sun-disk"></div>
     
     <div class="intro-content">
-      <!-- Egyptian Winged Scarab Emblem SVG -->
-      <svg class="intro-scarab-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="50" cy="20" r="10" fill="url(#introGoldGrad)" filter="drop-shadow(0 0 10px #d4af37)" />
-        <!-- Scarab Head & Body -->
-        <path d="M45 35 C45 30 55 30 55 35 L57 48 C57 55 43 55 43 48 Z" fill="url(#introGoldGrad)" />
-        <ellipse cx="50" cy="62" rx="14" ry="18" fill="url(#introGoldGrad)" />
-        <line x1="50" y1="44" x2="50" y2="80" stroke="#0d0b08" stroke-width="1.5" />
-        <!-- Wings Left -->
-        <path d="M42 42 C25 25 10 35 5 50 C15 52 30 50 40 48 Z" fill="url(#introGoldGrad)" opacity="0.95" />
-        <path d="M40 50 C20 48 8 62 6 72 C20 70 32 62 38 56 Z" fill="url(#introGoldGrad)" opacity="0.85" />
-        <!-- Wings Right -->
-        <path d="M58 42 C75 25 90 35 95 50 C85 52 70 50 60 48 Z" fill="url(#introGoldGrad)" opacity="0.95" />
-        <path d="M60 50 C80 48 92 62 94 72 C80 70 68 62 62 56 Z" fill="url(#introGoldGrad)" opacity="0.85" />
-        <!-- Eye of Horus Center Detail -->
-        <circle cx="50" cy="62" r="4" fill="#0d0b08" />
-        <circle cx="50" cy="62" r="1.5" fill="#38ef7d" />
-        <defs>
-          <linearGradient id="introGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#fff5cc" />
-            <stop offset="50%" stop-color="#d4af37" />
-            <stop offset="100%" stop-color="#96781b" />
-          </linearGradient>
-        </defs>
-      </svg>
+      <!-- Official Golden Anubis Logo Emblem -->
+      <img src="anubis-logo.png" alt="ANUBIS TRAVEL LOGO" class="intro-logo-img">
 
       <h1 class="intro-title-en">ANUBIS TRAVEL</h1>
-      <h2 class="intro-title-ar">أنوبيس ترافيل</h2>
-      <p class="intro-subtitle">للسياحة والليموزين الفاخر • إدارة / جهاد حسين</p>
+      <h2 class="intro-title-ar" data-i18n="intro_ar_title">أنوبيس ترافيل</h2>
+      <p class="intro-subtitle" data-i18n="intro_sub">للسياحة والليموزين الفاخر • إدارة / جهاد حسين</p>
 
       <div class="intro-loader-line">
         <div class="intro-loader-progress" id="intro-progress"></div>
       </div>
 
-      <button class="intro-skip-btn" id="skip-intro-btn">تخطي المقدمة (Skip)</button>
+      <button class="intro-skip-btn" id="skip-intro-btn" data-i18n="intro_skip">تخطي المقدمة (Skip)</button>
     </div>
   </div>
 
@@ -2225,32 +1634,36 @@
     <header class="top-nav">
       <div class="brand-container">
         <div class="brand-icon-wrapper">
-          <svg class="brand-icon-svg" viewBox="0 0 24 24">
-            <!-- Ankh Symbol -->
-            <path d="M12 2C9.24 2 7 4.24 7 7C7 9.07 8.27 10.84 10.08 11.61L10.08 13L6 13C5.45 13 5 13.45 5 14C5 14.55 5.45 15 6 15L10 15L10 21C10 21.55 10.45 22 11 22C11.55 22 12 21.55 12 21L12 15L14 15L14 21C14 21.55 14.45 22 15 22C15.55 22 16 21.55 16 21L16 15L20 15C20.55 15 21 14.55 21 14C21 13.45 20.55 13 20 13L15.92 13L15.92 11.61C17.73 10.84 19 9.07 19 7C19 4.24 16.76 2 12 2ZM12 4C13.66 4 15 5.34 15 7C15 8.66 13.66 10 12 10C10.34 10 9 8.66 9 7C9 5.34 10.34 4 12 4Z"/>
-          </svg>
+          <img src="anubis-logo.png" alt="ANUBIS TRAVEL LOGO" class="brand-logo-img">
         </div>
         <div class="brand-titles">
           <span class="brand-name-en">ANUBIS TRAVEL</span>
           <span class="brand-name-ar">
-            أنوبيس ترافيل
-            <span class="manager-badge">إدارة / جهاد حسين</span>
+            <span data-i18n="brand_ar">أنوبيس ترافيل</span>
+            <span class="manager-badge" data-i18n="manager_name">إدارة / جهاد حسين</span>
           </span>
         </div>
       </div>
 
       <div class="nav-actions">
+        <!-- Language Switcher Button -->
+        <button class="lang-switch-btn" id="lang-toggle-btn" onclick="toggleLanguage()" title="Switch Language / تغيير اللغة">
+          <span>🌐</span>
+          <span id="lang-btn-label">English</span>
+        </button>
+
         <a href="tel:01091501160" class="nav-call-btn">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
             <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
           </svg>
-          <span>01091501160</span>
+          <span style="font-family: var(--font-latin); direction: ltr;">01091501160</span>
         </a>
+
         <a href="https://wa.me/201091501160?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D9%88%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%20%D8%A3%D9%86%D9%88%D8%A8%D9%8A%D8%B3%20%D8%AA%D8%B1%D8%A7%D9%81%D9%8A%D9%84" target="_blank" rel="noopener" class="nav-wa-btn">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2M12.05 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15C10.56 20.15 9.11 19.76 7.85 19L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 15 3.8 13.47 3.8 11.91C3.81 7.37 7.5 3.67 12.05 3.67M9.53 7.57C9.37 7.57 9.12 7.63 8.9 7.87C8.68 8.11 8.08 8.67 8.08 9.83C8.08 10.99 8.92 12.11 9.04 12.27C9.16 12.43 10.66 14.75 13 15.75C15.25 16.72 15.71 16.53 16.2 16.48C16.69 16.44 17.78 15.83 18.01 15.2C18.24 14.56 18.24 14.02 18.17 13.91C18.1 13.8 17.94 13.73 17.7 13.61C17.46 13.49 16.27 12.91 16.05 12.83C15.83 12.75 15.67 12.71 15.51 12.95C15.35 13.19 14.9 13.73 14.76 13.89C14.62 14.05 14.48 14.07 14.24 13.95C14 13.83 13.04 13.52 11.91 12.51C11.02 11.72 10.42 10.74 10.26 10.46C10.1 10.18 10.24 10.04 10.36 9.92C10.47 9.81 10.61 9.63 10.74 9.47C10.87 9.31 10.91 9.19 11 8.95C11.09 8.71 11.05 8.51 10.97 8.35C10.89 8.19 10.28 6.7 10.02 6.1C9.77 5.5 9.53 5.58 9.35 5.57H8.97C8.79 5.57 9.53 7.57 9.53 7.57Z"/>
           </svg>
-          <span>تواصل واتساب</span>
+          <span data-i18n="nav_wa">تواصل واتساب</span>
         </a>
       </div>
     </header>
@@ -2259,16 +1672,16 @@
     <section class="hero-section">
       <div class="hero-cartouche-badge">
         <span>𓂀</span>
-        <span>خدمات ليموزين ونقل سياحي فاخر VIP</span>
+        <span data-i18n="hero_badge">خدمات ليموزين ونقل سياحي فاخر VIP</span>
         <span>𓋹</span>
       </div>
 
       <h1 class="hero-title">
-        أنوبيس ترافيل <br>
+        <span data-i18n="hero_title_1">أنوبيس ترافيل</span> <br>
         <span class="gold-gradient-text">ANUBIS TRAVEL</span>
       </h1>
 
-      <p class="hero-subtitle">
+      <p class="hero-subtitle" data-i18n="hero_sub">
         رحلتك في أرض الفراعنة بفخامة ملكية لا مثيل لها. أحدث أسطول سيارات سياحية مكيفة، سائقون محترفون، والتزام تام بأعلى معايير الراحة والدقة في المواعيد داخل القاهرة والجيزة وجميع محافظات مصر.
       </p>
 
@@ -2276,7 +1689,7 @@
         <svg class="avatar-scarab" viewBox="0 0 24 24">
           <path d="M12 2L15 8H9L12 2ZM4 9L8 15H2L4 9ZM20 9L22 15H16L20 9ZM12 10L16 18H8L12 10ZM12 22L8 19H16L12 22Z"/>
         </svg>
-        <span class="name">إدارة / جهاد حسين</span>
+        <span class="name" data-i18n="manager_name">إدارة / جهاد حسين</span>
         <span class="phone">01091501160</span>
       </div>
 
@@ -2286,32 +1699,32 @@
           <svg class="stat-icon" viewBox="0 0 24 24">
             <path d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M12 20C7.59 20 4 16.41 4 12S7.59 4 12 4 20 7.59 20 12 16.41 20 12 20M12.5 7H11V13L16.2 16.2L17 14.9L12.5 12.2V7Z"/>
           </svg>
-          <div class="stat-title">خدمة 24/7 VIP</div>
-          <div class="stat-desc">جاهزية تامة على مدار اليوم لاستقبالكم وتلبية رحلاتكم</div>
+          <div class="stat-title" data-i18n="stat_1_t">خدمة 24/7 VIP</div>
+          <div class="stat-desc" data-i18n="stat_1_d">جاهزية تامة على مدار اليوم لاستقبالكم وتلبية رحلاتكم</div>
         </div>
 
         <div class="stat-card">
           <svg class="stat-icon" viewBox="0 0 24 24">
             <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5H6.5C5.84 5 5.28 5.42 5.08 6.01L3 12V20C3 20.55 3.45 21 4 21H5C5.55 21 6 20.55 6 20V19H18V20C18 20.55 18.45 21 19 21H20C20.55 21 21 20.55 21 20V12L18.92 6.01ZM6.5 16C5.67 16 5 15.33 5 14.5S5.67 13 6.5 13 8 13.67 8 14.5 7.33 16 6.5 16ZM17.5 16C16.67 16 16 15.33 16 14.5S16.67 13 17.5 13 19 13.67 19 14.5 18.33 16 17.5 16ZM5 11L6.5 6.5H17.5L19 11H5Z"/>
           </svg>
-          <div class="stat-title">أسطول حديث ومعقم</div>
-          <div class="stat-desc">سيارات ملاكي، 7 راكب، إتش وان، وهاي إس سياحي</div>
+          <div class="stat-title" data-i18n="stat_2_t">أسطول حديث ومعقم</div>
+          <div class="stat-desc" data-i18n="stat_2_d">سيارات ملاكي، 7 راكب، إتش وان، وهاي إس سياحي</div>
         </div>
 
         <div class="stat-card">
           <svg class="stat-icon" viewBox="0 0 24 24">
             <path d="M12 1L3 5V11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11V5L12 1M12 11.99H19C18.47 16.11 15.72 19.78 12 20.93V12H5V6.3L12 3.19V11.99Z"/>
           </svg>
-          <div class="stat-title">أمان وخصوصية تامة</div>
-          <div class="stat-desc">سائقون ذوو خبرة عالية بالمعالم السياحية والطرق السريعة</div>
+          <div class="stat-title" data-i18n="stat_3_t">أمان وخصوصية تامة</div>
+          <div class="stat-desc" data-i18n="stat_3_d">سائقون ذوو خبرة عالية بالمعالم السياحية والطرق السريعة</div>
         </div>
 
         <div class="stat-card">
           <svg class="stat-icon" viewBox="0 0 24 24">
             <path d="M12 2L1 21H23L12 2M12 6L19.53 19H4.47L12 6Z"/>
           </svg>
-          <div class="stat-title">أسعار تنافسية واضحة</div>
-          <div class="stat-desc">قوائم أسعار محددة وشفافة بدون أي رسوم خفية</div>
+          <div class="stat-title" data-i18n="stat_4_t">أسعار تنافسية واضحة</div>
+          <div class="stat-desc" data-i18n="stat_4_d">قوائم أسعار محددة وشفافة بدون أي رسوم خفية</div>
         </div>
       </div>
     </section>
@@ -2320,12 +1733,12 @@
     <section>
       <div class="section-header">
         <div class="section-eyebrow">
-          <span>✦</span> أسطول أنوبيس الفاخر <span>✦</span>
+          <span>✦</span> <span data-i18n="fleet_eyebrow">أسطول أنوبيس الفاخر</span> <span>✦</span>
         </div>
-        <h2 class="section-title">
+        <h2 class="section-title" data-i18n="fleet_title">
           خيارات النقل المتنوعة لجميع الرحلات
         </h2>
-        <p class="section-subtitle">
+        <p class="section-subtitle" data-i18n="fleet_sub">
           نوفر أحدث موديلات السيارات المجهزة بأعلى وسائل الراحة والتكييف لتناسب الأفراد، العائلات، والوفود السياحية.
         </p>
       </div>
@@ -2338,13 +1751,13 @@
               <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5H6.5C5.84 5 5.28 5.42 5.08 6.01L3 12V20C3 20.55 3.45 21 4 21H5C5.55 21 6 20.55 6 20V19H18V20C18 20.55 18.45 21 19 21H20C20.55 21 21 20.55 21 20V12L18.92 6.01ZM6.5 16C5.67 16 5 15.33 5 14.5S5.67 13 6.5 13 8 13.67 8 14.5 7.33 16 6.5 16ZM17.5 16C16.67 16 16 15.33 16 14.5S16.67 13 17.5 13 19 13.67 19 14.5 18.33 16 17.5 16ZM5 11L6.5 6.5H17.5L19 11H5Z"/>
             </svg>
           </div>
-          <h3 class="fleet-name">ملاكي فاخر</h3>
+          <h3 class="fleet-name" data-i18n="fleet_1_name">ملاكي فاخر</h3>
           <div class="fleet-en-name">SEDAN VIP CLASS</div>
           <div class="fleet-specs">
-            <span class="spec-pill">👥 1 - 3 ركاب</span>
-            <span class="spec-pill">🧳 2-3 حقائب</span>
+            <span class="spec-pill" data-i18n="fleet_1_spec1">👥 1 - 3 ركاب</span>
+            <span class="spec-pill" data-i18n="fleet_1_spec2">🧳 2-3 حقائب</span>
           </div>
-          <p class="fleet-desc">
+          <p class="fleet-desc" data-i18n="fleet_1_desc">
             سيارات سيدان حديثة مريحة ومكيفة (تويوتا كورولا / نيسان صني / رينو ميجان) مثالية للأفراد والأزواج ورحلات المطار السريعة.
           </p>
         </div>
@@ -2356,13 +1769,13 @@
               <path d="M5 11L6.5 6.5H17.5L19 11M18.92 6.01C18.72 5.42 18.16 5 17.5 5H6.5C5.84 5 5.28 5.42 5.08 6.01L3 12V20C3 20.55 3.45 21 4 21H5C5.55 21 6 20.55 6 20V19H18V20C18 20.55 18.45 21 19 21H20C20.55 21 21 20.55 21 20V12L18.92 6.01Z"/>
             </svg>
           </div>
-          <h3 class="fleet-name">7 راكب عائلي</h3>
+          <h3 class="fleet-name" data-i18n="fleet_2_name">7 راكب عائلي</h3>
           <div class="fleet-en-name">7-SEATER FAMILY SUV</div>
           <div class="fleet-specs">
-            <span class="spec-pill">👥 حتى 6 ركاب</span>
-            <span class="spec-pill">🧳 4-5 حقائب</span>
+            <span class="spec-pill" data-i18n="fleet_2_spec1">👥 حتى 6 ركاب</span>
+            <span class="spec-pill" data-i18n="fleet_2_spec2">🧳 4-5 حقائب</span>
           </div>
-          <p class="fleet-desc">
+          <p class="fleet-desc" data-i18n="fleet_2_desc">
             سيارات عائلية واسعة (ميتسوبيشي إكسباندر / تويوتا روميون) توفر مساحة جلوس رحبة ومريحة جداً للعائلات ومجموعات الأصدقاء.
           </p>
         </div>
@@ -2374,13 +1787,13 @@
               <path d="M4 16C4 16.55 4.45 17 5 17H6C6.55 17 7 16.55 7 16V15H17V16C17 16.55 17.45 17 18 17H19C19.55 17 20 16.55 20 16V6C20 4.9 19.1 4 18 4H6C4.9 4 4 4.9 4 6V16ZM6 6H18V10H6V6ZM6 12H18V13H6V12Z"/>
             </svg>
           </div>
-          <h3 class="fleet-name">إتش وان VIP</h3>
+          <h3 class="fleet-name" data-i18n="fleet_3_name">إتش وان VIP</h3>
           <div class="fleet-en-name">HYUNDAI H-1 LUXURY VAN</div>
           <div class="fleet-specs">
-            <span class="spec-pill">👥 7 - 9 ركاب</span>
-            <span class="spec-pill">🧳 6-8 حقائب</span>
+            <span class="spec-pill" data-i18n="fleet_3_spec1">👥 7 - 9 ركاب</span>
+            <span class="spec-pill" data-i18n="fleet_3_spec2">🧳 6-8 حقائب</span>
           </div>
-          <p class="fleet-desc">
+          <p class="fleet-desc" data-i18n="fleet_3_desc">
             فان هيونداي إتش وان الفاخر بمقاعد جلدية مريحة وتكييف مركزي قوي، الخيار الأول للوفود الدبلوماسية ورجال الأعمال والعائلات الكبيرة.
           </p>
         </div>
@@ -2392,13 +1805,13 @@
               <path d="M4 16C4 16.55 4.45 17 5 17H6C6.55 17 7 16.55 7 16V15H17V16C17 16.55 17.45 17 18 17H19C19.55 17 20 16.55 20 16V6C20 4.9 19.1 4 18 4H6C4.9 4 4 4.9 4 6V16ZM6 6H18V10H6V6ZM6 12H18V13H6V12Z"/>
             </svg>
           </div>
-          <h3 class="fleet-name">هاي إس سياحي</h3>
+          <h3 class="fleet-name" data-i18n="fleet_4_name">هاي إس سياحي</h3>
           <div class="fleet-en-name">TOYOTA HIACE TOURIST</div>
           <div class="fleet-specs">
-            <span class="spec-pill">👥 حتى 14 راكب</span>
-            <span class="spec-pill">🧳 شبكة أمتعة كاملة</span>
+            <span class="spec-pill" data-i18n="fleet_4_spec1">👥 حتى 14 راكب</span>
+            <span class="spec-pill" data-i18n="fleet_4_spec2">🧳 شبكة أمتعة كاملة</span>
           </div>
-          <p class="fleet-desc">
+          <p class="fleet-desc" data-i18n="fleet_4_desc">
             تويوتا هاي إس سياحي سوبر كاستم مكيف مع مقاعد مريحة متحركة ومساحة ممتازة للمجموعات والرحلات السياحية الكبرى.
           </p>
         </div>
@@ -2406,625 +1819,17 @@
     </section>
 
     <!-- ==========================================================================
-       3. MASTER PRICING TABLES
+       3. INTERACTIVE INSTANT TRIP CALCULATOR & BOOKING GENERATOR (MOVED TO TOP!)
        ========================================================================== -->
-    <section class="pricing-tables-wrapper" id="pricing-section">
-      <div class="section-header">
-        <div class="section-eyebrow">
-          <span>𓂀</span> جداول الأسعار الملكية <span>𓂀</span>
-        </div>
-        <h2 class="section-title">
-          قوائم أسعار الرحلات والمزارات السياحية
-        </h2>
-        <p class="section-subtitle">
-          اختر نوع الرحلة والسيارة المناسبة وتواصل معنا للحجز المباشر الفوري.
-        </p>
-      </div>
-
-      <!-- Filter & Search Controls -->
-      <div class="tables-filter-bar">
-        <div class="filter-tabs-group">
-          <button class="filter-tab-btn active" onclick="filterTableCategory('all')">جميع الرحلات</button>
-          <button class="filter-tab-btn" onclick="filterTableCategory('cairo')">داخل القاهرة والجيزة</button>
-          <button class="filter-tab-btn" onclick="filterTableCategory('overday')">رحلات الأوفردي</button>
-          <button class="filter-tab-btn" onclick="filterTableCategory('multiday')">السياحة والمحافظات</button>
-        </div>
-
-        <div class="table-search-box">
-          <input type="text" id="trip-search-input" class="table-search-input" placeholder="ابحث عن رحلة أو مزار..." oninput="handleTripSearch(this.value)">
-          <svg class="search-icon-svg" viewBox="0 0 24 24">
-            <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-          </svg>
-        </div>
-      </div>
-
-      <!-- ==========================================
-           TABLE 1: المزارات واليوميات (داخل القاهرة والجيزة)
-           ========================================== -->
-      <div class="stone-table-card" data-category="cairo" id="table-cairo-section">
-        <div class="table-card-header">
-          <div class="table-header-info">
-            <div class="table-header-icon">
-              <!-- Pyramids SVG -->
-              <svg viewBox="0 0 24 24">
-                <path d="M12 2L1 21h22L12 2zm0 3.84L18.48 19H5.52L12 5.84z"/>
-              </svg>
-            </div>
-            <div>
-              <h3 class="table-header-title">الجدول الأول: المزارات واليوميات</h3>
-              <div class="table-header-desc">داخل نطاق القاهرة الكبرى والجيزة وتوصيلات المطارات</div>
-            </div>
-          </div>
-          <span class="table-badge-count">8 خدمات رئيسية</span>
-        </div>
-
-        <div class="table-responsive">
-          <table class="pharaonic-table" id="table-cairo">
-            <thead>
-              <tr>
-                <th>الخدمة / المزار السياحي</th>
-                <th>
-                  ملاكي
-                  <span class="th-sub">Sedan (1-3)</span>
-                </th>
-                <th>
-                  7 راكب
-                  <span class="th-sub">Family (7-Seater)</span>
-                </th>
-                <th>
-                  إتش وان
-                  <span class="th-sub">Hyundai H1 (VIP)</span>
-                </th>
-                <th>
-                  هاي إس
-                  <span class="th-sub">Toyota HiAce</span>
-                </th>
-                <th>حجز فوري</th>
-              </tr>
-            </thead>
-            <tbody>
-              <!-- Row 1 -->
-              <tr data-trip-name="هرم - ممفيس - سقارة">
-                <td>
-                  <div class="service-cell">
-                    <div class="service-bullet"></div>
-                    <div>
-                      <div class="service-text">هرم - ممفيس - سقارة</div>
-                      <div class="service-detail">أهرامات الجيزة، تمثال رمسيس بممفيس، هرم زوسر المدرج بسقارة</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span class="price-pill">حسب المسار والوقت</span></td>
-                <td><span class="price-pill">حسب المسار والوقت</span></td>
-                <td><span class="price-pill">حسب المسار والوقت</span></td>
-                <td><span class="price-pill">حسب المسار والوقت</span></td>
-                <td>
-                  <button class="row-book-btn" onclick="bookViaWhatsApp('هرم - ممفيس - سقارة')">
-                    <span>حجز</span> 📱
-                  </button>
-                </td>
-              </tr>
-
-              <!-- Row 2 -->
-              <tr data-trip-name="هرم - ممفيس - سقارة - دهشور">
-                <td>
-                  <div class="service-cell">
-                    <div class="service-bullet"></div>
-                    <div>
-                      <div class="service-text">هرم - ممفيس - سقارة - دهشور</div>
-                      <div class="service-detail">جولة فرعونية كاملة تشمل الهرم المنحني والهرم الأحمر بدهشور</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span class="price-pill">حسب المسار والوقت</span></td>
-                <td><span class="price-pill">حسب المسار والوقت</span></td>
-                <td><span class="price-pill">حسب المسار والوقت</span></td>
-                <td><span class="price-pill">حسب المسار والوقت</span></td>
-                <td>
-                  <button class="row-book-btn" onclick="bookViaWhatsApp('هرم - ممفيس - سقارة - دهشور')">
-                    <span>حجز</span> 📱
-                  </button>
-                </td>
-              </tr>
-
-              <!-- Row 3 -->
-              <tr data-trip-name="يومية بلد (3 مزارات)">
-                <td>
-                  <div class="service-cell">
-                    <div class="service-bullet"></div>
-                    <div>
-                      <div class="service-text">يومية بلد (3 مزارات)</div>
-                      <div class="service-detail">مثال: قلعة صلاح الدين، المتحف المصري بالتحرير، خان الخليلي والمعز</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span class="price-pill">يومية كاملة</span></td>
-                <td><span class="price-pill">يومية كاملة</span></td>
-                <td><span class="price-pill">يومية كاملة</span></td>
-                <td><span class="price-pill">يومية كاملة</span></td>
-                <td>
-                  <button class="row-book-btn" onclick="bookViaWhatsApp('يومية بلد (3 مزارات)')">
-                    <span>حجز</span> 📱
-                  </button>
-                </td>
-              </tr>
-
-              <!-- Row 4 -->
-              <tr data-trip-name="يومية بلد (4 مزارات)">
-                <td>
-                  <div class="service-cell">
-                    <div class="service-bullet"></div>
-                    <div>
-                      <div class="service-text">يومية بلد (4 مزارات)</div>
-                      <div class="service-detail">برنامج مكثف يشمل 4 معالم تاريخية وإسلامية وقبطية كبرى</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span class="price-pill">يومية كاملة VIP</span></td>
-                <td><span class="price-pill">يومية كاملة VIP</span></td>
-                <td><span class="price-pill">يومية كاملة VIP</span></td>
-                <td><span class="price-pill">يومية كاملة VIP</span></td>
-                <td>
-                  <button class="row-book-btn" onclick="bookViaWhatsApp('يومية بلد (4 مزارات)')">
-                    <span>حجز</span> 📱
-                  </button>
-                </td>
-              </tr>
-
-              <!-- Row 5 -->
-              <tr data-trip-name="نصف يومية">
-                <td>
-                  <div class="service-cell">
-                    <div class="service-bullet"></div>
-                    <div>
-                      <div class="service-text">نصف يومية (Half Day)</div>
-                      <div class="service-detail">زيارة مزار أو مزارين (مدة حتى 4 إلى 5 ساعات) داخل القاهرة</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span class="price-pill">نصف يومية</span></td>
-                <td><span class="price-pill">نصف يومية</span></td>
-                <td><span class="price-pill">نصف يومية</span></td>
-                <td><span class="price-pill">نصف يومية</span></td>
-                <td>
-                  <button class="row-book-btn" onclick="bookViaWhatsApp('نصف يومية داخل القاهرة')">
-                    <span>حجز</span> 📱
-                  </button>
-                </td>
-              </tr>
-
-              <!-- Row 6 -->
-              <tr data-trip-name="سهرة عشاء نيلية">
-                <td>
-                  <div class="service-cell">
-                    <div class="service-bullet"></div>
-                    <div>
-                      <div class="service-text">سهرة عشاء نيلية (Dinner Cruise)</div>
-                      <div class="service-detail">توصيل وانتظار أثناء العشاء على الباخرة النيلية ثم العودة للفندق</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span class="price-pill">توصيل + انتظار</span></td>
-                <td><span class="price-pill">توصيل + انتظار</span></td>
-                <td><span class="price-pill">توصيل + انتظار</span></td>
-                <td><span class="price-pill">توصيل + انتظار</span></td>
-                <td>
-                  <button class="row-book-btn" onclick="bookViaWhatsApp('سهرة عشاء نيلية')">
-                    <span>حجز</span> 📱
-                  </button>
-                </td>
-              </tr>
-
-              <!-- Row 7 -->
-              <tr data-trip-name="مطار القاهرة (سفر أو استقبال)">
-                <td>
-                  <div class="service-cell">
-                    <div class="service-bullet"></div>
-                    <div>
-                      <div class="service-text">مطار القاهرة الدولي (سفر أو استقبال)</div>
-                      <div class="service-detail">استقبال بلافتة الاسم من صالة الوصول أو التوصيل لصالات السفر</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span class="price-pill">توصيلة مطار</span></td>
-                <td><span class="price-pill">توصيلة مطار</span></td>
-                <td><span class="price-pill">توصيلة مطار</span></td>
-                <td><span class="price-pill">توصيلة مطار</span></td>
-                <td>
-                  <button class="row-book-btn" onclick="bookViaWhatsApp('مطار القاهرة سفر أو استقبال')">
-                    <span>حجز</span> 📱
-                  </button>
-                </td>
-              </tr>
-
-              <!-- Row 8 -->
-              <tr data-trip-name="مطار سفنكس (سفر أو استقبال)">
-                <td>
-                  <div class="service-cell">
-                    <div class="service-bullet"></div>
-                    <div>
-                      <div class="service-text">مطار سفنكس الدولي (سفر أو استقبال)</div>
-                      <div class="service-detail">خدمة ليموزين مباشرة من وإلى مطار سفنكس (غرب القاهرة والشيخ زايد)</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span class="price-pill">توصيلة مطار سفنكس</span></td>
-                <td><span class="price-pill">توصيلة مطار سفنكس</span></td>
-                <td><span class="price-pill">توصيلة مطار سفنكس</span></td>
-                <td><span class="price-pill">توصيلة مطار سفنكس</span></td>
-                <td>
-                  <button class="row-book-btn" onclick="bookViaWhatsApp('مطار سفنكس سفر أو استقبال')">
-                    <span>حجز</span> 📱
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- ==========================================
-           TABLE 2: رحلات الأوفردي (Overday Trips)
-           ========================================== -->
-      <div class="stone-table-card" data-category="overday" id="table-overday-section">
-        <div class="table-card-header">
-          <div class="table-header-info">
-            <div class="table-header-icon">
-              <!-- Sun Over Horizons SVG -->
-              <svg viewBox="0 0 24 24">
-                <path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 8c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3zm-1-13h2v3h-2zm0 17h2v3h-2zm10-9h3v2h-3zm-19 0h3v2H2zm15.66-6.66l2.12 2.12-1.41 1.41-2.12-2.12zM5.64 16.95l2.12 2.12-1.41 1.41-2.12-2.12zm12.73 2.12l-2.12-2.12 1.41-1.41 2.12 2.12zM7.05 5.64l-2.12-2.12 1.41-1.41 2.12 2.12z"/>
-              </svg>
-            </div>
-            <div>
-              <h3 class="table-header-title">الجدول الثاني: رحلات الأوفردي (Overday Trips)</h3>
-              <div class="table-header-desc">رحلات الذهاب والعودة في نفس اليوم إلى المدن والمزارات الساحلية والأثرية</div>
-            </div>
-          </div>
-          <span class="table-badge-count">6 وجهات سياحية</span>
-        </div>
-
-        <div class="table-responsive">
-          <table class="pharaonic-table" id="table-overday">
-            <thead>
-              <tr>
-                <th>الوجهة / الرحلة</th>
-                <th>
-                  ملاكي
-                  <span class="th-sub">Sedan (1-3)</span>
-                </th>
-                <th>
-                  7 راكب
-                  <span class="th-sub">Family (7-Seater)</span>
-                </th>
-                <th>
-                  إتش وان
-                  <span class="th-sub">Hyundai H1 (VIP)</span>
-                </th>
-                <th>
-                  هاي إس
-                  <span class="th-sub">Toyota HiAce</span>
-                </th>
-                <th>حجز فوري</th>
-              </tr>
-            </thead>
-            <tbody>
-              <!-- Row 1 -->
-              <tr data-trip-name="أوفردي الإسكندرية">
-                <td>
-                  <div class="service-cell">
-                    <div class="service-bullet"></div>
-                    <div>
-                      <div class="service-text">أوفردي الإسكندرية (Alexandria Overday)</div>
-                      <div class="service-detail">قلعة قايتباي، مكتبة الإسكندرية، حدائق المنتزه، كوبري ستانلي والعودة</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span class="price-pill">ذهاب وعودة</span></td>
-                <td><span class="price-pill">ذهاب وعودة</span></td>
-                <td><span class="price-pill">ذهاب وعودة</span></td>
-                <td><span class="price-pill">ذهاب وعودة</span></td>
-                <td>
-                  <button class="row-book-btn" onclick="bookViaWhatsApp('أوفردي الإسكندرية')">
-                    <span>حجز</span> 📱
-                  </button>
-                </td>
-              </tr>
-
-              <!-- Row 2 -->
-              <tr data-trip-name="أوفردي الفيوم">
-                <td>
-                  <div class="service-cell">
-                    <div class="service-bullet"></div>
-                    <div>
-                      <div class="service-text">أوفردي الفيوم (Fayoum Oasis)</div>
-                      <div class="service-detail">وادي الريان والشلالات، بحيرة قارون، قرية تونس، وادي الحيتان وجبل المدورة</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span class="price-pill">ذهاب وعودة</span></td>
-                <td><span class="price-pill">ذهاب وعودة</span></td>
-                <td><span class="price-pill">ذهاب وعودة</span></td>
-                <td><span class="price-pill">ذهاب وعودة</span></td>
-                <td>
-                  <button class="row-book-btn" onclick="bookViaWhatsApp('أوفردي الفيوم ووادي الريان')">
-                    <span>حجز</span> 📱
-                  </button>
-                </td>
-              </tr>
-
-              <!-- Row 3 -->
-              <tr data-trip-name="أوفردي العين السخنة">
-                <td>
-                  <div class="service-cell">
-                    <div class="service-bullet"></div>
-                    <div>
-                      <div class="service-text">أوفردي العين السخنة (Ain Sokhna)</div>
-                      <div class="service-detail">يوم شاطئي كامل على ساحل البحر الأحمر مع الاستمتاع بالمنتجعات والأنشطة</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span class="price-pill">ذهاب وعودة</span></td>
-                <td><span class="price-pill">ذهاب وعودة</span></td>
-                <td><span class="price-pill">ذهاب وعودة</span></td>
-                <td><span class="price-pill">ذهاب وعودة</span></td>
-                <td>
-                  <button class="row-book-btn" onclick="bookViaWhatsApp('أوفردي العين السخنة')">
-                    <span>حجز</span> 📱
-                  </button>
-                </td>
-              </tr>
-
-              <!-- Row 4 -->
-              <tr data-trip-name="أوفردي المنيا">
-                <td>
-                  <div class="service-cell">
-                    <div class="service-bullet"></div>
-                    <div>
-                      <div class="service-text">أوفردي المنيا (Minya / Tel El-Amarna)</div>
-                      <div class="service-detail">عروس الصعيد: زيارة آثار تل العمارنة وتونة الجبل وبني حسن والعودة</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span class="price-pill">ذهاب وعودة</span></td>
-                <td><span class="price-pill">ذهاب وعودة</span></td>
-                <td><span class="price-pill">ذهاب وعودة</span></td>
-                <td><span class="price-pill">ذهاب وعودة</span></td>
-                <td>
-                  <button class="row-book-btn" onclick="bookViaWhatsApp('أوفردي المنيا وتل العمارنة')">
-                    <span>حجز</span> 📱
-                  </button>
-                </td>
-              </tr>
-
-              <!-- Row 5 -->
-              <tr data-trip-name="توصيلة الإسكندرية">
-                <td>
-                  <div class="service-cell">
-                    <div class="service-bullet"></div>
-                    <div>
-                      <div class="service-text">توصيلة الإسكندرية (One-Way Transfer)</div>
-                      <div class="service-detail">توصيل اتجاه واحد مباشر من أي مكان بالقاهرة إلى الإسكندرية أو العكس</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span class="price-pill">وان واي (اتجاه واحد)</span></td>
-                <td><span class="price-pill">وان واي (اتجاه واحد)</span></td>
-                <td><span class="price-pill">وان واي (اتجاه واحد)</span></td>
-                <td><span class="price-pill">وان واي (اتجاه واحد)</span></td>
-                <td>
-                  <button class="row-book-btn" onclick="bookViaWhatsApp('توصيلة الإسكندرية وان واي')">
-                    <span>حجز</span> 📱
-                  </button>
-                </td>
-              </tr>
-
-              <!-- Row 6 -->
-              <tr data-trip-name="توصيلة الأقصر والصعيد">
-                <td>
-                  <div class="service-cell">
-                    <div class="service-bullet"></div>
-                    <div>
-                      <div class="service-text">توصيلة الأقصر ومحافظات الصعيد</div>
-                      <div class="service-detail">نقل سياحي مريح وسلس لمحافظات الصعيد (بني سويف، أسيوط، سوهاج، قنا، الأقصر)</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span class="price-pill">حسب المحافظة والمسافة</span></td>
-                <td><span class="price-pill">حسب المحافظة والمسافة</span></td>
-                <td><span class="price-pill">حسب المحافظة والمسافة</span></td>
-                <td><span class="price-pill">حسب المحافظة والمسافة</span></td>
-                <td>
-                  <button class="row-book-btn" onclick="bookViaWhatsApp('توصيلة الأقصر ومحافظات الصعيد')">
-                    <span>حجز</span> 📱
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- ==========================================
-           TABLE 3: السياحة والمحافظات (متعددة الأيام)
-           ========================================== -->
-      <div class="stone-table-card" data-category="multiday" id="table-multiday-section">
-        <div class="table-card-header">
-          <div class="table-header-info">
-            <div class="table-header-icon">
-              <!-- Palm Tree & Travel Oasis SVG -->
-              <svg viewBox="0 0 24 24">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
-              </svg>
-            </div>
-            <div>
-              <h3 class="table-header-title">الجدول الثالث: السياحة والمحافظات (متعددة الأيام)</h3>
-              <div class="table-header-desc">برامج الإقامة والمبيت وجولات المحافظات السياحية الشاملة</div>
-            </div>
-          </div>
-          <span class="table-badge-count">5 برامج سياحية</span>
-        </div>
-
-        <div class="table-responsive">
-          <table class="pharaonic-table" id="table-multiday">
-            <thead>
-              <tr>
-                <th>البرنامج والوجهة السياحية</th>
-                <th>
-                  المدة
-                  <span class="th-sub">Duration</span>
-                </th>
-                <th>
-                  ملاكي
-                  <span class="th-sub">Sedan (1-3)</span>
-                </th>
-                <th>
-                  7 راكب
-                  <span class="th-sub">Family (7-Seater)</span>
-                </th>
-                <th>
-                  إتش وان
-                  <span class="th-sub">Hyundai H1 (VIP)</span>
-                </th>
-                <th>
-                  هاي إس
-                  <span class="th-sub">Toyota HiAce</span>
-                </th>
-                <th>حجز فوري</th>
-              </tr>
-            </thead>
-            <tbody>
-              <!-- Row 1 -->
-              <tr data-trip-name="الغردقة والجونة">
-                <td>
-                  <div class="service-cell">
-                    <div class="service-bullet"></div>
-                    <div>
-                      <div class="service-text">الغردقة والجونة (Hurghada & El Gouna)</div>
-                      <div class="service-detail">توصيل سياحي فاخر مع إمكانية المبيت أو التوصيل والاستقبال من الفندق</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span class="price-tag-badge">توصيل / إقامة</span></td>
-                <td><span class="price-pill">حسب برنامج الرحلة</span></td>
-                <td><span class="price-pill">حسب برنامج الرحلة</span></td>
-                <td><span class="price-pill">حسب برنامج الرحلة</span></td>
-                <td><span class="price-pill">حسب برنامج الرحلة</span></td>
-                <td>
-                  <button class="row-book-btn" onclick="bookViaWhatsApp('رحلة الغردقة والجونة')">
-                    <span>حجز</span> 📱
-                  </button>
-                </td>
-              </tr>
-
-              <!-- Row 2 -->
-              <tr data-trip-name="شرم الشيخ ودهب">
-                <td>
-                  <div class="service-cell">
-                    <div class="service-bullet"></div>
-                    <div>
-                      <div class="service-text">شرم الشيخ ودهب (Sharm El Sheikh & Dahab)</div>
-                      <div class="service-detail">رحلات سيناء الساحرة عبر نفق الشهيد أحمد حمدي بأحدث السيارات المجهزة</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span class="price-tag-badge">توصيل / إقامة</span></td>
-                <td><span class="price-pill">حسب برنامج الرحلة</span></td>
-                <td><span class="price-pill">حسب برنامج الرحلة</span></td>
-                <td><span class="price-pill">حسب برنامج الرحلة</span></td>
-                <td><span class="price-pill">حسب برنامج الرحلة</span></td>
-                <td>
-                  <button class="row-book-btn" onclick="bookViaWhatsApp('رحلة شرم الشيخ ودهب')">
-                    <span>حجز</span> 📱
-                  </button>
-                </td>
-              </tr>
-
-              <!-- Row 3 -->
-              <tr data-trip-name="الواحات البحرية والصحراء البيضاء">
-                <td>
-                  <div class="service-cell">
-                    <div class="service-bullet"></div>
-                    <div>
-                      <div class="service-text">الواحات البحرية والصحراء البيضاء</div>
-                      <div class="service-detail">مغامرة الصحراء السوداء والبيضاء، جبل الكريستال، وعيون المياه الكبريتية</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span class="price-tag-badge">2 يوم / 1 ليلة</span></td>
-                <td><span class="price-pill">برنامج متكامل</span></td>
-                <td><span class="price-pill">برنامج متكامل</span></td>
-                <td><span class="price-pill">برنامج متكامل</span></td>
-                <td><span class="price-pill">برنامج متكامل</span></td>
-                <td>
-                  <button class="row-book-btn" onclick="bookViaWhatsApp('برنامج الواحات البحرية والصحراء البيضاء (2 يوم / 1 ليلة)')">
-                    <span>حجز</span> 📱
-                  </button>
-                </td>
-              </tr>
-
-              <!-- Row 4 -->
-              <tr data-trip-name="واحة سيوة الساحرة">
-                <td>
-                  <div class="service-cell">
-                    <div class="service-bullet"></div>
-                    <div>
-                      <div class="service-text">واحة سيوة الأسطورية (Siwa Oasis)</div>
-                      <div class="service-detail">قلعة شالي، معبد آمون، عين كليوباترا، بحيرات الملح، وجولات بحر الرمال الأعظم</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span class="price-tag-badge">3 أيام / 2 ليلة</span></td>
-                <td><span class="price-pill">برنامج مبيت فاخر</span></td>
-                <td><span class="price-pill">برنامج مبيت فاخر</span></td>
-                <td><span class="price-pill">برنامج مبيت فاخر</span></td>
-                <td><span class="price-pill">برنامج مبيت فاخر</span></td>
-                <td>
-                  <button class="row-book-btn" onclick="bookViaWhatsApp('برنامج واحة سيوة (3 أيام / 2 ليلة)')">
-                    <span>حجز</span> 📱
-                  </button>
-                </td>
-              </tr>
-
-              <!-- Row 5 -->
-              <tr data-trip-name="الإسكندرية ومطروح">
-                <td>
-                  <div class="service-cell">
-                    <div class="service-bullet"></div>
-                    <div>
-                      <div class="service-text">الإسكندرية ومطروح (Alex & Matrouh)</div>
-                      <div class="service-detail">جولة الساحل الشمالي وشواطئ مرسى مطروح الفيروزية مع مبيت ليلة أو ليلتين</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span class="price-tag-badge">2 يوم / 1 ليلة</span></td>
-                <td><span class="price-pill">برنامج متكامل</span></td>
-                <td><span class="price-pill">برنامج متكامل</span></td>
-                <td><span class="price-pill">برنامج متكامل</span></td>
-                <td><span class="price-pill">برنامج متكامل</span></td>
-                <td>
-                  <button class="row-book-btn" onclick="bookViaWhatsApp('برنامج الإسكندرية ومطروح (2 يوم / 1 ليلة)')">
-                    <span>حجز</span> 📱
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==========================================================================
-       4. INTERACTIVE INSTANT TRIP CALCULATOR & BOOKING GENERATOR
-       ========================================================================== -->
-    <section class="calculator-section">
+    <section class="calculator-section" id="calculator-section">
       <div class="section-header" style="margin: 0 0 20px;">
         <div class="section-eyebrow">
-          <span>✦</span> حاسبة الحجز التفاعلية <span>✦</span>
+          <span>✦</span> <span data-i18n="calc_eyebrow">حاسبة الحجز التفاعلية</span> <span>✦</span>
         </div>
-        <h2 class="section-title" style="font-size: 1.8rem;">
+        <h2 class="section-title" style="font-size: 1.8rem;" data-i18n="calc_title">
           احسب تفاصيل رحلتك واحجز مباشرة بالواتساب
         </h2>
-        <p class="section-subtitle">
+        <p class="section-subtitle" data-i18n="calc_sub">
           اختر الوجهة ونوع السيارة لتوليد رسالة الحجز الفورية بكافة التفاصيل.
         </p>
       </div>
@@ -3032,87 +1837,233 @@
       <div class="calculator-grid">
         <div class="calc-input-group">
           <label class="calc-label" for="calc-trip-select">
-            <span>🗺️</span> اختر الرحلة أو المزار:
+            <span>🗺️</span> <span data-i18n="calc_label_trip">اختر الرحلة أو المزار:</span>
           </label>
           <select id="calc-trip-select" class="calc-select" onchange="updateCalcSummary()">
-            <optgroup label="داخل القاهرة والجيزة">
-              <option value="هرم - ممفيس - سقارة">هرم - ممفيس - سقارة</option>
-              <option value="هرم - ممفيس - سقارة - دهشور">هرم - ممفيس - سقارة - دهشور</option>
-              <option value="يومية بلد (3 مزارات)">يومية بلد (3 مزارات)</option>
-              <option value="يومية بلد (4 مزارات)">يومية بلد (4 مزارات)</option>
-              <option value="نصف يومية داخل القاهرة">نصف يومية (مزار أو مزارين)</option>
-              <option value="سهرة عشاء نيلية">سهرة عشاء نيلية</option>
-              <option value="مطار القاهرة الدولي (استقبال أو سفر)">مطار القاهرة (استقبال أو سفر)</option>
-              <option value="مطار سفنكس الدولي (استقبال أو سفر)">مطار سفنكس (استقبال أو سفر)</option>
-            </optgroup>
-            <optgroup label="رحلات الأوفردي (اليوم الواحد)">
-              <option value="أوفردي الإسكندرية">أوفردي الإسكندرية</option>
-              <option value="أوفردي الفيوم والشلالات">أوفردي الفيوم ووادي الريان</option>
-              <option value="أوفردي العين السخنة">أوفردي العين السخنة</option>
-              <option value="أوفردي المنيا وتل العمارنة">أوفردي المنيا</option>
-              <option value="توصيلة الإسكندرية وان واي">توصيلة الإسكندرية (وان واي)</option>
-              <option value="توصيلة الأقصر ومحافظات الصعيد">توصيلة الصعيد / الأقصر</option>
-            </optgroup>
-            <optgroup label="السياحة والمحافظات (متعددة الأيام)">
-              <option value="الغردقة والجونة">الغردقة والجونة</option>
-              <option value="شرم الشيخ ودهب">شرم الشيخ ودهب</option>
-              <option value="الواحات البحرية والصحراء البيضاء (2 يوم / 1 ليلة)">الواحات البحرية والصحراء البيضاء (2 يوم / 1 ليلة)</option>
-              <option value="واحة سيوة (3 أيام / 2 ليلة)">واحة سيوة (3 أيام / 2 ليلة)</option>
-              <option value="الإسكندرية ومطروح (2 يوم / 1 ليلة)">الإسكندرية ومطروح (2 يوم / 1 ليلة)</option>
-            </optgroup>
+            <!-- Dynamic options populated in JS -->
           </select>
         </div>
 
         <div class="calc-input-group">
           <label class="calc-label" for="calc-vehicle-select">
-            <span>🚗</span> نوع السيارة المناسبة:
+            <span>🚗</span> <span data-i18n="calc_label_vehicle">نوع السيارة المناسبة:</span>
           </label>
           <select id="calc-vehicle-select" class="calc-select" onchange="updateCalcSummary()">
-            <option value="ملاكي فاخر (سيدان 1-3 ركاب)">ملاكي فاخر (سيدان 1-3 ركاب)</option>
-            <option value="7 راكب عائلي (SUV حتى 6 ركاب)">7 راكب عائلي (SUV حتى 6 ركاب)</option>
-            <option value="إتش وان VIP (فان فاخر 7-9 ركاب)">إتش وان VIP (فان فاخر 7-9 ركاب)</option>
-            <option value="هاي إس سياحي (حتى 14 راكب)">هاي إس سياحي (حتى 14 راكب)</option>
+            <!-- Dynamic options populated in JS -->
           </select>
         </div>
 
         <div class="calc-input-group">
           <label class="calc-label" for="calc-location-select">
-            <span>📍</span> منطقة الانطلاق / التجمع:
+            <span>📍</span> <span data-i18n="calc_label_location">منطقة الانطلاق / التجمع:</span>
           </label>
           <select id="calc-location-select" class="calc-select" onchange="updateCalcSummary()">
-            <option value="وسط القاهرة / الجيزة / المعادي">وسط القاهرة / الجيزة / المعادي</option>
-            <option value="مدينة نصر / مصر الجديدة">مدينة نصر / مصر الجديدة</option>
-            <option value="أكتوبر / الشيخ زايد (أطراف)">أكتوبر / الشيخ زايد</option>
-            <option value="التجمع الخامس / مدينتي / الشروق / العاصمة">التجمع / مدينتي / الشروق / العاصمة</option>
-            <option value="مطار القاهرة الدولي">صالة وصول مطار القاهرة</option>
-            <option value="مطار سفنكس الدولي">صالة وصول مطار سفنكس</option>
+            <!-- Dynamic options populated in JS -->
           </select>
         </div>
 
         <div class="calc-input-group">
           <label class="calc-label" for="calc-overtime-select">
-            <span>⏱️</span> ساعات انتظار إضافية متوقعة:
+            <span>⏱️</span> <span data-i18n="calc_label_overtime">ساعات انتظار إضافية متوقعة:</span>
           </label>
           <select id="calc-overtime-select" class="calc-select" onchange="updateCalcSummary()">
-            <option value="0">بدون وقت إضافي (ضمن وقت البرنامج)</option>
-            <option value="1">+ 1 ساعة انتظار (200 ج.م)</option>
-            <option value="2">+ 2 ساعة انتظار (400 ج.م)</option>
-            <option value="3">+ 3 ساعات انتظار (600 ج.م)</option>
-            <option value="4">+ 4 ساعات أو أكثر</option>
+            <!-- Dynamic options populated in JS -->
           </select>
         </div>
       </div>
 
       <div class="calc-result-box">
         <div class="calc-summary-text" id="calc-summary-display">
-          الرحلة المختارة: <strong id="summary-trip-name">هرم - ممفيس - سقارة</strong> | السيارة: <strong id="summary-vehicle-name">ملاكي فاخر</strong>
+          <span data-i18n="calc_summary_prefix">الرحلة المختارة:</span> <strong id="summary-trip-name">هرم - ممفيس - سقارة</strong> | <span data-i18n="calc_summary_vehicle">السيارة:</span> <strong id="summary-vehicle-name">ملاكي فاخر</strong>
         </div>
         <button class="calc-direct-book-btn" onclick="sendCalculatedBooking()">
-          <span>إرسال طلب الحجز للواتساب</span>
+          <span data-i18n="calc_btn">إرسال طلب الحجز للواتساب</span>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2M12.05 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15C10.56 20.15 9.11 19.76 7.85 19L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 15 3.8 13.47 3.8 11.91C3.81 7.37 7.5 3.67 12.05 3.67M9.53 7.57C9.37 7.57 9.12 7.63 8.9 7.87C8.68 8.11 8.08 8.67 8.08 9.83C8.08 10.99 8.92 12.11 9.04 12.27C9.16 12.43 10.66 14.75 13 15.75C15.25 16.72 15.71 16.53 16.2 16.48C16.69 16.44 17.78 15.83 18.01 15.2C18.24 14.56 18.24 14.02 18.17 13.91C18.1 13.8 17.94 13.73 17.7 13.61C17.46 13.49 16.27 12.91 16.05 12.83C15.83 12.75 15.67 12.71 15.51 12.95C15.35 13.19 14.9 13.73 14.76 13.89C14.62 14.05 14.48 14.07 14.24 13.95C14 13.83 13.04 13.52 11.91 12.51C11.02 11.72 10.42 10.74 10.26 10.46C10.1 10.18 10.24 10.04 10.36 9.92C10.47 9.81 10.61 9.63 10.74 9.47C10.87 9.31 10.91 9.19 11 8.95C11.09 8.71 11.05 8.51 10.97 8.35C10.89 8.19 10.28 6.7 10.02 6.1C9.77 5.5 9.53 5.58 9.35 5.57H8.97C8.79 5.57 9.53 7.57 9.53 7.57Z"/>
           </svg>
         </button>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+       4. MASTER PRICING TABLES
+       ========================================================================== -->
+    <section class="pricing-tables-wrapper" id="pricing-section">
+      <div class="section-header">
+        <div class="section-eyebrow">
+          <span>𓂀</span> <span data-i18n="tables_eyebrow">جداول الأسعار الملكية</span> <span>𓂀</span>
+        </div>
+        <h2 class="section-title" data-i18n="tables_title">
+          قوائم أسعار الرحلات والمزارات السياحية
+        </h2>
+        <p class="section-subtitle" data-i18n="tables_sub">
+          اختر نوع الرحلة والسيارة المناسبة وتواصل معنا للحجز المباشر الفوري.
+        </p>
+      </div>
+
+      <!-- Filter & Search Controls -->
+      <div class="tables-filter-bar">
+        <div class="filter-tabs-group">
+          <button class="filter-tab-btn active" onclick="filterTableCategory('all', event)" data-i18n="tab_all">جميع الرحلات</button>
+          <button class="filter-tab-btn" onclick="filterTableCategory('cairo', event)" data-i18n="tab_cairo">داخل القاهرة والجيزة</button>
+          <button class="filter-tab-btn" onclick="filterTableCategory('overday', event)" data-i18n="tab_overday">رحلات الأوفردي</button>
+          <button class="filter-tab-btn" onclick="filterTableCategory('multiday', event)" data-i18n="tab_multiday">السياحة والمحافظات</button>
+        </div>
+
+        <div class="table-search-box">
+          <input type="text" id="trip-search-input" class="table-search-input" placeholder="ابحث عن رحلة أو مزار..." oninput="handleTripSearch(this.value)" data-i18n-placeholder="search_placeholder">
+          <svg class="search-icon-svg" viewBox="0 0 24 24">
+            <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- TABLE 1: المزارات واليوميات (داخل القاهرة والجيزة) -->
+      <div class="stone-table-card" data-category="cairo" id="table-cairo-section">
+        <div class="table-card-header">
+          <div class="table-header-info">
+            <div class="table-header-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 2L1 21h22L12 2zm0 3.84L18.48 19H5.52L12 5.84z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="table-header-title" data-i18n="t1_title">الجدول الأول: المزارات واليوميات</h3>
+              <div class="table-header-desc" data-i18n="t1_sub">داخل نطاق القاهرة الكبرى والجيزة وتوصيلات المطارات</div>
+            </div>
+          </div>
+          <span class="table-badge-count" data-i18n="t1_badge">8 خدمات رئيسية</span>
+        </div>
+
+        <div class="table-responsive">
+          <table class="pharaonic-table" id="table-cairo">
+            <thead>
+              <tr>
+                <th data-i18n="th_service">الخدمة / المزار السياحي</th>
+                <th>
+                  <span data-i18n="th_sedan">ملاكي</span>
+                  <span class="th-sub">Sedan (1-3)</span>
+                </th>
+                <th>
+                  <span data-i18n="th_family">7 راكب</span>
+                  <span class="th-sub">Family (7-Seater)</span>
+                </th>
+                <th>
+                  <span data-i18n="th_h1">إتش وان</span>
+                  <span class="th-sub">Hyundai H1 (VIP)</span>
+                </th>
+                <th>
+                  <span data-i18n="th_hiace">هاي إس</span>
+                  <span class="th-sub">Toyota HiAce</span>
+                </th>
+                <th data-i18n="th_book">حجز فوري</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-cairo">
+              <!-- Dynamically rendered or updated in JS for translations -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TABLE 2: رحلات الأوفردي (Overday Trips) -->
+      <div class="stone-table-card" data-category="overday" id="table-overday-section">
+        <div class="table-card-header">
+          <div class="table-header-info">
+            <div class="table-header-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 8c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3zm-1-13h2v3h-2zm0 17h2v3h-2zm10-9h3v2h-3zm-19 0h3v2H2zm15.66-6.66l2.12 2.12-1.41 1.41-2.12-2.12zM5.64 16.95l2.12 2.12-1.41 1.41-2.12-2.12zm12.73 2.12l-2.12-2.12 1.41-1.41 2.12 2.12zM7.05 5.64l-2.12-2.12 1.41-1.41 2.12 2.12z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="table-header-title" data-i18n="t2_title">الجدول الثاني: رحلات الأوفردي (Overday Trips)</h3>
+              <div class="table-header-desc" data-i18n="t2_sub">رحلات الذهاب والعودة في نفس اليوم إلى المدن والمزارات الساحلية والأثرية</div>
+            </div>
+          </div>
+          <span class="table-badge-count" data-i18n="t2_badge">6 وجهات سياحية</span>
+        </div>
+
+        <div class="table-responsive">
+          <table class="pharaonic-table" id="table-overday">
+            <thead>
+              <tr>
+                <th data-i18n="th_service">الوجهة / الرحلة</th>
+                <th>
+                  <span data-i18n="th_sedan">ملاكي</span>
+                  <span class="th-sub">Sedan (1-3)</span>
+                </th>
+                <th>
+                  <span data-i18n="th_family">7 راكب</span>
+                  <span class="th-sub">Family (7-Seater)</span>
+                </th>
+                <th>
+                  <span data-i18n="th_h1">إتش وان</span>
+                  <span class="th-sub">Hyundai H1 (VIP)</span>
+                </th>
+                <th>
+                  <span data-i18n="th_hiace">هاي إس</span>
+                  <span class="th-sub">Toyota HiAce</span>
+                </th>
+                <th data-i18n="th_book">حجز فوري</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-overday">
+              <!-- Dynamically rendered or updated in JS for translations -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TABLE 3: السياحة والمحافظات (متعددة الأيام) -->
+      <div class="stone-table-card" data-category="multiday" id="table-multiday-section">
+        <div class="table-card-header">
+          <div class="table-header-info">
+            <div class="table-header-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="table-header-title" data-i18n="t3_title">الجدول الثالث: السياحة والمحافظات (متعددة الأيام)</h3>
+              <div class="table-header-desc" data-i18n="t3_sub">برامج الإقامة والمبيت وجولات المحافظات السياحية الشاملة</div>
+            </div>
+          </div>
+          <span class="table-badge-count" data-i18n="t3_badge">5 برامج سياحية</span>
+        </div>
+
+        <div class="table-responsive">
+          <table class="pharaonic-table" id="table-multiday">
+            <thead>
+              <tr>
+                <th data-i18n="th_service">البرنامج والوجهة السياحية</th>
+                <th>
+                  <span data-i18n="th_duration">المدة</span>
+                  <span class="th-sub">Duration</span>
+                </th>
+                <th>
+                  <span data-i18n="th_sedan">ملاكي</span>
+                  <span class="th-sub">Sedan (1-3)</span>
+                </th>
+                <th>
+                  <span data-i18n="th_family">7 راكب</span>
+                  <span class="th-sub">Family (7-Seater)</span>
+                </th>
+                <th>
+                  <span data-i18n="th_h1">إتش وان</span>
+                  <span class="th-sub">Hyundai H1 (VIP)</span>
+                </th>
+                <th>
+                  <span data-i18n="th_hiace">هاي إس</span>
+                  <span class="th-sub">Toyota HiAce</span>
+                </th>
+                <th data-i18n="th_book">حجز فوري</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-multiday">
+              <!-- Dynamically rendered or updated in JS for translations -->
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
 
@@ -3122,12 +2073,12 @@
     <section class="notes-section">
       <div class="section-header">
         <div class="section-eyebrow">
-          <span>📜</span> تنبيهات وسياسات الخدمة <span>📜</span>
+          <span>📜</span> <span data-i18n="notes_eyebrow">تنبيهات وسياسات الخدمة</span> <span>📜</span>
         </div>
-        <h2 class="section-title">
+        <h2 class="section-title" data-i18n="notes_title">
           ملاحظات هامة وشروط الخدمة
         </h2>
-        <p class="section-subtitle">
+        <p class="section-subtitle" data-i18n="notes_sub">
           حرصاً منا على تقديم أرقى تجربة سفر وتوضيح كافة البنود بكل شفافية لعملائنا الكرام.
         </p>
       </div>
@@ -3141,17 +2092,10 @@
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
               </svg>
             </div>
-            <h3 class="note-title">رسوم المناطق البعيدة والمطارات</h3>
+            <h3 class="note-title" data-i18n="note_1_t">رسوم المناطق البعيدة والمطارات</h3>
           </div>
-          <div class="note-body">
-            يرجى العلم بوجود <span class="rate-highlight">رسوم إضافية</span> لتوصيلات أو انطلاق الرحلات من وإلى مناطق أطراف القاهرة الكبرى والمطارات، وتشمل:
-            <ul>
-              <li>مدينة 6 أكتوبر والشيخ زايد وحدائق أكتوبر</li>
-              <li>مدينتي، مدينة الشروق، مدينة بدر، ومدينة المستقبل</li>
-              <li>التجمع الخامس، التجمع الأول، والقاهرة الجديدة</li>
-              <li>العاصمة الإدارية الجديدة ومطار العاصمة</li>
-              <li>مطار سفنكس الدولي ومطار القاهرة (حسب نقطة الانطلاق)</li>
-            </ul>
+          <div class="note-body" id="note-body-1">
+            <!-- Populated via translation system -->
           </div>
         </div>
 
@@ -3163,15 +2107,10 @@
                 <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
               </svg>
             </div>
-            <h3 class="note-title">رسوم ساعات الانتظار (Overtime)</h3>
+            <h3 class="note-title" data-i18n="note_2_t">رسوم ساعات الانتظار (Overtime)</h3>
           </div>
-          <div class="note-body">
-            في حال رغبة العميل في تمديد وقت الرحلة أو قضاء وقت إضافي يتجاوز الساعات المحددة لكل برنامج:
-            <ul>
-              <li>يتم احتساب ساعة الأوفرتايم / الانتظار الإضافية بقيمة: <strong class="rate-highlight">200 جنيه مصري / للساعة</strong></li>
-              <li>يتم احتساب كسر الساعة بما يتناسب مع وقت الانتظار الفعلي.</li>
-              <li>ينصح بالتنسيق المسبق مع الإدارة في حال الرحلات الممتدة لضمان راحة السائق والجدول الزمني.</li>
-            </ul>
+          <div class="note-body" id="note-body-2">
+            <!-- Populated via translation system -->
           </div>
         </div>
 
@@ -3183,16 +2122,10 @@
                 <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/>
               </svg>
             </div>
-            <h3 class="note-title">مميزات وضمانات الخدمة الملكية</h3>
+            <h3 class="note-title" data-i18n="note_3_t">مميزات وضمانات الخدمة الملكية</h3>
           </div>
-          <div class="note-body">
-            مع أنوبيس ترافيل، نضمن لكم أعلى معايير الجودة والراحة:
-            <ul>
-              <li>الأسعار تشمل السائق المحترف، البنزين، وكارتات وبوابات الطرق الرئيسية.</li>
-              <li>السيارات مجهزة بأحدث وسائل الراحة وتكييف ممتاز ونظافة فائقة.</li>
-              <li>إمكانية توفير مرشد سياحي مرخص معتمد بمختلف اللغات العالمية عند الطلب المسبق.</li>
-              <li>خدمة متابعة الرحلات على مدار الساعة (24/7 VIP Support).</li>
-            </ul>
+          <div class="note-body" id="note-body-3">
+            <!-- Populated via translation system -->
           </div>
         </div>
       </div>
@@ -3203,18 +2136,14 @@
        ========================================================================== -->
     <section class="qr-share-section">
       <div class="qr-cartouche-card">
-        <h3 class="qr-title">استوديو رمز الاستجابة السريعة (QR Code Studio)</h3>
-        <p class="qr-subtitle">امسح الكود بكاميرا هاتفك أو قم بتخصيصه وتحميله بدقة فائقة للطباعة ومشاركته مع عملائك.</p>
+        <h3 class="qr-title" data-i18n="qr_title">استوديو رمز الاستجابة السريعة (QR Code Studio)</h3>
+        <p class="qr-subtitle" data-i18n="qr_sub">امسح الكود بكاميرا هاتفك أو قم بتخصيصه وتحميله بدقة فائقة للطباعة ومشاركته مع عملائك.</p>
 
         <!-- QR Studio Interactive Controls -->
         <div class="qr-studio-controls">
           <div class="qr-control-row">
             <select id="qr-target-select" class="qr-select" onchange="handleQRTargetChange()">
-              <option value="whatsapp">📱 محادثة واتساب فورية (01091501160)</option>
-              <option value="current-page">🌐 رابط الموقع الحالي (Web Page)</option>
-              <option value="phone">📞 اتصال هاتفي مباشر (01091501160)</option>
-              <option value="vcard">👤 بطاقة جهة الاتصال (جهاد حسين)</option>
-              <option value="custom">✍️ إدخال رابط أو نص مخصص...</option>
+              <!-- Populated via JS for translation -->
             </select>
           </div>
 
@@ -3224,14 +2153,13 @@
 
           <div class="qr-control-row">
             <div class="qr-style-pills">
-              <button class="qr-style-btn active" id="qr-style-gold" onclick="setQRStyle('gold')">🌟 تصميم ذهبي فاخر</button>
-              <button class="qr-style-btn" id="qr-style-bw" onclick="setQRStyle('bw')">⚪ أبيض وأسود للطباعة</button>
+              <button class="qr-style-btn active" id="qr-style-gold" onclick="setQRStyle('gold')" data-i18n="qr_opt_gold">🌟 تصميم ذهبي فاخر</button>
+              <button class="qr-style-btn" id="qr-style-bw" onclick="setQRStyle('bw')" data-i18n="qr_opt_bw">⚪ أبيض وأسود للطباعة</button>
             </div>
           </div>
         </div>
 
         <div class="qr-frame-outer" id="qr-frame-box">
-          <!-- Active QR Code via API with Dynamic Styling -->
           <img 
             id="qr-preview-img"
             src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://wa.me/201091501160&color=d4af37&bgcolor=14100b&qzone=1" 
@@ -3246,28 +2174,28 @@
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
               <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
             </svg>
-            <span>تحميل الـ QR بجودة فائقة (HD PNG)</span>
+            <span data-i18n="qr_btn_hd">تحميل الـ QR بجودة فائقة (HD PNG)</span>
           </button>
 
           <button class="qr-btn qr-btn-primary" onclick="sharePriceList()">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
               <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/>
             </svg>
-            <span>مشاركة الرابط</span>
+            <span data-i18n="qr_btn_share">مشاركة الرابط</span>
           </button>
 
           <button class="qr-btn qr-btn-secondary" onclick="downloadVCard()">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
               <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/>
             </svg>
-            <span>حفظ جهة الاتصال (vCard)</span>
+            <span data-i18n="qr_btn_vcard">حفظ جهة الاتصال (vCard)</span>
           </button>
 
           <button class="qr-btn qr-btn-secondary" onclick="window.print()">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
               <path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/>
             </svg>
-            <span>طباعة الأسعار</span>
+            <span data-i18n="qr_btn_print">طباعة الأسعار</span>
           </button>
         </div>
       </div>
@@ -3276,18 +2204,14 @@
   </div><!-- End of Page Wrapper -->
 
   <!-- ==========================================================================
-       7. FOOTER
+       7. FOOTER (CLEANED - ADMIN BUTTON REMOVED)
        ========================================================================== -->
   <footer class="footer">
+    <img src="anubis-logo.png" alt="ANUBIS TRAVEL LOGO" class="footer-logo-img">
     <div class="footer-brand">ANUBIS TRAVEL</div>
-    <div class="footer-manager">إدارة / جهاد حسين</div>
+    <div class="footer-manager" data-i18n="manager_name">إدارة / جهاد حسين</div>
     <a href="tel:01091501160" class="footer-phone">01091501160</a>
-    <div style="margin: 12px 0 16px;">
-      <a href="admin.html" class="qr-btn qr-btn-secondary" style="font-size: 0.82rem; padding: 6px 16px; border-color: rgba(212, 175, 55, 0.4);">
-        <span>🔐 لوحة تحكم الإدارة (Admin Portal)</span>
-      </a>
-    </div>
-    <p class="footer-copy">
+    <p class="footer-copy" data-i18n="footer_copy">
       © 2026 أنوبيس ترافيل (ANUBIS TRAVEL) - جميع الحقوق محفوظة • أرقى خدمات الليموزين والنقل السياحي في مصر
     </p>
   </footer>
@@ -3300,17 +2224,17 @@
       <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
         <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2M12.05 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15C10.56 20.15 9.11 19.76 7.85 19L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 15 3.8 13.47 3.8 11.91C3.81 7.37 7.5 3.67 12.05 3.67M9.53 7.57C9.37 7.57 9.12 7.63 8.9 7.87C8.68 8.11 8.08 8.67 8.08 9.83C8.08 10.99 8.92 12.11 9.04 12.27C9.16 12.43 10.66 14.75 13 15.75C15.25 16.72 15.71 16.53 16.2 16.48C16.69 16.44 17.78 15.83 18.01 15.2C18.24 14.56 18.24 14.02 18.17 13.91C18.1 13.8 17.94 13.73 17.7 13.61C17.46 13.49 16.27 12.91 16.05 12.83C15.83 12.75 15.67 12.71 15.51 12.95C15.35 13.19 14.9 13.73 14.76 13.89C14.62 14.05 14.48 14.07 14.24 13.95C14 13.83 13.04 13.52 11.91 12.51C11.02 11.72 10.42 10.74 10.26 10.46C10.1 10.18 10.24 10.04 10.36 9.92C10.47 9.81 10.61 9.63 10.74 9.47C10.87 9.31 10.91 9.19 11 8.95C11.09 8.71 11.05 8.51 10.97 8.35C10.89 8.19 10.28 6.7 10.02 6.1C9.77 5.5 9.53 5.58 9.35 5.57H8.97C8.79 5.57 9.53 7.57 9.53 7.57Z"/>
       </svg>
-      <span>واتساب مباشر</span>
+      <span data-i18n="float_wa">واتساب</span>
     </a>
 
     <a href="tel:01091501160" class="float-btn float-call">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
         <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
       </svg>
-      <span>اتصال هاتفي</span>
+      <span data-i18n="float_call">اتصال</span>
     </a>
 
-    <button class="float-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="إلى أعلى الصفحة">
+    <button class="float-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="إلى أعلى الصفحة / Back to Top">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
         <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
       </svg>
@@ -3318,11 +2242,713 @@
   </div>
 
   <!-- ==========================================================================
-       9. JAVASCRIPT LOGIC & GSAP ANIMATIONS
+       9. JAVASCRIPT LOGIC & BILINGUAL ENGINE
        ========================================================================== -->
   <script>
     // --------------------------------------------------------------------------
-    // A. GSAP INTRO SPLASH TIMELINE
+    // A. BILINGUAL TRANSLATION DATA
+    // --------------------------------------------------------------------------
+    let currentLang = localStorage.getItem('anubis_lang') || 'ar';
+
+    const i18n = {
+      ar: {
+        page_title: "أنوبيس ترافيل | ANUBIS TRAVEL - ليموزين ونقل سياحي فاخر",
+        intro_ar_title: "أنوبيس ترافيل",
+        intro_sub: "للسياحة والليموزين الفاخر • إدارة / جهاد حسين",
+        intro_skip: "تخطي المقدمة (Skip)",
+        brand_ar: "أنوبيس ترافيل",
+        manager_name: "إدارة / جهاد حسين",
+        nav_wa: "تواصل واتساب",
+        hero_badge: "خدمات ليموزين ونقل سياحي فاخر VIP",
+        hero_title_1: "أنوبيس ترافيل",
+        hero_sub: "رحلتك في أرض الفراعنة بفخامة ملكية لا مثيل لها. أحدث أسطول سيارات سياحية مكيفة، سائقون محترفون، والتزام تام بأعلى معايير الراحة والدقة في المواعيد داخل القاهرة والجيزة وجميع محافظات مصر.",
+        stat_1_t: "خدمة 24/7 VIP",
+        stat_1_d: "جاهزية تامة على مدار اليوم لاستقبالكم وتلبية رحلاتكم",
+        stat_2_t: "أسطول حديث ومعقم",
+        stat_2_d: "سيارات ملاكي، 7 راكب، إتش وان، وهاي إس سياحي",
+        stat_3_t: "أمان وخصوصية تامة",
+        stat_3_d: "سائقون ذوو خبرة عالية بالمعالم السياحية والطرق السريعة",
+        stat_4_t: "أسعار تنافسية واضحة",
+        stat_4_d: "قوائم أسعار محددة وشفافة بدون أي رسوم خفية",
+        fleet_eyebrow: "أسطول أنوبيس الفاخر",
+        fleet_title: "خيارات النقل المتنوعة لجميع الرحلات",
+        fleet_sub: "نوفر أحدث موديلات السيارات المجهزة بأعلى وسائل الراحة والتكييف لتناسب الأفراد، العائلات، والوفود السياحية.",
+        fleet_1_name: "ملاكي فاخر",
+        fleet_1_spec1: "👥 1 - 3 ركاب",
+        fleet_1_spec2: "🧳 2-3 حقائب",
+        fleet_1_desc: "سيارات سيدان حديثة مريحة ومكيفة (تويوتا كورولا / نيسان صني / رينو ميجان) مثالية للأفراد والأزواج ورحلات المطار السريعة.",
+        fleet_2_name: "7 راكب عائلي",
+        fleet_2_spec1: "👥 حتى 6 ركاب",
+        fleet_2_spec2: "🧳 4-5 حقائب",
+        fleet_2_desc: "سيارات عائلية واسعة (ميتسوبيشي إكسباندر / تويوتا روميون) توفر مساحة جلوس رحبة ومريحة جداً للعائلات ومجموعات الأصدقاء.",
+        fleet_3_name: "إتش وان VIP",
+        fleet_3_spec1: "👥 7 - 9 ركاب",
+        fleet_3_spec2: "🧳 6-8 حقائب",
+        fleet_3_desc: "فان هيونداي إتش وان الفاخر بمقاعد جلدية مريحة وتكييف مركزي قوي، الخيار الأول للوفود الدبلوماسية ورجال الأعمال والعائلات الكبيرة.",
+        fleet_4_name: "هاي إس سياحي",
+        fleet_4_spec1: "👥 حتى 14 راكب",
+        fleet_4_spec2: "🧳 شبكة أمتعة كاملة",
+        fleet_4_desc: "تويوتا هاي إس سياحي سوبر كاستم مكيف مع مقاعد مريحة متحركة ومساحة ممتازة للمجموعات والرحلات السياحية الكبرى.",
+        calc_eyebrow: "حاسبة الحجز التفاعلية",
+        calc_title: "احسب تفاصيل رحلتك واحجز مباشرة بالواتساب",
+        calc_sub: "اختر الوجهة ونوع السيارة لتوليد رسالة الحجز الفورية بكافة التفاصيل.",
+        calc_label_trip: "اختر الرحلة أو المزار:",
+        calc_label_vehicle: "نوع السيارة المناسبة:",
+        calc_label_location: "منطقة الانطلاق / التجمع:",
+        calc_label_overtime: "ساعات انتظار إضافية متوقعة:",
+        calc_summary_prefix: "الرحلة المختارة:",
+        calc_summary_vehicle: "السيارة:",
+        calc_btn: "إرسال طلب الحجز للواتساب",
+        tables_eyebrow: "جداول الأسعار الملكية",
+        tables_title: "قوائم أسعار الرحلات والمزارات السياحية",
+        tables_sub: "اختر نوع الرحلة والسيارة المناسبة وتواصل معنا للحجز المباشر الفوري.",
+        tab_all: "جميع الرحلات",
+        tab_cairo: "داخل القاهرة والجيزة",
+        tab_overday: "رحلات الأوفردي",
+        tab_multiday: "السياحة والمحافظات",
+        search_placeholder: "ابحث عن رحلة أو مزار...",
+        t1_title: "الجدول الأول: المزارات واليوميات",
+        t1_sub: "داخل نطاق القاهرة الكبرى والجيزة وتوصيلات المطارات",
+        t1_badge: "8 خدمات رئيسية",
+        t2_title: "الجدول الثاني: رحلات الأوفردي (Overday Trips)",
+        t2_sub: "رحلات الذهاب والعودة في نفس اليوم إلى المدن والمزارات الساحلية والأثرية",
+        t2_badge: "6 وجهات سياحية",
+        t3_title: "الجدول الثالث: السياحة والمحافظات (متعددة الأيام)",
+        t3_sub: "برامج الإقامة والمبيت وجولات المحافظات السياحية الشاملة",
+        t3_badge: "5 برامج سياحية",
+        th_service: "الخدمة / المزار السياحي",
+        th_duration: "المدة",
+        th_sedan: "ملاكي",
+        th_family: "7 راكب",
+        th_h1: "إتش وان",
+        th_hiace: "هاي إس",
+        th_book: "حجز فوري",
+        book_btn: "حجز 📱",
+        notes_eyebrow: "تنبيهات وسياسات الخدمة",
+        notes_title: "ملاحظات هامة وشروط الخدمة",
+        notes_sub: "حرصاً منا على تقديم أرقى تجربة سفر وتوضيح كافة البنود بكل شفافية لعملائنا الكرام.",
+        note_1_t: "رسوم المناطق البعيدة والمطارات",
+        note_2_t: "رسوم ساعات الانتظار (Overtime)",
+        note_3_t: "مميزات وضمانات الخدمة الملكية",
+        qr_title: "استوديو رمز الاستجابة السريعة (QR Code Studio)",
+        qr_sub: "امسح الكود بكاميرا هاتفك أو قم بتخصيصه وتحميله بدقة فائقة للطباعة ومشاركته مع عملائك.",
+        qr_opt_gold: "🌟 تصميم ذهبي فاخر",
+        qr_opt_bw: "⚪ أبيض وأسود للطباعة",
+        qr_btn_hd: "تحميل الـ QR بجودة فائقة (HD PNG)",
+        qr_btn_share: "مشاركة الرابط",
+        qr_btn_vcard: "حفظ جهة الاتصال (vCard)",
+        qr_btn_print: "طباعة الأسعار",
+        footer_copy: "© 2026 أنوبيس ترافيل (ANUBIS TRAVEL) - جميع الحقوق محفوظة • أرقى خدمات الليموزين والنقل السياحي في مصر",
+        float_wa: "واتساب مباشر",
+        float_call: "اتصال هاتفي"
+      },
+      en: {
+        page_title: "ANUBIS TRAVEL | Luxury Limousine & Tour Services Egypt",
+        intro_ar_title: "ANUBIS TRAVEL",
+        intro_sub: "Luxury Limousine & Tourism • Managed by / Gehad Hussein",
+        intro_skip: "Skip Intro",
+        brand_ar: "ANUBIS TRAVEL",
+        manager_name: "General Manager / Gehad Hussein",
+        nav_wa: "WhatsApp Us",
+        hero_badge: "Luxury Limousine & VIP Tourist Transportation",
+        hero_title_1: "ANUBIS TRAVEL",
+        hero_sub: "Experience Egypt in royal luxury. Modern air-conditioned fleet, professional multilingual drivers, and an uncompromising commitment to comfort, safety, and punctuality across Cairo, Giza, and all Egyptian governorates.",
+        stat_1_t: "24/7 VIP Service",
+        stat_1_d: "Round-the-clock availability for airport pickups and custom tours",
+        stat_2_t: "Modern Sanitized Fleet",
+        stat_2_d: "Luxury Sedans, 7-Seaters, Hyundai H1 VIP, & HiAce Tourist Vans",
+        stat_3_t: "Full Safety & Privacy",
+        stat_3_d: "Highly experienced tourist drivers with vast landmark knowledge",
+        stat_4_t: "Clear Competitive Rates",
+        stat_4_d: "Transparent upfront pricing with zero hidden fees",
+        fleet_eyebrow: "Our Luxury Fleet",
+        fleet_title: "Tailored Transportation for Every Journey",
+        fleet_sub: "We provide the latest vehicle models fully equipped with premium AC and comfort features for solo travelers, families, and tourist delegations.",
+        fleet_1_name: "VIP Sedan",
+        fleet_1_spec1: "👥 1 - 3 Passengers",
+        fleet_1_spec2: "🧳 2-3 Luggage",
+        fleet_1_desc: "Modern, comfortable, air-conditioned sedans (Toyota Corolla / Nissan Sunny / Megane) ideal for solo travelers, couples, and swift airport transfers.",
+        fleet_2_name: "7-Seater Family",
+        fleet_2_spec1: "👥 Up to 6 Passengers",
+        fleet_2_spec2: "🧳 4-5 Luggage",
+        fleet_2_desc: "Spacious family SUVs (Mitsubishi Xpander / Toyota Rumion) offering generous legroom and comfort for families and group outings.",
+        fleet_3_name: "Hyundai H-1 VIP",
+        fleet_3_spec1: "👥 7 - 9 Passengers",
+        fleet_3_spec2: "🧳 6-8 Luggage",
+        fleet_3_desc: "Executive Hyundai H-1 luxury van with leather seating and powerful climate control. The prime choice for delegations, VIPs, and large families.",
+        fleet_4_name: "Toyota HiAce",
+        fleet_4_spec1: "👥 Up to 14 Passengers",
+        fleet_4_spec2: "🧳 Full Luggage Capacity",
+        fleet_4_desc: "Tourist Super Custom HiAce van with reclining comfortable seats and ample space for tour groups and long-distance intercity excursions.",
+        calc_eyebrow: "Interactive Booking Calculator",
+        calc_title: "Calculate Your Tour & Book Directly via WhatsApp",
+        calc_sub: "Select your destination and vehicle type to generate an instant WhatsApp booking request with full itinerary details.",
+        calc_label_trip: "Select Trip / Destination:",
+        calc_label_vehicle: "Select Vehicle Type:",
+        calc_label_location: "Departure / Pickup Area:",
+        calc_label_overtime: "Expected Extra Waiting Hours:",
+        calc_summary_prefix: "Selected Tour:",
+        calc_summary_vehicle: "Vehicle:",
+        calc_btn: "Send Booking Request on WhatsApp",
+        tables_eyebrow: "Royal Price Tariffs",
+        tables_title: "Comprehensive Tour & Destination Rates",
+        tables_sub: "Choose your destination and preferred vehicle for immediate direct reservation.",
+        tab_all: "All Trips & Tours",
+        tab_cairo: "Cairo & Giza Tours",
+        tab_overday: "Overday Day Trips",
+        tab_multiday: "Multi-Day & Intercity",
+        search_placeholder: "Search tour or destination...",
+        t1_title: "Table 1: Cairo & Giza Day Tours",
+        t1_sub: "Greater Cairo area, Giza antiquities, and airport transfer services",
+        t1_badge: "8 Prime Services",
+        t2_title: "Table 2: Overday Day Trips (Same-Day Return)",
+        t2_sub: "Round-trip full-day excursions to coastal and historical landmarks",
+        t2_badge: "6 Tour Destinations",
+        t3_title: "Table 3: Multi-Day & Intercity Tourism",
+        t3_sub: "Overnight travel programs and comprehensive governorate tours",
+        t3_badge: "5 Tour Programs",
+        th_service: "Service / Destination",
+        th_duration: "Duration",
+        th_sedan: "Sedan",
+        th_family: "7-Seater",
+        th_h1: "Hyundai H1",
+        th_hiace: "Toyota HiAce",
+        th_book: "Direct Book",
+        book_btn: "Book 📱",
+        notes_eyebrow: "Service Policies & Guidelines",
+        notes_title: "Important Notes & Terms of Service",
+        notes_sub: "Committed to delivering transparent, seamless, and regal travel experiences for our valued clients.",
+        note_1_t: "Airport & Outskirt Surcharges",
+        note_2_t: "Overtime & Waiting Rates",
+        note_3_t: "Royal Quality Guarantees",
+        qr_title: "QR Code Studio & Sharing",
+        qr_sub: "Scan with your phone camera, or customize and download in high definition for printing and client sharing.",
+        qr_opt_gold: "🌟 Luxury Gold Style",
+        qr_opt_bw: "⚪ High-Contrast Print (B&W)",
+        qr_btn_hd: "Download HD QR Code (1200px PNG)",
+        qr_btn_share: "Share Price List",
+        qr_btn_vcard: "Save Contact (vCard)",
+        qr_btn_print: "Print Price Sheet",
+        footer_copy: "© 2026 ANUBIS TRAVEL - All Rights Reserved • Egypt's Premier Luxury Limousine & Tourist Transport",
+        float_wa: "WhatsApp",
+        float_call: "Direct Call"
+      }
+    };
+
+    // Table 1 Data: Cairo & Giza
+    const tableDataCairo = [
+      {
+        name_ar: "هرم - ممفيس - سقارة",
+        name_en: "Pyramids - Memphis - Saqqara",
+        detail_ar: "أهرامات الجيزة، تمثال رمسيس بممفيس، هرم زوسر المدرج بسقارة",
+        detail_en: "Giza Pyramids, Sphinx, Colossus of Ramesses II at Memphis, and Djoser Step Pyramid in Saqqara",
+        rate_ar: "حسب المسار والوقت",
+        rate_en: "Custom Route & Time"
+      },
+      {
+        name_ar: "هرم - ممفيس - سقارة - دهشور",
+        name_en: "Pyramids - Memphis - Saqqara - Dahshur",
+        detail_ar: "جولة فرعونية كاملة تشمل الهرم المنحني والهرم الأحمر بدهشور",
+        detail_en: "Grand Pharaonic circuit including the Bent Pyramid & Red Pyramid at Dahshur",
+        rate_ar: "حسب المسار والوقت",
+        rate_en: "Custom Route & Time"
+      },
+      {
+        name_ar: "يومية بلد (3 مزارات)",
+        name_en: "Cairo City Full Day (3 Sights)",
+        detail_ar: "مثال: قلعة صلاح الدين، المتحف المصري بالتحرير، خان الخليلي والمعز",
+        detail_en: "E.g. Saladin Citadel, Egyptian Museum Tahrir, Khan El Khalili & Al-Moez Street",
+        rate_ar: "يومية كاملة",
+        rate_en: "Full Day Tour"
+      },
+      {
+        name_ar: "يومية بلد (4 مزارات)",
+        name_en: "Cairo City Grand Tour (4 Sights)",
+        detail_ar: "برنامج مكثف يشمل 4 معالم تاريخية وإسلامية وقبطية كبرى",
+        detail_en: "Intensive 4-sight itinerary spanning Islamic, Coptic, and ancient landmarks",
+        rate_ar: "يومية كاملة VIP",
+        rate_en: "VIP Full Day"
+      },
+      {
+        name_ar: "نصف يومية داخل القاهرة",
+        name_en: "Half-Day Tour (Cairo/Giza)",
+        detail_ar: "زيارة مزار أو مزارين (مدة حتى 4 إلى 5 ساعات) داخل القاهرة",
+        detail_en: "Visit 1 or 2 landmarks (up to 4-5 hours) within Greater Cairo",
+        rate_ar: "نصف يومية",
+        rate_en: "Half Day Rate"
+      },
+      {
+        name_ar: "سهرة عشاء نيلية",
+        name_en: "Nile Dinner Cruise Transfer",
+        detail_ar: "توصيل وانتظار أثناء العشاء على الباخرة النيلية ثم العودة للفندق",
+        detail_en: "Pickup, cruise waiting time during show & dinner, and return hotel transfer",
+        rate_ar: "توصيل + انتظار",
+        rate_en: "Transfer + Waiting"
+      },
+      {
+        name_ar: "مطار القاهرة (سفر أو استقبال)",
+        name_en: "Cairo Airport (Arrival / Departure)",
+        detail_ar: "استقبال بلافتة الاسم من صالة الوصول أو التوصيل لصالات السفر",
+        detail_en: "Meet & greet with name sign at arrival hall or hotel-to-terminal departure",
+        rate_ar: "توصيلة مطار",
+        rate_en: "Airport Transfer"
+      },
+      {
+        name_ar: "مطار سفنكس (سفر أو استقبال)",
+        name_en: "Sphinx Airport (Arrival / Departure)",
+        detail_ar: "خدمة ليموزين مباشرة من وإلى مطار سفنكس (غرب القاهرة والشيخ زايد)",
+        detail_en: "Direct limousine service to/from Sphinx International Airport (West Cairo/Zayed)",
+        rate_ar: "توصيلة مطار سفنكس",
+        rate_en: "Sphinx Transfer"
+      }
+    ];
+
+    // Table 2 Data: Overday Trips
+    const tableDataOverday = [
+      {
+        name_ar: "أوفردي الإسكندرية",
+        name_en: "Alexandria Overday Day Trip",
+        detail_ar: "قلعة قايتباي، مكتبة الإسكندرية، حدائق المنتزه، كوبري ستانلي والعودة",
+        detail_en: "Citadel of Qaitbay, Bibliotheca Alexandrina, Montaza Palace & Stanley Bridge",
+        rate_ar: "ذهاب وعودة",
+        rate_en: "Round Trip"
+      },
+      {
+        name_ar: "أوفردي الفيوم ووادي الريان",
+        name_en: "Fayoum Oasis & Wadi El-Rayan",
+        detail_ar: "وادي الريان والشلالات، بحيرة قارون، قرية تونس، وادي الحيتان وجبل المدورة",
+        detail_en: "Waterfalls, Lake Qarun, Tunis Pottery Village, Wadi El Hitan & Magic Lake",
+        rate_ar: "ذهاب وعودة",
+        rate_en: "Round Trip"
+      },
+      {
+        name_ar: "أوفردي العين السخنة",
+        name_en: "Ain Sokhna Red Sea Day Trip",
+        detail_ar: "يوم شاطئي كامل على ساحل البحر الأحمر مع الاستمتاع بالمنتجعات والأنشطة",
+        detail_en: "Full beach day on the Red Sea coast with resort access and water activities",
+        rate_ar: "ذهاب وعودة",
+        rate_en: "Round Trip"
+      },
+      {
+        name_ar: "أوفردي المنيا وتل العمارنة",
+        name_en: "Minya & Tel El-Amarna Overday",
+        detail_ar: "عروس الصعيد: زيارة آثار تل العمارنة وتونة الجبل وبني حسن والعودة",
+        detail_en: "Bride of Upper Egypt: Akhenaten's Tel El-Amarna, Tuna El-Gebel & Beni Hasan",
+        rate_ar: "ذهاب وعودة",
+        rate_en: "Round Trip"
+      },
+      {
+        name_ar: "توصيلة الإسكندرية (وان واي)",
+        name_en: "Alexandria One-Way Transfer",
+        detail_ar: "توصيل اتجاه واحد مباشر من أي مكان بالقاهرة إلى الإسكندرية أو العكس",
+        detail_en: "Direct single-direction transfer from any Cairo address to Alexandria or vice-versa",
+        rate_ar: "وان واي (اتجاه واحد)",
+        rate_en: "One-Way Transfer"
+      },
+      {
+        name_ar: "توصيلة الأقصر ومحافظات الصعيد",
+        name_en: "Upper Egypt & Luxor Transfer",
+        detail_ar: "نقل سياحي مريح وسلس لمحافظات الصعيد (بني سويف، أسيوط، سوهاج، قنا، الأقصر)",
+        detail_en: "Comfortable private transfer to Upper Egypt (Beni Suef, Asyut, Sohag, Qena, Luxor)",
+        rate_ar: "حسب المحافظة والمسافة",
+        rate_en: "By Governorate & Dist."
+      }
+    ];
+
+    // Table 3 Data: Multi-Day
+    const tableDataMultiday = [
+      {
+        name_ar: "الغردقة والجونة",
+        name_en: "Hurghada & El Gouna Excursion",
+        duration_ar: "توصيل / إقامة",
+        duration_en: "Transfer / Stay",
+        detail_ar: "توصيل سياحي فاخر مع إمكانية المبيت أو التوصيل والاستقبال من الفندق",
+        detail_en: "Luxury Red Sea transit with multi-day driver availability or hotel pickup/drop",
+        rate_ar: "حسب برنامج الرحلة",
+        rate_en: "Custom Program"
+      },
+      {
+        name_ar: "شرم الشيخ ودهب",
+        name_en: "Sharm El Sheikh & Dahab Excursion",
+        duration_ar: "توصيل / إقامة",
+        duration_en: "Transfer / Stay",
+        detail_ar: "رحلات سيناء الساحرة عبر نفق الشهيد أحمد حمدي بأحدث السيارات المجهزة",
+        detail_en: "South Sinai journeys via Ahmed Hamdi Tunnel with modern, vetted vehicles",
+        rate_ar: "حسب برنامج الرحلة",
+        rate_en: "Custom Program"
+      },
+      {
+        name_ar: "الواحات البحرية والصحراء البيضاء",
+        name_en: "Bahariya Oasis & White Desert Safari",
+        duration_ar: "2 يوم / 1 ليلة",
+        duration_en: "2 Days / 1 Night",
+        detail_ar: "مغامرة الصحراء السوداء والبيضاء، جبل الكريستال، وعيون المياه الكبريتية",
+        detail_en: "Black & White Desert expedition, Crystal Mountain, hot springs and camping",
+        rate_ar: "برنامج متكامل",
+        rate_en: "Complete Package"
+      },
+      {
+        name_ar: "واحة سيوة الأسطورية",
+        name_en: "Siwa Oasis Legendary Expedition",
+        duration_ar: "3 أيام / 2 ليلة",
+        duration_en: "3 Days / 2 Nights",
+        detail_ar: "قلعة شالي، معبد آمون، عين كليوباترا، بحيرات الملح، وجولات بحر الرمال الأعظم",
+        detail_en: "Shali Fortress, Temple of Amun, Cleopatra Spring, Salt Lakes & Great Sand Sea",
+        rate_ar: "برنامج مبيت فاخر",
+        rate_en: "Luxury Safari Stay"
+      },
+      {
+        name_ar: "الإسكندرية ومطروح",
+        name_en: "Alexandria & Marsa Matrouh Tour",
+        duration_ar: "2 يوم / 1 ليلة",
+        duration_en: "2 Days / 1 Night",
+        detail_ar: "جولة الساحل الشمالي وشواطئ مرسى مطروح الفيروزية مع مبيت ليلة أو ليلتين",
+        detail_en: "North Coast tour with turquoise Marsa Matrouh beaches and overnight stay",
+        rate_ar: "برنامج متكامل",
+        rate_en: "Complete Package"
+      }
+    ];
+
+    // --------------------------------------------------------------------------
+    // B. LANGUAGE TOGGLE & DOM RENDERER
+    // --------------------------------------------------------------------------
+    function toggleLanguage() {
+      currentLang = (currentLang === 'ar' ? 'en' : 'ar');
+      localStorage.setItem('anubis_lang', currentLang);
+      applyLanguage(currentLang);
+    }
+
+    function applyLanguage(lang) {
+      document.documentElement.lang = lang;
+      document.documentElement.dir = (lang === 'ar' ? 'rtl' : 'ltr');
+      
+      const t = i18n[lang];
+
+      // Update page title & meta
+      document.title = t.page_title;
+
+      // Update text elements with data-i18n
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key]) {
+          el.innerHTML = t[key];
+        }
+      });
+
+      // Update placeholders
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (t[key]) {
+          el.placeholder = t[key];
+        }
+      });
+
+      // Update language toggle button label
+      const btnLabel = document.getElementById('lang-btn-label');
+      if (btnLabel) {
+        btnLabel.textContent = (lang === 'ar' ? 'English' : 'عربي');
+      }
+
+      // Populate policy notes content
+      renderPolicyNotes(lang);
+
+      // Populate Calculator Dropdown Options
+      renderCalculatorOptions(lang);
+
+      // Populate Tables
+      renderTables(lang);
+
+      // Populate QR Studio dropdown options
+      renderQRSelectOptions(lang);
+
+      // Update Calculator Live summary
+      updateCalcSummary();
+    }
+
+    function renderPolicyNotes(lang) {
+      const box1 = document.getElementById('note-body-1');
+      const box2 = document.getElementById('note-body-2');
+      const box3 = document.getElementById('note-body-3');
+
+      if (lang === 'ar') {
+        box1.innerHTML = `يرجى العلم بوجود <span class="rate-highlight">رسوم إضافية</span> لتوصيلات أو انطلاق الرحلات من وإلى مناطق أطراف القاهرة الكبرى والمطارات، وتشمل:
+          <ul>
+            <li>مدينة 6 أكتوبر والشيخ زايد وحدائق أكتوبر</li>
+            <li>مدينتي، مدينة الشروق، مدينة بدر، ومدينة المستقبل</li>
+            <li>التجمع الخامس، التجمع الأول، والقاهرة الجديدة</li>
+            <li>العاصمة الإدارية الجديدة ومطار العاصمة</li>
+            <li>مطار سفنكس الدولي ومطار القاهرة (حسب نقطة الانطلاق)</li>
+          </ul>`;
+        box2.innerHTML = `في حال رغبة العميل في تمديد وقت الرحلة أو قضاء وقت إضافي يتجاوز الساعات المحددة لكل برنامج:
+          <ul>
+            <li>يتم احتساب ساعة الأوفرتايم / الانتظار الإضافية بقيمة: <strong class="rate-highlight">200 جنيه مصري / للساعة</strong></li>
+            <li>يتم احتساب كسر الساعة بما يتناسب مع وقت الانتظار الفعلي.</li>
+            <li>ينصح بالتنسيق المسبق مع الإدارة في حال الرحلات الممتدة لضمان راحة السائق والجدول الزمني.</li>
+          </ul>`;
+        box3.innerHTML = `مع أنوبيس ترافيل، نضمن لكم أعلى معايير الجودة والراحة:
+          <ul>
+            <li>الأسعار تشمل السائق المحترف، البنزين، وكارتات وبوابات الطرق الرئيسية.</li>
+            <li>السيارات مجهزة بأحدث وسائل الراحة وتكييف ممتاز ونظافة فائقة.</li>
+            <li>إمكانية توفير مرشد سياحي مرخص معتمد بمختلف اللغات العالمية عند الطلب المسبق.</li>
+            <li>خدمة متابعة الرحلات على مدار الساعة (24/7 VIP Support).</li>
+          </ul>`;
+      } else {
+        box1.innerHTML = `Please note that <span class="rate-highlight">surcharges apply</span> for pickups and drop-offs in peripheral Cairo zones and airports, including:
+          <ul>
+            <li>6th of October City, Sheikh Zayed & October Gardens</li>
+            <li>Madinaty, El Shorouk, Badr City & Mostakbal City</li>
+            <li>5th Settlement, 1st Settlement & New Cairo</li>
+            <li>New Administrative Capital & Capital International Airport</li>
+            <li>Sphinx Airport & Cairo Airport (depending on pickup origin)</li>
+          </ul>`;
+        box2.innerHTML = `If the client desires to extend the tour duration beyond standard programmed hours:
+          <ul>
+            <li>Overtime / Extra waiting is billed at: <strong class="rate-highlight">200 EGP / hour</strong></li>
+            <li>Fractional hours are prorated based on actual waiting duration.</li>
+            <li>Prior coordination with management is recommended for extended schedules.</li>
+          </ul>`;
+        box3.innerHTML = `With Anubis Travel, we guarantee unmatched executive standards:
+          <ul>
+            <li>Rates include a vetted professional driver, fuel, and all main highway tolls.</li>
+            <li>Spotless, sanitized vehicles with dual-zone AC and plush interiors.</li>
+            <li>Licensed multilingual tour guides available upon advance request.</li>
+            <li>24/7 VIP operations desk tracking and customer support.</li>
+          </ul>`;
+      }
+    }
+
+    function renderCalculatorOptions(lang) {
+      const tripSelect = document.getElementById('calc-trip-select');
+      const vehicleSelect = document.getElementById('calc-vehicle-select');
+      const locationSelect = document.getElementById('calc-location-select');
+      const overtimeSelect = document.getElementById('calc-overtime-select');
+
+      if (!tripSelect) return;
+
+      const currentTripVal = tripSelect.value;
+      const currentVehVal = vehicleSelect.value;
+      const currentLocVal = locationSelect.value;
+      const currentOtVal = overtimeSelect.value;
+
+      if (lang === 'ar') {
+        tripSelect.innerHTML = `
+          <optgroup label="داخل القاهرة والجيزة">
+            <option value="هرم - ممفيس - سقارة">هرم - ممفيس - سقارة</option>
+            <option value="هرم - ممفيس - سقارة - دهشور">هرم - ممفيس - سقارة - دهشور</option>
+            <option value="يومية بلد (3 مزارات)">يومية بلد (3 مزارات)</option>
+            <option value="يومية بلد (4 مزارات)">يومية بلد (4 مزارات)</option>
+            <option value="نصف يومية داخل القاهرة">نصف يومية داخل القاهرة</option>
+            <option value="سهرة عشاء نيلية">سهرة عشاء نيلية</option>
+            <option value="مطار القاهرة الدولي (استقبال أو سفر)">مطار القاهرة (استقبال أو سفر)</option>
+            <option value="مطار سفنكس الدولي (استقبال أو سفر)">مطار سفنكس (استقبال أو سفر)</option>
+          </optgroup>
+          <optgroup label="رحلات الأوفردي (اليوم الواحد)">
+            <option value="أوفردي الإسكندرية">أوفردي الإسكندرية</option>
+            <option value="أوفردي الفيوم ووادي الريان">أوفردي الفيوم ووادي الريان</option>
+            <option value="أوفردي العين السخنة">أوفردي العين السخنة</option>
+            <option value="أوفردي المنيا وتل العمارنة">أوفردي المنيا وتل العمارنة</option>
+            <option value="توصيلة الإسكندرية (وان واي)">توصيلة الإسكندرية (وان واي)</option>
+            <option value="توصيلة الأقصر ومحافظات الصعيد">توصيلة الأقصر والصعيد</option>
+          </optgroup>
+          <optgroup label="السياحة والمحافظات (متعددة الأيام)">
+            <option value="الغردقة والجونة">الغردقة والجونة</option>
+            <option value="شرم الشيخ ودهب">شرم الشيخ ودهب</option>
+            <option value="الواحات البحرية والصحراء البيضاء">الواحات البحرية والصحراء البيضاء (2 يوم / 1 ليلة)</option>
+            <option value="واحة سيوة الأسطورية">واحة سيوة (3 أيام / 2 ليلة)</option>
+            <option value="الإسكندرية ومطروح">الإسكندرية ومطروح (2 يوم / 1 ليلة)</option>
+          </optgroup>
+        `;
+
+        vehicleSelect.innerHTML = `
+          <option value="ملاكي فاخر (سيدان 1-3 ركاب)">ملاكي فاخر (سيدان 1-3 ركاب)</option>
+          <option value="7 راكب عائلي (SUV حتى 6 ركاب)">7 راكب عائلي (SUV حتى 6 ركاب)</option>
+          <option value="إتش وان VIP (فان فاخر 7-9 ركاب)">إتش وان VIP (فان فاخر 7-9 ركاب)</option>
+          <option value="هاي إس سياحي (حتى 14 راكب)">هاي إس سياحي (حتى 14 راكب)</option>
+        `;
+
+        locationSelect.innerHTML = `
+          <option value="وسط القاهرة / الجيزة / المعادي">وسط القاهرة / الجيزة / المعادي</option>
+          <option value="مدينة نصر / مصر الجديدة">مدينة نصر / مصر الجديدة</option>
+          <option value="أكتوبر / الشيخ زايد">أكتوبر / الشيخ زايد</option>
+          <option value="التجمع الخامس / مدينتي / الشروق / العاصمة">التجمع / مدينتي / الشروق / العاصمة</option>
+          <option value="مطار القاهرة الدولي">صالة وصول مطار القاهرة</option>
+          <option value="مطار سفنكس الدولي">صالة وصول مطار سفنكس</option>
+        `;
+
+        overtimeSelect.innerHTML = `
+          <option value="0">بدون وقت إضافي (ضمن البرنامج)</option>
+          <option value="1">+ 1 ساعة انتظار (200 ج.م)</option>
+          <option value="2">+ 2 ساعة انتظار (400 ج.م)</option>
+          <option value="3">+ 3 ساعات انتظار (600 ج.م)</option>
+          <option value="4">+ 4 ساعات أو أكثر</option>
+        `;
+      } else {
+        tripSelect.innerHTML = `
+          <optgroup label="Cairo & Giza Day Tours">
+            <option value="Pyramids - Memphis - Saqqara">Pyramids - Memphis - Saqqara</option>
+            <option value="Pyramids - Memphis - Saqqara - Dahshur">Pyramids - Memphis - Saqqara - Dahshur</option>
+            <option value="Cairo City Full Day (3 Sights)">Cairo City Full Day (3 Sights)</option>
+            <option value="Cairo City Grand Tour (4 Sights)">Cairo City Grand Tour (4 Sights)</option>
+            <option value="Half-Day Tour (Cairo/Giza)">Half-Day Tour (Cairo/Giza)</option>
+            <option value="Nile Dinner Cruise Transfer">Nile Dinner Cruise Transfer</option>
+            <option value="Cairo Airport (Arrival/Departure)">Cairo Airport (Arrival/Departure)</option>
+            <option value="Sphinx Airport (Arrival/Departure)">Sphinx Airport (Arrival/Departure)</option>
+          </optgroup>
+          <optgroup label="Overday Day Trips">
+            <option value="Alexandria Overday Day Trip">Alexandria Overday Day Trip</option>
+            <option value="Fayoum Oasis & Wadi El-Rayan">Fayoum Oasis & Wadi El-Rayan</option>
+            <option value="Ain Sokhna Red Sea Day Trip">Ain Sokhna Red Sea Day Trip</option>
+            <option value="Minya & Tel El-Amarna Overday">Minya & Tel El-Amarna Overday</option>
+            <option value="Alexandria One-Way Transfer">Alexandria One-Way Transfer</option>
+            <option value="Upper Egypt & Luxor Transfer">Upper Egypt & Luxor Transfer</option>
+          </optgroup>
+          <optgroup label="Multi-Day & Intercity Tours">
+            <option value="Hurghada & El Gouna Excursion">Hurghada & El Gouna Excursion</option>
+            <option value="Sharm El Sheikh & Dahab Excursion">Sharm El Sheikh & Dahab Excursion</option>
+            <option value="Bahariya Oasis & White Desert (2D/1N)">Bahariya Oasis & White Desert (2D/1N)</option>
+            <option value="Siwa Oasis Expedition (3D/2N)">Siwa Oasis Expedition (3D/2N)</option>
+            <option value="Alexandria & Marsa Matrouh (2D/1N)">Alexandria & Marsa Matrouh (2D/1N)</option>
+          </optgroup>
+        `;
+
+        vehicleSelect.innerHTML = `
+          <option value="VIP Sedan (1-3 Passengers)">VIP Sedan (1-3 Passengers)</option>
+          <option value="7-Seater Family SUV (Up to 6 Passengers)">7-Seater Family SUV (Up to 6 Passengers)</option>
+          <option value="Hyundai H-1 VIP Luxury Van (7-9 Passengers)">Hyundai H-1 VIP Luxury Van (7-9 Passengers)</option>
+          <option value="Toyota HiAce Tourist Bus (Up to 14 Passengers)">Toyota HiAce Tourist Bus (Up to 14 Passengers)</option>
+        `;
+
+        locationSelect.innerHTML = `
+          <option value="Downtown Cairo / Giza / Maadi">Downtown Cairo / Giza / Maadi</option>
+          <option value="Nasr City / Heliopolis">Nasr City / Heliopolis</option>
+          <option value="6th of October / Sheikh Zayed">6th of October / Sheikh Zayed</option>
+          <option value="New Cairo / 5th Settlement / Madinaty / Capital">New Cairo / 5th Settlement / Madinaty / Capital</option>
+          <option value="Cairo International Airport (Arrival Hall)">Cairo International Airport (Arrival Hall)</option>
+          <option value="Sphinx International Airport (Arrival Hall)">Sphinx International Airport (Arrival Hall)</option>
+        `;
+
+        overtimeSelect.innerHTML = `
+          <option value="0">Standard Schedule (No Extra Overtime)</option>
+          <option value="1">+ 1 Extra Hour (200 EGP)</option>
+          <option value="2">+ 2 Extra Hours (400 EGP)</option>
+          <option value="3">+ 3 Extra Hours (600 EGP)</option>
+          <option value="4">+ 4 or more Extra Hours</option>
+        `;
+      }
+    }
+
+    function renderTables(lang) {
+      const isAr = (lang === 'ar');
+      const bookLabel = isAr ? 'حجز 📱' : 'Book 📱';
+
+      // Table 1 (Cairo)
+      const tbodyCairo = document.getElementById('tbody-cairo');
+      if (tbodyCairo) {
+        tbodyCairo.innerHTML = tableDataCairo.map(item => `
+          <tr data-trip-name="${isAr ? item.name_ar : item.name_en}">
+            <td>
+              <div class="service-cell">
+                <div class="service-bullet"></div>
+                <div>
+                  <div class="service-text">${isAr ? item.name_ar : item.name_en}</div>
+                  <div class="service-detail">${isAr ? item.detail_ar : item.detail_en}</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="price-pill">${isAr ? item.rate_ar : item.rate_en}</span></td>
+            <td><span class="price-pill">${isAr ? item.rate_ar : item.rate_en}</span></td>
+            <td><span class="price-pill">${isAr ? item.rate_ar : item.rate_en}</span></td>
+            <td><span class="price-pill">${isAr ? item.rate_ar : item.rate_en}</span></td>
+            <td>
+              <button class="row-book-btn" onclick="bookViaWhatsApp('${isAr ? item.name_ar : item.name_en}')">
+                <span>${bookLabel}</span>
+              </button>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      // Table 2 (Overday)
+      const tbodyOverday = document.getElementById('tbody-overday');
+      if (tbodyOverday) {
+        tbodyOverday.innerHTML = tableDataOverday.map(item => `
+          <tr data-trip-name="${isAr ? item.name_ar : item.name_en}">
+            <td>
+              <div class="service-cell">
+                <div class="service-bullet"></div>
+                <div>
+                  <div class="service-text">${isAr ? item.name_ar : item.name_en}</div>
+                  <div class="service-detail">${isAr ? item.detail_ar : item.detail_en}</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="price-pill">${isAr ? item.rate_ar : item.rate_en}</span></td>
+            <td><span class="price-pill">${isAr ? item.rate_ar : item.rate_en}</span></td>
+            <td><span class="price-pill">${isAr ? item.rate_ar : item.rate_en}</span></td>
+            <td><span class="price-pill">${isAr ? item.rate_ar : item.rate_en}</span></td>
+            <td>
+              <button class="row-book-btn" onclick="bookViaWhatsApp('${isAr ? item.name_ar : item.name_en}')">
+                <span>${bookLabel}</span>
+              </button>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      // Table 3 (Multiday)
+      const tbodyMultiday = document.getElementById('tbody-multiday');
+      if (tbodyMultiday) {
+        tbodyMultiday.innerHTML = tableDataMultiday.map(item => `
+          <tr data-trip-name="${isAr ? item.name_ar : item.name_en}">
+            <td>
+              <div class="service-cell">
+                <div class="service-bullet"></div>
+                <div>
+                  <div class="service-text">${isAr ? item.name_ar : item.name_en}</div>
+                  <div class="service-detail">${isAr ? item.detail_ar : item.detail_en}</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="price-tag-badge">${isAr ? item.duration_ar : item.duration_en}</span></td>
+            <td><span class="price-pill">${isAr ? item.rate_ar : item.rate_en}</span></td>
+            <td><span class="price-pill">${isAr ? item.rate_ar : item.rate_en}</span></td>
+            <td><span class="price-pill">${isAr ? item.rate_ar : item.rate_en}</span></td>
+            <td><span class="price-pill">${isAr ? item.rate_ar : item.rate_en}</span></td>
+            <td>
+              <button class="row-book-btn" onclick="bookViaWhatsApp('${isAr ? item.name_ar : item.name_en}')">
+                <span>${bookLabel}</span>
+              </button>
+            </td>
+          </tr>
+        `).join('');
+      }
+    }
+
+    function renderQRSelectOptions(lang) {
+      const qrSelect = document.getElementById('qr-target-select');
+      if (!qrSelect) return;
+
+      if (lang === 'ar') {
+        qrSelect.innerHTML = `
+          <option value="whatsapp">📱 محادثة واتساب فورية (01091501160)</option>
+          <option value="current-page">🌐 رابط الموقع الحالي (Web Page)</option>
+          <option value="phone">📞 اتصال هاتفي مباشر (01091501160)</option>
+          <option value="vcard">👤 بطاقة جهة الاتصال (جهاد حسين)</option>
+          <option value="custom">✍️ إدخال رابط أو نص مخصص...</option>
+        `;
+      } else {
+        qrSelect.innerHTML = `
+          <option value="whatsapp">📱 Direct WhatsApp Chat (+201091501160)</option>
+          <option value="current-page">🌐 Current Website Page (URL)</option>
+          <option value="phone">📞 Direct Phone Call (+201091501160)</option>
+          <option value="vcard">👤 Save Contact Card (Gehad Hussein)</option>
+          <option value="custom">✍️ Enter Custom Link or Text...</option>
+        `;
+      }
+    }
+
+    // --------------------------------------------------------------------------
+    // C. GSAP INTRO SPLASH TIMELINE
     // --------------------------------------------------------------------------
     let splashDismissed = false;
 
@@ -3337,27 +2963,23 @@
         onComplete: dismissIntro
       });
 
-      // Animate loader bar
       tl.to(progressBar, {
         width: '100%',
         duration: 1.5,
         ease: 'power2.inOut'
       })
-      // Pulse scarab glow
-      .to('.intro-scarab-svg', {
-        scale: 1.1,
-        filter: 'drop-shadow(0 0 35px #f7d070)',
+      .to('.intro-logo-img', {
+        scale: 1.08,
+        filter: 'drop-shadow(0 0 45px #f7d070)',
         duration: 0.4,
         ease: 'back.out(2)'
       }, "-=0.5")
-      // Fade out intro content
       .to('.intro-content', {
         opacity: 0,
         y: -30,
         duration: 0.4,
         ease: 'power2.in'
       })
-      // Slide up intro veil
       .to(splash, {
         yPercent: -100,
         duration: 0.8,
@@ -3387,7 +3009,6 @@
         });
       }
 
-      // Entrance animation for page elements
       if (typeof gsap !== 'undefined') {
         gsap.from('.top-nav', { y: -50, opacity: 0, duration: 0.8, ease: 'power3.out' });
         gsap.from('.hero-section', { y: 40, opacity: 0, duration: 1, ease: 'power3.out', delay: 0.2 });
@@ -3396,7 +3017,7 @@
     }
 
     // --------------------------------------------------------------------------
-    // B. BACKGROUND CANVAS PARTICLES (GOLDEN DUST & RUNES)
+    // D. BACKGROUND CANVAS PARTICLES (GOLDEN DUST & RUNES)
     // --------------------------------------------------------------------------
     function initParticlesCanvas() {
       const canvas = document.getElementById('stars-canvas');
@@ -3458,7 +3079,7 @@
     }
 
     // --------------------------------------------------------------------------
-    // C. 3D MOUSE TILT ON STONE CARDS (ANTI-GRAVITY EFFECT)
+    // E. 3D MOUSE TILT ON STONE CARDS (ANTI-GRAVITY EFFECT)
     // --------------------------------------------------------------------------
     function initCardParallax() {
       const cards = document.querySelectorAll('.fleet-card, .note-box, .stat-card');
@@ -3481,13 +3102,13 @@
     }
 
     // --------------------------------------------------------------------------
-    // D. PRICING TABLE FILTERING & SEARCH
+    // F. PRICING TABLE FILTERING & SEARCH
     // --------------------------------------------------------------------------
-    function filterTableCategory(category) {
+    function filterTableCategory(category, evt) {
       const tabs = document.querySelectorAll('.filter-tab-btn');
       tabs.forEach(tab => tab.classList.remove('active'));
-      if (event && event.currentTarget) {
-        event.currentTarget.classList.add('active');
+      if (evt && evt.currentTarget) {
+        evt.currentTarget.classList.add('active');
       }
 
       const tables = document.querySelectorAll('.stone-table-card');
@@ -3518,17 +3139,22 @@
     }
 
     // --------------------------------------------------------------------------
-    // E. WHATSAPP BOOKING INTEGRATION
+    // G. WHATSAPP BOOKING INTEGRATION (BILINGUAL)
     // --------------------------------------------------------------------------
     function bookViaWhatsApp(serviceName) {
       const phone = "201091501160";
-      const message = `السلام عليكم ورحمة الله،\nأود الاستفسار وحجز:\n*${serviceName}*\nمع أنوبيس ترافيل (إدارة / جهاد حسين). يرجى تزويدي بالأسعار والتفاصيل المتاحة.`;
+      let message = "";
+      if (currentLang === 'ar') {
+        message = `السلام عليكم ورحمة الله،\nأود الاستفسار وحجز:\n*${serviceName}*\nمع أنوبيس ترافيل (إدارة / جهاد حسين). يرجى تزويدي بالأسعار والتفاصيل المتاحة.`;
+      } else {
+        message = `Hello Anubis Travel,\nI would like to inquire about & book the following tour:\n*${serviceName}*\n(Management / Gehad Hussein). Please provide me with the available schedule and best rates. Thank you!`;
+      }
       const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
       window.open(url, '_blank');
     }
 
     // --------------------------------------------------------------------------
-    // F. INSTANT CALCULATOR & GENERATOR
+    // H. INSTANT CALCULATOR & GENERATOR (BILINGUAL)
     // --------------------------------------------------------------------------
     function updateCalcSummary() {
       const trip = document.getElementById('calc-trip-select').value;
@@ -3544,21 +3170,31 @@
       const location = document.getElementById('calc-location-select').value;
       const overtime = document.getElementById('calc-overtime-select').value;
 
-      let overtimeText = overtime === "0" ? "بدون وقت إضافي" : `+ ${overtime} ساعة إضافية`;
-
-      const message = `السلام عليكم ورحمة الله،\nأرغب في حجز رحلة مع أنوبيس ترافيل بالتفاصيل التالية:\n\n` +
-        `📍 *الرحلة:* ${trip}\n` +
-        `🚗 *السيارة المطلوبة:* ${vehicle}\n` +
-        `🏙️ *نقطة الانطلاق:* ${location}\n` +
-        `⏱️ *الوقت الإضافي:* ${overtimeText}\n\n` +
-        `يرجى تأكيد إتاحة الموعد وإرسال السعر النهائي. شكراً لكم!`;
+      let message = "";
+      if (currentLang === 'ar') {
+        let overtimeText = overtime === "0" ? "بدون وقت إضافي" : `+ ${overtime} ساعة إضافية`;
+        message = `السلام عليكم ورحمة الله،\nأرغب في حجز رحلة مع أنوبيس ترافيل بالتفاصيل التالية:\n\n` +
+          `📍 *الرحلة:* ${trip}\n` +
+          `🚗 *السيارة المطلوبة:* ${vehicle}\n` +
+          `🏙️ *نقطة الانطلاق:* ${location}\n` +
+          `⏱️ *الوقت الإضافي:* ${overtimeText}\n\n` +
+          `يرجى تأكيد إتاحة الموعد وإرسال السعر النهائي. شكراً لكم!`;
+      } else {
+        let overtimeText = overtime === "0" ? "Standard Schedule" : `+ ${overtime} Extra Waiting Hours`;
+        message = `Hello Anubis Travel,\nI would like to book a trip with the following details:\n\n` +
+          `📍 *Tour/Destination:* ${trip}\n` +
+          `🚗 *Vehicle Type:* ${vehicle}\n` +
+          `🏙️ *Pickup Location:* ${location}\n` +
+          `⏱️ *Extra Waiting:* ${overtimeText}\n\n` +
+          `Please confirm availability and the final quotation. Thank you!`;
+      }
 
       const url = `https://wa.me/201091501160?text=${encodeURIComponent(message)}`;
       window.open(url, '_blank');
     }
 
     // --------------------------------------------------------------------------
-    // G. QR CODE STUDIO DYNAMIC GENERATOR & HD DOWNLOAD
+    // I. QR CODE STUDIO DYNAMIC GENERATOR & HD DOWNLOAD
     // --------------------------------------------------------------------------
     let currentQRStyle = 'gold';
 
@@ -3571,7 +3207,7 @@
       } else if (target === 'phone') {
         return 'tel:+201091501160';
       } else if (target === 'vcard') {
-        return 'https://wa.me/201091501160?text=' + encodeURIComponent('السلام عليكم، أود حفظ جهة اتصال أنوبيس ترافيل (إدارة / جهاد حسين - 01091501160)');
+        return 'https://wa.me/201091501160?text=' + encodeURIComponent(currentLang === 'ar' ? 'السلام عليكم، أود حفظ جهة اتصال أنوبيس ترافيل (إدارة / جهاد حسين - 01091501160)' : 'Hello, I would like to save Anubis Travel contact (Gehad Hussein - +201091501160)');
       } else if (target === 'custom') {
         const customUrl = document.getElementById('qr-custom-url-input').value.trim();
         return customUrl || 'https://wa.me/201091501160';
@@ -3638,24 +3274,28 @@
         document.body.removeChild(link);
         URL.revokeObjectURL(blobUrl);
       } catch (e) {
-        // Fallback open in new window
         window.open(hdUrl, '_blank');
       }
     }
 
     // --------------------------------------------------------------------------
-    // H. SHARING & VCARD UTILITIES
+    // J. SHARING & VCARD UTILITIES
     // --------------------------------------------------------------------------
     function sharePriceList() {
+      const shareTitle = currentLang === 'ar' ? 'أنوبيس ترافيل | ANUBIS TRAVEL' : 'ANUBIS TRAVEL | Luxury Limousine Egypt';
+      const shareText = currentLang === 'ar' 
+        ? 'قائمة أسعار رحلات وليموزين أنوبيس ترافيل - إدارة / جهاد حسين - ت: 01091501160' 
+        : 'Anubis Travel Egypt - Luxury Limousine & Tour Services - Gehad Hussein - Tel: +201091501160';
+
       if (navigator.share) {
         navigator.share({
-          title: 'أنوبيس ترافيل | ANUBIS TRAVEL',
-          text: 'قائمة أسعار رحلات وليموزين أنوبيس ترافيل - إدارة / جهاد حسين - ت: 01091501160',
+          title: shareTitle,
+          text: shareText,
           url: window.location.href
         }).catch(() => {});
       } else {
         navigator.clipboard.writeText(window.location.href);
-        alert('تم نسخ رابط قائمة الأسعار إلى الحافظة بنجاح!');
+        alert(currentLang === 'ar' ? 'تم نسخ رابط قائمة الأسعار إلى الحافظة بنجاح!' : 'Website price list link copied to clipboard!');
       }
     }
 
@@ -3663,12 +3303,12 @@
       const vcardData = 
 `BEGIN:VCARD
 VERSION:3.0
-FN:جهاد حسين - أنوبيس ترافيل
+FN:جهاد حسين - أنوبيس ترافيل (Gehad Hussein)
 N:حسين;جهاد;;;
 ORG:ANUBIS TRAVEL (أنوبيس ترافيل)
-TITLE:المدير العام / نقل سياحي وليموزين فاخر
+TITLE:General Manager / Luxury Tourist Transport
 TEL;TYPE=CELL,VOICE:+201091501160
-NOTE:خدمات ليموزين ونقل سياحي فاخر داخل القاهرة وجميع محافظات مصر
+NOTE:Luxury Limousine & Tourist Transport across Egypt
 URL:https://wa.me/201091501160
 END:VCARD`;
 
@@ -3682,13 +3322,13 @@ END:VCARD`;
     }
 
     // --------------------------------------------------------------------------
-    // H. INITIALIZE EVERYTHING ON DOM LOAD
+    // K. INITIALIZATION
     // --------------------------------------------------------------------------
     document.addEventListener('DOMContentLoaded', () => {
+      applyLanguage(currentLang);
       initIntroAnimation();
       initParticlesCanvas();
       initCardParallax();
-      updateCalcSummary();
     });
   </script>
 </body>
