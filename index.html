@@ -868,6 +868,35 @@
       box-shadow: 0 8px 25px rgba(37, 211, 102, 0.55);
     }
 
+    .calc-price-display {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .excel-download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 9px 18px;
+      border-radius: var(--radius-full);
+      background: rgba(56, 239, 125, 0.12);
+      border: 1px solid rgba(56, 239, 125, 0.45);
+      color: var(--cyan-accent);
+      font-size: 0.86rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: var(--transition-smooth);
+      white-space: nowrap;
+    }
+    .excel-download-btn:hover {
+      background: rgba(56, 239, 125, 0.25);
+      border-color: var(--cyan-accent);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(56, 239, 125, 0.35);
+      color: #ffffff;
+    }
+
     /* ==========================================================================
        11. MASTER PRICING TABLES SECTION
        ========================================================================== */
@@ -1876,6 +1905,10 @@
         <div class="calc-summary-text" id="calc-summary-display">
           <span data-i18n="calc_summary_prefix">الرحلة المختارة:</span> <strong id="summary-trip-name">هرم - ممفيس - سقارة</strong> | <span data-i18n="calc_summary_vehicle">السيارة:</span> <strong id="summary-vehicle-name">ملاكي فاخر</strong>
         </div>
+        <div class="calc-price-display">
+          <span style="font-size: 0.92rem; color: var(--text-muted);" data-i18n="calc_price_label">السعر التقديري:</span>
+          <span class="price-pill" id="calc-computed-price" style="font-size: 1.22rem; font-weight: 900; color: var(--gold-200); border-color: var(--gold-primary); background: rgba(212, 175, 55, 0.15); box-shadow: 0 0 15px rgba(212, 175, 55, 0.25);">1,000 ج.م</span>
+        </div>
         <button class="calc-direct-book-btn" onclick="sendCalculatedBooking()">
           <span data-i18n="calc_btn">إرسال طلب الحجز للواتساب</span>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -1910,11 +1943,18 @@
           <button class="filter-tab-btn" onclick="filterTableCategory('multiday', event)" data-i18n="tab_multiday">السياحة والمحافظات</button>
         </div>
 
-        <div class="table-search-box">
-          <input type="text" id="trip-search-input" class="table-search-input" placeholder="ابحث عن رحلة أو مزار..." oninput="handleTripSearch(this.value)" data-i18n-placeholder="search_placeholder">
-          <svg class="search-icon-svg" viewBox="0 0 24 24">
-            <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-          </svg>
+        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+          <a href="pricing_transfers.xlsx" download="Anubis_Travel_Pricing.xlsx" class="excel-download-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+            <span data-i18n="btn_download_excel">تحميل جدول الإكسيل (XLSX)</span>
+          </a>
+
+          <div class="table-search-box">
+            <input type="text" id="trip-search-input" class="table-search-input" placeholder="ابحث عن رحلة أو مزار..." oninput="handleTripSearch(this.value)" data-i18n-placeholder="search_placeholder">
+            <svg class="search-icon-svg" viewBox="0 0 24 24">
+              <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+          </div>
         </div>
       </div>
 
@@ -2298,7 +2338,9 @@
         calc_label_overtime: "ساعات انتظار إضافية متوقعة:",
         calc_summary_prefix: "الرحلة المختارة:",
         calc_summary_vehicle: "السيارة:",
+        calc_price_label: "السعر التقديري:",
         calc_btn: "إرسال طلب الحجز للواتساب",
+        btn_download_excel: "تحميل جدول الإكسيل (XLSX)",
         tables_eyebrow: "جداول الأسعار الملكية",
         tables_title: "قوائم أسعار الرحلات والمزارات السياحية",
         tables_sub: "اختر نوع الرحلة والسيارة المناسبة وتواصل معنا للحجز المباشر الفوري.",
@@ -2389,7 +2431,9 @@
         calc_label_overtime: "Expected Extra Waiting Hours:",
         calc_summary_prefix: "Selected Tour:",
         calc_summary_vehicle: "Vehicle:",
+        calc_price_label: "Estimated Total:",
         calc_btn: "Send Booking Request on WhatsApp",
+        btn_download_excel: "Download Excel Sheet (XLSX)",
         tables_eyebrow: "Royal Price Tariffs",
         tables_title: "Comprehensive Tour & Destination Rates",
         tables_sub: "Choose your destination and preferred vehicle for immediate direct reservation.",
@@ -2435,179 +2479,247 @@
       }
     };
 
-    // Table 1 Data: Cairo & Giza
+    function formatPrice(val, isAr) {
+      if (val === null || val === undefined || val === '-' || val === '') {
+        return '<span style="opacity:0.45">-</span>';
+      }
+      return `${val.toLocaleString()} ${isAr ? 'ج.م' : 'EGP'}`;
+    }
+
+    // Table 1 Data: Cairo & Giza (From Official Excel Sheet)
     const tableDataCairo = [
       {
+        id: "cairo-1",
         name_ar: "هرم - ممفيس - سقارة",
         name_en: "Pyramids - Memphis - Saqqara",
         detail_ar: "أهرامات الجيزة، تمثال رمسيس بممفيس، هرم زوسر المدرج بسقارة",
         detail_en: "Giza Pyramids, Sphinx, Colossus of Ramesses II at Memphis, and Djoser Step Pyramid in Saqqara",
-        rate_ar: "حسب المسار والوقت",
-        rate_en: "Custom Route & Time"
+        sedan: 1000,
+        family: 1500,
+        h1: 2300,
+        hiace: 2600
       },
       {
+        id: "cairo-2",
         name_ar: "هرم - ممفيس - سقارة - دهشور",
         name_en: "Pyramids - Memphis - Saqqara - Dahshur",
         detail_ar: "جولة فرعونية كاملة تشمل الهرم المنحني والهرم الأحمر بدهشور",
         detail_en: "Grand Pharaonic circuit including the Bent Pyramid & Red Pyramid at Dahshur",
-        rate_ar: "حسب المسار والوقت",
-        rate_en: "Custom Route & Time"
+        sedan: 1200,
+        family: 1700,
+        h1: 2500,
+        hiace: 2800
       },
       {
-        name_ar: "يومية بلد (3 مزارات)",
-        name_en: "Cairo City Full Day (3 Sights)",
-        detail_ar: "مثال: قلعة صلاح الدين، المتحف المصري بالتحرير، خان الخليلي والمعز",
-        detail_en: "E.g. Saladin Citadel, Egyptian Museum Tahrir, Khan El Khalili & Al-Moez Street",
-        rate_ar: "يومية كاملة",
-        rate_en: "Full Day Tour"
+        id: "cairo-3",
+        name_ar: "يومية بلد 3 مزار",
+        name_en: "Cairo City Day (3 Sights)",
+        detail_ar: "مثال: قلعة صلاح الدين، المتحف المصري بالتحرير، خان الخليلي والمعز (مدة اليومية 9 ساعات)",
+        detail_en: "E.g. Saladin Citadel, Egyptian Museum Tahrir, Khan El Khalili (9 tour hours)",
+        sedan: 1000,
+        family: 1500,
+        h1: 2300,
+        hiace: 2600
       },
       {
-        name_ar: "يومية بلد (4 مزارات)",
-        name_en: "Cairo City Grand Tour (4 Sights)",
-        detail_ar: "برنامج مكثف يشمل 4 معالم تاريخية وإسلامية وقبطية كبرى",
-        detail_en: "Intensive 4-sight itinerary spanning Islamic, Coptic, and ancient landmarks",
-        rate_ar: "يومية كاملة VIP",
-        rate_en: "VIP Full Day"
+        id: "cairo-4",
+        name_ar: "يومية بلد 4 مزار",
+        name_en: "Cairo City Grand Day (4 Sights)",
+        detail_ar: "برنامج مكثف يشمل 4 معالم تاريخية وإسلامية وقبطية كبرى (العمل من 8 ص حتى 5 م)",
+        detail_en: "Intensive 4-sight itinerary spanning Islamic, Coptic, and ancient landmarks (9 hrs)",
+        sedan: 1150,
+        family: 1700,
+        h1: 2500,
+        hiace: 2800
       },
       {
-        name_ar: "نصف يومية داخل القاهرة",
-        name_en: "Half-Day Tour (Cairo/Giza)",
-        detail_ar: "زيارة مزار أو مزارين (مدة حتى 4 إلى 5 ساعات) داخل القاهرة",
-        detail_en: "Visit 1 or 2 landmarks (up to 4-5 hours) within Greater Cairo",
-        rate_ar: "نصف يومية",
-        rate_en: "Half Day Rate"
+        id: "cairo-5",
+        name_ar: "نصف يومية مزار فقط",
+        name_en: "Half-Day Tour (Single Sight)",
+        detail_ar: "زيارة مزار واحد محدد داخل القاهرة والجيزة (مدة حتى 4 إلى 5 ساعات)",
+        detail_en: "Visit 1 specific landmark within Greater Cairo/Giza (up to 4-5 hours)",
+        sedan: 900,
+        family: 1300,
+        h1: 1800,
+        hiace: 3500
       },
       {
-        name_ar: "سهرة عشاء نيلية",
-        name_en: "Nile Dinner Cruise Transfer",
+        id: "cairo-6",
+        name_ar: "سهرة عشاء",
+        name_en: "Nile Dinner Cruise",
         detail_ar: "توصيل وانتظار أثناء العشاء على الباخرة النيلية ثم العودة للفندق",
         detail_en: "Pickup, cruise waiting time during show & dinner, and return hotel transfer",
-        rate_ar: "توصيل + انتظار",
-        rate_en: "Transfer + Waiting"
+        sedan: 800,
+        family: 1000,
+        h1: 1500,
+        hiace: 1700
       },
       {
-        name_ar: "مطار القاهرة (سفر أو استقبال)",
+        id: "cairo-7",
+        name_ar: "مطار سفر أو استقبال",
         name_en: "Cairo Airport (Arrival / Departure)",
-        detail_ar: "استقبال بلافتة الاسم من صالة الوصول أو التوصيل لصالات السفر",
-        detail_en: "Meet & greet with name sign at arrival hall or hotel-to-terminal departure",
-        rate_ar: "توصيلة مطار",
-        rate_en: "Airport Transfer"
+        detail_ar: "استقبال بلافتة الاسم من صالة الوصول أو التوصيل لصالات السفر (أي فندق داخل المطار يُحسب أوفر داي)",
+        detail_en: "Meet & greet with name sign at arrival hall or departure transfer",
+        sedan: 800,
+        family: 1000,
+        h1: 1600,
+        hiace: 1700
       },
       {
-        name_ar: "مطار سفنكس (سفر أو استقبال)",
+        id: "cairo-8",
+        name_ar: "مطار سفنكس",
         name_en: "Sphinx Airport (Arrival / Departure)",
-        detail_ar: "خدمة ليموزين مباشرة من وإلى مطار سفنكس (غرب القاهرة والشيخ زايد)",
+        detail_ar: "خدمة ليموزين مباشرة من وإلى مطار سفنكس الدولي (غرب القاهرة والشيخ زايد)",
         detail_en: "Direct limousine service to/from Sphinx International Airport (West Cairo/Zayed)",
-        rate_ar: "توصيلة مطار سفنكس",
-        rate_en: "Sphinx Transfer"
+        sedan: 800,
+        family: 1000,
+        h1: 1700,
+        hiace: 1800
       }
     ];
 
-    // Table 2 Data: Overday Trips
+    // Table 2 Data: Overday Trips (From Official Excel Sheet)
     const tableDataOverday = [
       {
-        name_ar: "أوفردي الإسكندرية",
+        id: "overday-1",
+        name_ar: "أوفر داي إسكندرية",
         name_en: "Alexandria Overday Day Trip",
-        detail_ar: "قلعة قايتباي، مكتبة الإسكندرية، حدائق المنتزه، كوبري ستانلي والعودة",
+        detail_ar: "قلعة قايتباي، مكتبة الإسكندرية، حدائق المنتزه، كوبري ستانلي والعودة بنفس اليوم",
         detail_en: "Citadel of Qaitbay, Bibliotheca Alexandrina, Montaza Palace & Stanley Bridge",
-        rate_ar: "ذهاب وعودة",
-        rate_en: "Round Trip"
+        sedan: 3000,
+        family: 3500,
+        h1: 5000,
+        hiace: 5500
       },
       {
-        name_ar: "أوفردي الفيوم ووادي الريان",
+        id: "overday-2",
+        name_ar: "أوفر داي الفيوم",
         name_en: "Fayoum Oasis & Wadi El-Rayan",
-        detail_ar: "وادي الريان والشلالات، بحيرة قارون، قرية تونس، وادي الحيتان وجبل المدورة",
+        detail_ar: "وادي الريان والشلالات، بحيرة قارون، قرية تونس، وادي الحيتان والعودة",
         detail_en: "Waterfalls, Lake Qarun, Tunis Pottery Village, Wadi El Hitan & Magic Lake",
-        rate_ar: "ذهاب وعودة",
-        rate_en: "Round Trip"
+        sedan: 2800,
+        family: 3250,
+        h1: 4500,
+        hiace: 5000
       },
       {
-        name_ar: "أوفردي العين السخنة",
+        id: "overday-3",
+        name_ar: "أوفر داي السخنة",
         name_en: "Ain Sokhna Red Sea Day Trip",
-        detail_ar: "يوم شاطئي كامل على ساحل البحر الأحمر مع الاستمتاع بالمنتجعات والأنشطة",
+        detail_ar: "يوم شاطئي كامل على ساحل البحر الأحمر مع الاستمتاع بالمنتجعات والأنشطة والعودة",
         detail_en: "Full beach day on the Red Sea coast with resort access and water activities",
-        rate_ar: "ذهاب وعودة",
-        rate_en: "Round Trip"
+        sedan: 2800,
+        family: 3250,
+        h1: 4500,
+        hiace: 5000
       },
       {
-        name_ar: "أوفردي المنيا وتل العمارنة",
-        name_en: "Minya & Tel El-Amarna Overday",
-        detail_ar: "عروس الصعيد: زيارة آثار تل العمارنة وتونة الجبل وبني حسن والعودة",
+        id: "overday-4",
+        name_ar: "أوفر داي المنهار",
+        name_en: "Minya / El-Menhar Overday Trip",
+        detail_ar: "عروس الصعيد: زيارة آثار تل العمارنة وتونة الجبل وبني حسن والعودة بنفس اليوم",
         detail_en: "Bride of Upper Egypt: Akhenaten's Tel El-Amarna, Tuna El-Gebel & Beni Hasan",
-        rate_ar: "ذهاب وعودة",
-        rate_en: "Round Trip"
+        sedan: 2500,
+        family: 3000,
+        h1: 3900,
+        hiace: 4300
       },
       {
-        name_ar: "توصيلة الإسكندرية (وان واي)",
+        id: "overday-5",
+        name_ar: "توصيلة إسكندرية",
         name_en: "Alexandria One-Way Transfer",
         detail_ar: "توصيل اتجاه واحد مباشر من أي مكان بالقاهرة إلى الإسكندرية أو العكس",
         detail_en: "Direct single-direction transfer from any Cairo address to Alexandria or vice-versa",
-        rate_ar: "وان واي (اتجاه واحد)",
-        rate_en: "One-Way Transfer"
+        sedan: 2800,
+        family: 3500,
+        h1: 4700,
+        hiace: 5200
       },
       {
-        name_ar: "توصيلة الأقصر ومحافظات الصعيد",
+        id: "overday-6",
+        name_ar: "توصيلة الأقصر",
         name_en: "Upper Egypt & Luxor Transfer",
         detail_ar: "نقل سياحي مريح وسلس لمحافظات الصعيد (بني سويف، أسيوط، سوهاج، قنا، الأقصر)",
         detail_en: "Comfortable private transfer to Upper Egypt (Beni Suef, Asyut, Sohag, Qena, Luxor)",
-        rate_ar: "حسب المحافظة والمسافة",
-        rate_en: "By Governorate & Dist."
+        sedan: 8500,
+        family: 9500,
+        h1: null,
+        hiace: null
       }
     ];
 
-    // Table 3 Data: Multi-Day
+    // Table 3 Data: Multi-Day (From Official Excel Sheet)
     const tableDataMultiday = [
       {
-        name_ar: "الغردقة والجونة",
-        name_en: "Hurghada & El Gouna Excursion",
+        id: "multi-1",
+        name_ar: "الغردقة",
+        name_en: "Hurghada Excursion",
         duration_ar: "توصيل / إقامة",
         duration_en: "Transfer / Stay",
         detail_ar: "توصيل سياحي فاخر مع إمكانية المبيت أو التوصيل والاستقبال من الفندق",
         detail_en: "Luxury Red Sea transit with multi-day driver availability or hotel pickup/drop",
-        rate_ar: "حسب برنامج الرحلة",
-        rate_en: "Custom Program"
+        sedan: 5500,
+        family: 6500,
+        h1: 8500,
+        hiace: 9500
       },
       {
-        name_ar: "شرم الشيخ ودهب",
-        name_en: "Sharm El Sheikh & Dahab Excursion",
+        id: "multi-2",
+        name_ar: "شرم الشيخ",
+        name_en: "Sharm El Sheikh Excursion",
         duration_ar: "توصيل / إقامة",
         duration_en: "Transfer / Stay",
         detail_ar: "رحلات سيناء الساحرة عبر نفق الشهيد أحمد حمدي بأحدث السيارات المجهزة",
         detail_en: "South Sinai journeys via Ahmed Hamdi Tunnel with modern, vetted vehicles",
-        rate_ar: "حسب برنامج الرحلة",
-        rate_en: "Custom Program"
+        sedan: 6000,
+        family: 7000,
+        h1: 9000,
+        hiace: 10000
       },
       {
-        name_ar: "الواحات البحرية والصحراء البيضاء",
-        name_en: "Bahariya Oasis & White Desert Safari",
+        id: "multi-3",
+        name_ar: "الواحات 2 يوم / 1 ليلة",
+        name_en: "Bahariya Oasis (2 Days / 1 Night)",
         duration_ar: "2 يوم / 1 ليلة",
         duration_en: "2 Days / 1 Night",
         detail_ar: "مغامرة الصحراء السوداء والبيضاء، جبل الكريستال، وعيون المياه الكبريتية",
         detail_en: "Black & White Desert expedition, Crystal Mountain, hot springs and camping",
-        rate_ar: "برنامج متكامل",
-        rate_en: "Complete Package"
+        sedan: 7000,
+        family: 8000,
+        h1: 10000,
+        hiace: 12000
       },
       {
-        name_ar: "واحة سيوة الأسطورية",
-        name_en: "Siwa Oasis Legendary Expedition",
+        id: "multi-4",
+        name_ar: "سيوة 3 يوم / 2 ليلة",
+        name_en: "Siwa Oasis Expedition (3D/2N)",
         duration_ar: "3 أيام / 2 ليلة",
         duration_en: "3 Days / 2 Nights",
         detail_ar: "قلعة شالي، معبد آمون، عين كليوباترا، بحيرات الملح، وجولات بحر الرمال الأعظم",
         detail_en: "Shali Fortress, Temple of Amun, Cleopatra Spring, Salt Lakes & Great Sand Sea",
-        rate_ar: "برنامج مبيت فاخر",
-        rate_en: "Luxury Safari Stay"
+        sedan: 14000,
+        family: 16000,
+        h1: 20000,
+        hiace: 22000
       },
       {
-        name_ar: "الإسكندرية ومطروح",
-        name_en: "Alexandria & Marsa Matrouh Tour",
+        id: "multi-5",
+        name_ar: "إسكندرية 2 يوم / 1 ليلة",
+        name_en: "Alexandria Tour (2 Days / 1 Night)",
         duration_ar: "2 يوم / 1 ليلة",
         duration_en: "2 Days / 1 Night",
-        detail_ar: "جولة الساحل الشمالي وشواطئ مرسى مطروح الفيروزية مع مبيت ليلة أو ليلتين",
-        detail_en: "North Coast tour with turquoise Marsa Matrouh beaches and overnight stay",
-        rate_ar: "برنامج متكامل",
-        rate_en: "Complete Package"
+        detail_ar: "جولة الساحل والآثار السكندرية مع مبيت ليلة والعودة لليوم التالي",
+        detail_en: "Alexandria historical landmarks tour with overnight stay and next-day return",
+        sedan: 5500,
+        family: 7000,
+        h1: 9000,
+        hiace: 10000
       }
     ];
+
+    function getTripById(id) {
+      return [...tableDataCairo, ...tableDataOverday, ...tableDataMultiday].find(t => t.id === id);
+    }
 
     // --------------------------------------------------------------------------
     // B. LANGUAGE TOGGLE & DOM RENDERER
@@ -2661,7 +2773,7 @@
       // Populate QR Studio dropdown options
       renderQRSelectOptions(lang);
 
-      // Update Calculator Live summary
+      // Update Calculator Live summary & price
       updateCalcSummary();
     }
 
@@ -2671,48 +2783,44 @@
       const box3 = document.getElementById('note-body-3');
 
       if (lang === 'ar') {
-        box1.innerHTML = `يرجى العلم بوجود <span class="rate-highlight">رسوم إضافية</span> لتوصيلات أو انطلاق الرحلات من وإلى مناطق أطراف القاهرة الكبرى والمطارات، وتشمل:
+        box1.innerHTML = `
           <ul>
-            <li>مدينة 6 أكتوبر والشيخ زايد وحدائق أكتوبر</li>
-            <li>مدينتي، مدينة الشروق، مدينة بدر، ومدينة المستقبل</li>
-            <li>التجمع الخامس، التجمع الأول، والقاهرة الجديدة</li>
-            <li>العاصمة الإدارية الجديدة ومطار العاصمة</li>
-            <li>مطار سفنكس الدولي ومطار القاهرة (حسب نقطة الانطلاق)</li>
-          </ul>`;
-        box2.innerHTML = `في حال رغبة العميل في تمديد وقت الرحلة أو قضاء وقت إضافي يتجاوز الساعات المحددة لكل برنامج:
-          <ul>
-            <li>يتم احتساب ساعة الأوفرتايم / الانتظار الإضافية بقيمة: <strong class="rate-highlight">200 جنيه مصري / للساعة</strong></li>
-            <li>يتم احتساب كسر الساعة بما يتناسب مع وقت الانتظار الفعلي.</li>
-            <li>ينصح بالتنسيق المسبق مع الإدارة في حال الرحلات الممتدة لضمان راحة السائق والجدول الزمني.</li>
-          </ul>`;
-        box3.innerHTML = `مع أنوبيس ترافيل، نضمن لكم أعلى معايير الجودة والراحة:
-          <ul>
+            <li><strong>فنادق المطار:</strong> أي فندق داخل نطاق المطار يُحسب تسعير <strong class="rate-highlight">أوفر داي</strong>.</li>
+            <li><strong>الفنادق البعيدة:</strong> (أكتوبر / مدينة نصر / التجمع / مصر الجديدة / الشيخ زايد) يُضاف <strong class="rate-highlight">200 ج.م</strong> للملاكي و7 راكب، ويُضاف <strong class="rate-highlight">500 ج.م</strong> للإتش وان والهاي إس.</li>
             <li>الأسعار تشمل السائق المحترف، البنزين، وكارتات وبوابات الطرق الرئيسية.</li>
-            <li>السيارات مجهزة بأحدث وسائل الراحة وتكييف ممتاز ونظافة فائقة.</li>
-            <li>إمكانية توفير مرشد سياحي مرخص معتمد بمختلف اللغات العالمية عند الطلب المسبق.</li>
-            <li>خدمة متابعة الرحلات على مدار الساعة (24/7 VIP Support).</li>
+          </ul>`;
+        box2.innerHTML = `
+          <ul>
+            <li><strong>مواعيد اليومية الرسمية:</strong> اليومية من الساعة <strong class="rate-highlight">8:00 صباحاً</strong> وحتى الساعة <strong class="rate-highlight">5:00 مساءً</strong> (مدة اليومية 9 ساعات).</li>
+            <li><strong>ساعات الانتظار الإضافية:</strong> أي ساعة إضافية تحسب بتكلفة منفصلة: <strong class="rate-highlight">200 ج.م / للساعة</strong>.</li>
+            <li>يتم احتساب كسر الساعة بما يتناسب مع وقت الانتظار الفعلي.</li>
+          </ul>`;
+        box3.innerHTML = `
+          <ul>
+            <li>السيارات مجهزة بأعلى وسائل الراحة والتكييف الكامل لضمان تجربة VIP فاخرة.</li>
+            <li>سائقون ذوو خبرة تامة بالمعالم الأثرية والمزارات الفرعونية والطرق السريعة.</li>
+            <li>إمكانية توفير مرشد سياحي مرخص معتمد بجميع اللغات العالمية عند الطلب المسبق.</li>
+            <li>خدمة متابعة مستمرة على مدار الساعة (24/7 VIP Support).</li>
           </ul>`;
       } else {
-        box1.innerHTML = `Please note that <span class="rate-highlight">surcharges apply</span> for pickups and drop-offs in peripheral Cairo zones and airports, including:
+        box1.innerHTML = `
           <ul>
-            <li>6th of October City, Sheikh Zayed & October Gardens</li>
-            <li>Madinaty, El Shorouk, Badr City & Mostakbal City</li>
-            <li>5th Settlement, 1st Settlement & New Cairo</li>
-            <li>New Administrative Capital & Capital International Airport</li>
-            <li>Sphinx Airport & Cairo Airport (depending on pickup origin)</li>
+            <li><strong>Airport Hotels:</strong> Any hotel inside Cairo Airport zone is billed at an <strong class="rate-highlight">Overday</strong> rate.</li>
+            <li><strong>Distant Hotels Surcharge:</strong> (6th of October / Nasr City / New Cairo / Heliopolis / Sheikh Zayed): +<strong class="rate-highlight">200 EGP</strong> for Sedan & 7-Seater, +<strong class="rate-highlight">500 EGP</strong> for H1 & HiAce.</li>
+            <li>All rates include a vetted chauffeur, fuel, and primary highway tolls.</li>
           </ul>`;
-        box2.innerHTML = `If the client desires to extend the tour duration beyond standard programmed hours:
+        box2.innerHTML = `
           <ul>
-            <li>Overtime / Extra waiting is billed at: <strong class="rate-highlight">200 EGP / hour</strong></li>
+            <li><strong>Official Tour Hours:</strong> Day tours run from <strong class="rate-highlight">8:00 AM</strong> to <strong class="rate-highlight">5:00 PM</strong> (Total official duration: 9 hours).</li>
+            <li><strong>Overtime / Extra Waiting:</strong> Any additional waiting hour is billed separately at: <strong class="rate-highlight">200 EGP / hour</strong>.</li>
             <li>Fractional hours are prorated based on actual waiting duration.</li>
-            <li>Prior coordination with management is recommended for extended schedules.</li>
           </ul>`;
-        box3.innerHTML = `With Anubis Travel, we guarantee unmatched executive standards:
+        box3.innerHTML = `
           <ul>
-            <li>Rates include a vetted professional driver, fuel, and all main highway tolls.</li>
-            <li>Spotless, sanitized vehicles with dual-zone AC and plush interiors.</li>
-            <li>Licensed multilingual tour guides available upon advance request.</li>
-            <li>24/7 VIP operations desk tracking and customer support.</li>
+            <li>Sanitized luxury vehicles with powerful climate control and plush seating.</li>
+            <li>Experienced drivers with deep familiarity with Egypt's historical sites.</li>
+            <li>Licensed multilingual Egyptologist guides available upon advance request.</li>
+            <li>24/7 dedicated customer care and live trip tracking.</li>
           </ul>`;
       }
     }
@@ -2733,107 +2841,88 @@
       if (lang === 'ar') {
         tripSelect.innerHTML = `
           <optgroup label="داخل القاهرة والجيزة">
-            <option value="هرم - ممفيس - سقارة">هرم - ممفيس - سقارة</option>
-            <option value="هرم - ممفيس - سقارة - دهشور">هرم - ممفيس - سقارة - دهشور</option>
-            <option value="يومية بلد (3 مزارات)">يومية بلد (3 مزارات)</option>
-            <option value="يومية بلد (4 مزارات)">يومية بلد (4 مزارات)</option>
-            <option value="نصف يومية داخل القاهرة">نصف يومية داخل القاهرة</option>
-            <option value="سهرة عشاء نيلية">سهرة عشاء نيلية</option>
-            <option value="مطار القاهرة الدولي (استقبال أو سفر)">مطار القاهرة (استقبال أو سفر)</option>
-            <option value="مطار سفنكس الدولي (استقبال أو سفر)">مطار سفنكس (استقبال أو سفر)</option>
+            ${tableDataCairo.map(t => `<option value="${t.id}">${t.name_ar}</option>`).join('')}
           </optgroup>
-          <optgroup label="رحلات الأوفردي (اليوم الواحد)">
-            <option value="أوفردي الإسكندرية">أوفردي الإسكندرية</option>
-            <option value="أوفردي الفيوم ووادي الريان">أوفردي الفيوم ووادي الريان</option>
-            <option value="أوفردي العين السخنة">أوفردي العين السخنة</option>
-            <option value="أوفردي المنيا وتل العمارنة">أوفردي المنيا وتل العمارنة</option>
-            <option value="توصيلة الإسكندرية (وان واي)">توصيلة الإسكندرية (وان واي)</option>
-            <option value="توصيلة الأقصر ومحافظات الصعيد">توصيلة الأقصر والصعيد</option>
+          <optgroup label="رحلات الأوفردي والتوصيلات">
+            ${tableDataOverday.map(t => `<option value="${t.id}">${t.name_ar}</option>`).join('')}
           </optgroup>
           <optgroup label="السياحة والمحافظات (متعددة الأيام)">
-            <option value="الغردقة والجونة">الغردقة والجونة</option>
-            <option value="شرم الشيخ ودهب">شرم الشيخ ودهب</option>
-            <option value="الواحات البحرية والصحراء البيضاء">الواحات البحرية والصحراء البيضاء (2 يوم / 1 ليلة)</option>
-            <option value="واحة سيوة الأسطورية">واحة سيوة (3 أيام / 2 ليلة)</option>
-            <option value="الإسكندرية ومطروح">الإسكندرية ومطروح (2 يوم / 1 ليلة)</option>
+            ${tableDataMultiday.map(t => `<option value="${t.id}">${t.name_ar}</option>`).join('')}
           </optgroup>
         `;
 
         vehicleSelect.innerHTML = `
-          <option value="ملاكي فاخر (سيدان 1-3 ركاب)">ملاكي فاخر (سيدان 1-3 ركاب)</option>
-          <option value="7 راكب عائلي (SUV حتى 6 ركاب)">7 راكب عائلي (SUV حتى 6 ركاب)</option>
-          <option value="إتش وان VIP (فان فاخر 7-9 ركاب)">إتش وان VIP (فان فاخر 7-9 ركاب)</option>
-          <option value="هاي إس سياحي (حتى 14 راكب)">هاي إس سياحي (حتى 14 راكب)</option>
+          <option value="sedan">ملاكي فاخر (سيدان 1-3 ركاب)</option>
+          <option value="family">7 راكب عائلي (SUV حتى 6 ركاب)</option>
+          <option value="h1">إتش وان VIP (فان فاخر 7-9 ركاب)</option>
+          <option value="hiace">هاي إس سياحي (حتى 14 راكب)</option>
         `;
 
         locationSelect.innerHTML = `
-          <option value="وسط القاهرة / الجيزة / المعادي">وسط القاهرة / الجيزة / المعادي</option>
-          <option value="مدينة نصر / مصر الجديدة">مدينة نصر / مصر الجديدة</option>
-          <option value="أكتوبر / الشيخ زايد">أكتوبر / الشيخ زايد</option>
-          <option value="التجمع الخامس / مدينتي / الشروق / العاصمة">التجمع / مدينتي / الشروق / العاصمة</option>
-          <option value="مطار القاهرة الدولي">صالة وصول مطار القاهرة</option>
-          <option value="مطار سفنكس الدولي">صالة وصول مطار سفنكس</option>
+          <option value="standard">وسط القاهرة / الجيزة / المعادي</option>
+          <option value="distant">أكتوبر / الشيخ زايد (فندق بعيد +200/+500)</option>
+          <option value="distant">مدينة نصر / مصر الجديدة (فندق بعيد +200/+500)</option>
+          <option value="distant">التجمع الخامس / مدينتي / العاصمة (فندق بعيد +200/+500)</option>
+          <option value="standard">مطار القاهرة الدولي (صالة الوصول / السفر)</option>
+          <option value="standard">مطار سفنكس الدولي</option>
         `;
 
         overtimeSelect.innerHTML = `
-          <option value="0">بدون وقت إضافي (ضمن البرنامج)</option>
+          <option value="0">بدون وقت إضافي (ضمن البرنامج 9 ساعات)</option>
           <option value="1">+ 1 ساعة انتظار (200 ج.م)</option>
           <option value="2">+ 2 ساعة انتظار (400 ج.م)</option>
           <option value="3">+ 3 ساعات انتظار (600 ج.م)</option>
-          <option value="4">+ 4 ساعات أو أكثر</option>
+          <option value="4">+ 4 ساعات انتظار (800 ج.م)</option>
         `;
       } else {
         tripSelect.innerHTML = `
           <optgroup label="Cairo & Giza Day Tours">
-            <option value="Pyramids - Memphis - Saqqara">Pyramids - Memphis - Saqqara</option>
-            <option value="Pyramids - Memphis - Saqqara - Dahshur">Pyramids - Memphis - Saqqara - Dahshur</option>
-            <option value="Cairo City Full Day (3 Sights)">Cairo City Full Day (3 Sights)</option>
-            <option value="Cairo City Grand Tour (4 Sights)">Cairo City Grand Tour (4 Sights)</option>
-            <option value="Half-Day Tour (Cairo/Giza)">Half-Day Tour (Cairo/Giza)</option>
-            <option value="Nile Dinner Cruise Transfer">Nile Dinner Cruise Transfer</option>
-            <option value="Cairo Airport (Arrival/Departure)">Cairo Airport (Arrival/Departure)</option>
-            <option value="Sphinx Airport (Arrival/Departure)">Sphinx Airport (Arrival/Departure)</option>
+            ${tableDataCairo.map(t => `<option value="${t.id}">${t.name_en}</option>`).join('')}
           </optgroup>
           <optgroup label="Overday Day Trips">
-            <option value="Alexandria Overday Day Trip">Alexandria Overday Day Trip</option>
-            <option value="Fayoum Oasis & Wadi El-Rayan">Fayoum Oasis & Wadi El-Rayan</option>
-            <option value="Ain Sokhna Red Sea Day Trip">Ain Sokhna Red Sea Day Trip</option>
-            <option value="Minya & Tel El-Amarna Overday">Minya & Tel El-Amarna Overday</option>
-            <option value="Alexandria One-Way Transfer">Alexandria One-Way Transfer</option>
-            <option value="Upper Egypt & Luxor Transfer">Upper Egypt & Luxor Transfer</option>
+            ${tableDataOverday.map(t => `<option value="${t.id}">${t.name_en}</option>`).join('')}
           </optgroup>
           <optgroup label="Multi-Day & Intercity Tours">
-            <option value="Hurghada & El Gouna Excursion">Hurghada & El Gouna Excursion</option>
-            <option value="Sharm El Sheikh & Dahab Excursion">Sharm El Sheikh & Dahab Excursion</option>
-            <option value="Bahariya Oasis & White Desert (2D/1N)">Bahariya Oasis & White Desert (2D/1N)</option>
-            <option value="Siwa Oasis Expedition (3D/2N)">Siwa Oasis Expedition (3D/2N)</option>
-            <option value="Alexandria & Marsa Matrouh (2D/1N)">Alexandria & Marsa Matrouh (2D/1N)</option>
+            ${tableDataMultiday.map(t => `<option value="${t.id}">${t.name_en}</option>`).join('')}
           </optgroup>
         `;
 
         vehicleSelect.innerHTML = `
-          <option value="VIP Sedan (1-3 Passengers)">VIP Sedan (1-3 Passengers)</option>
-          <option value="7-Seater Family SUV (Up to 6 Passengers)">7-Seater Family SUV (Up to 6 Passengers)</option>
-          <option value="Hyundai H-1 VIP Luxury Van (7-9 Passengers)">Hyundai H-1 VIP Luxury Van (7-9 Passengers)</option>
-          <option value="Toyota HiAce Tourist Bus (Up to 14 Passengers)">Toyota HiAce Tourist Bus (Up to 14 Passengers)</option>
+          <option value="sedan">VIP Sedan (1-3 Passengers)</option>
+          <option value="family">7-Seater Family SUV (Up to 6 Passengers)</option>
+          <option value="h1">Hyundai H-1 VIP Van (7-9 Passengers)</option>
+          <option value="hiace">Toyota HiAce Tourist Bus (Up to 14 Passengers)</option>
         `;
 
         locationSelect.innerHTML = `
-          <option value="Downtown Cairo / Giza / Maadi">Downtown Cairo / Giza / Maadi</option>
-          <option value="Nasr City / Heliopolis">Nasr City / Heliopolis</option>
-          <option value="6th of October / Sheikh Zayed">6th of October / Sheikh Zayed</option>
-          <option value="New Cairo / 5th Settlement / Madinaty / Capital">New Cairo / 5th Settlement / Madinaty / Capital</option>
-          <option value="Cairo International Airport (Arrival Hall)">Cairo International Airport (Arrival Hall)</option>
-          <option value="Sphinx International Airport (Arrival Hall)">Sphinx International Airport (Arrival Hall)</option>
+          <option value="standard">Downtown Cairo / Giza / Maadi</option>
+          <option value="distant">6th of October / Sheikh Zayed (+200/+500 Surcharge)</option>
+          <option value="distant">Nasr City / Heliopolis (+200/+500 Surcharge)</option>
+          <option value="distant">New Cairo / 5th Settlement / Capital (+200/+500 Surcharge)</option>
+          <option value="standard">Cairo International Airport</option>
+          <option value="standard">Sphinx International Airport</option>
         `;
 
         overtimeSelect.innerHTML = `
-          <option value="0">Standard Schedule (No Extra Overtime)</option>
+          <option value="0">Standard Schedule (Within 9 hours)</option>
           <option value="1">+ 1 Extra Hour (200 EGP)</option>
           <option value="2">+ 2 Extra Hours (400 EGP)</option>
           <option value="3">+ 3 Extra Hours (600 EGP)</option>
-          <option value="4">+ 4 or more Extra Hours</option>
+          <option value="4">+ 4 Extra Hours (800 EGP)</option>
         `;
+      }
+
+      if (currentTripVal && tripSelect.querySelector(`option[value="${currentTripVal}"]`)) {
+        tripSelect.value = currentTripVal;
+      }
+      if (currentVehVal && vehicleSelect.querySelector(`option[value="${currentVehVal}"]`)) {
+        vehicleSelect.value = currentVehVal;
+      }
+      if (currentLocVal && locationSelect.querySelector(`option[value="${currentLocVal}"]`)) {
+        locationSelect.value = currentLocVal;
+      }
+      if (currentOtVal && overtimeSelect.querySelector(`option[value="${currentOtVal}"]`)) {
+        overtimeSelect.value = currentOtVal;
       }
     }
 
@@ -2855,10 +2944,10 @@
                 </div>
               </div>
             </td>
-            <td><span class="price-pill">${isAr ? item.rate_ar : item.rate_en}</span></td>
-            <td><span class="price-pill">${isAr ? item.rate_ar : item.rate_en}</span></td>
-            <td><span class="price-pill">${isAr ? item.rate_ar : item.rate_en}</span></td>
-            <td><span class="price-pill">${isAr ? item.rate_ar : item.rate_en}</span></td>
+            <td><span class="price-pill">${formatPrice(item.sedan, isAr)}</span></td>
+            <td><span class="price-pill">${formatPrice(item.family, isAr)}</span></td>
+            <td><span class="price-pill">${formatPrice(item.h1, isAr)}</span></td>
+            <td><span class="price-pill">${formatPrice(item.hiace, isAr)}</span></td>
             <td>
               <button class="row-book-btn" onclick="bookViaWhatsApp('${isAr ? item.name_ar : item.name_en}')">
                 <span>${bookLabel}</span>
@@ -2882,10 +2971,10 @@
                 </div>
               </div>
             </td>
-            <td><span class="price-pill">${isAr ? item.rate_ar : item.rate_en}</span></td>
-            <td><span class="price-pill">${isAr ? item.rate_ar : item.rate_en}</span></td>
-            <td><span class="price-pill">${isAr ? item.rate_ar : item.rate_en}</span></td>
-            <td><span class="price-pill">${isAr ? item.rate_ar : item.rate_en}</span></td>
+            <td><span class="price-pill">${formatPrice(item.sedan, isAr)}</span></td>
+            <td><span class="price-pill">${formatPrice(item.family, isAr)}</span></td>
+            <td><span class="price-pill">${formatPrice(item.h1, isAr)}</span></td>
+            <td><span class="price-pill">${formatPrice(item.hiace, isAr)}</span></td>
             <td>
               <button class="row-book-btn" onclick="bookViaWhatsApp('${isAr ? item.name_ar : item.name_en}')">
                 <span>${bookLabel}</span>
@@ -2910,10 +2999,10 @@
               </div>
             </td>
             <td><span class="price-tag-badge">${isAr ? item.duration_ar : item.duration_en}</span></td>
-            <td><span class="price-pill">${isAr ? item.rate_ar : item.rate_en}</span></td>
-            <td><span class="price-pill">${isAr ? item.rate_ar : item.rate_en}</span></td>
-            <td><span class="price-pill">${isAr ? item.rate_ar : item.rate_en}</span></td>
-            <td><span class="price-pill">${isAr ? item.rate_ar : item.rate_en}</span></td>
+            <td><span class="price-pill">${formatPrice(item.sedan, isAr)}</span></td>
+            <td><span class="price-pill">${formatPrice(item.family, isAr)}</span></td>
+            <td><span class="price-pill">${formatPrice(item.h1, isAr)}</span></td>
+            <td><span class="price-pill">${formatPrice(item.hiace, isAr)}</span></td>
             <td>
               <button class="row-book-btn" onclick="bookViaWhatsApp('${isAr ? item.name_ar : item.name_en}')">
                 <span>${bookLabel}</span>
@@ -3157,36 +3246,102 @@
     // H. INSTANT CALCULATOR & GENERATOR (BILINGUAL)
     // --------------------------------------------------------------------------
     function updateCalcSummary() {
-      const trip = document.getElementById('calc-trip-select').value;
-      const vehicle = document.getElementById('calc-vehicle-select').value;
+      const tripSelect = document.getElementById('calc-trip-select');
+      const vehicleSelect = document.getElementById('calc-vehicle-select');
+      const locationSelect = document.getElementById('calc-location-select');
+      const overtimeSelect = document.getElementById('calc-overtime-select');
+      const priceDisplay = document.getElementById('calc-computed-price');
 
-      document.getElementById('summary-trip-name').textContent = trip;
-      document.getElementById('summary-vehicle-name').textContent = vehicle;
+      if (!tripSelect || !vehicleSelect) return;
+
+      const tripId = tripSelect.value;
+      const vehicleKey = vehicleSelect.value;
+      const locationType = locationSelect ? locationSelect.value : 'standard';
+      const overtimeHours = overtimeSelect ? (parseInt(overtimeSelect.value) || 0) : 0;
+
+      const trip = getTripById(tripId);
+      const isAr = (currentLang === 'ar');
+
+      const tripName = trip ? (isAr ? trip.name_ar : trip.name_en) : (tripSelect.options[tripSelect.selectedIndex]?.text || '');
+      const vehicleText = vehicleSelect.options[vehicleSelect.selectedIndex]?.text || '';
+
+      const summaryTripEl = document.getElementById('summary-trip-name');
+      const summaryVehEl = document.getElementById('summary-vehicle-name');
+      if (summaryTripEl) summaryTripEl.textContent = tripName;
+      if (summaryVehEl) summaryVehEl.textContent = vehicleText;
+
+      if (!priceDisplay) return;
+
+      if (trip && typeof trip[vehicleKey] === 'number') {
+        const basePrice = trip[vehicleKey];
+        let locationSurcharge = 0;
+        if (locationType === 'distant') {
+          locationSurcharge = (vehicleKey === 'h1' || vehicleKey === 'hiace') ? 500 : 200;
+        }
+        const overtimeCost = overtimeHours * 200;
+        const total = basePrice + locationSurcharge + overtimeCost;
+        priceDisplay.textContent = `${total.toLocaleString()} ${isAr ? 'ج.م' : 'EGP'}`;
+      } else {
+        priceDisplay.textContent = isAr ? 'حسب خط السير' : 'Custom Quote';
+      }
     }
 
     function sendCalculatedBooking() {
-      const trip = document.getElementById('calc-trip-select').value;
-      const vehicle = document.getElementById('calc-vehicle-select').value;
-      const location = document.getElementById('calc-location-select').value;
-      const overtime = document.getElementById('calc-overtime-select').value;
+      const tripSelect = document.getElementById('calc-trip-select');
+      const vehicleSelect = document.getElementById('calc-vehicle-select');
+      const locationSelect = document.getElementById('calc-location-select');
+      const overtimeSelect = document.getElementById('calc-overtime-select');
+
+      const tripId = tripSelect.value;
+      const vehicleKey = vehicleSelect.value;
+      const locationText = locationSelect ? (locationSelect.options[locationSelect.selectedIndex]?.text || '') : '';
+      const locationType = locationSelect ? locationSelect.value : 'standard';
+      const overtimeHours = overtimeSelect ? (parseInt(overtimeSelect.value) || 0) : 0;
+
+      const trip = getTripById(tripId);
+      const isAr = (currentLang === 'ar');
+      const tripName = trip ? (isAr ? trip.name_ar : trip.name_en) : tripSelect.options[tripSelect.selectedIndex]?.text;
+      const vehicleName = vehicleSelect.options[vehicleSelect.selectedIndex]?.text;
+
+      let basePrice = (trip && typeof trip[vehicleKey] === 'number') ? trip[vehicleKey] : null;
+      let locationSurcharge = 0;
+      if (locationType === 'distant' && basePrice !== null) {
+        locationSurcharge = (vehicleKey === 'h1' || vehicleKey === 'hiace') ? 500 : 200;
+      }
+      let overtimeCost = overtimeHours * 200;
+      let total = basePrice !== null ? (basePrice + locationSurcharge + overtimeCost) : null;
 
       let message = "";
-      if (currentLang === 'ar') {
-        let overtimeText = overtime === "0" ? "بدون وقت إضافي" : `+ ${overtime} ساعة إضافية`;
-        message = `السلام عليكم ورحمة الله،\nأرغب في حجز رحلة مع أنوبيس ترافيل بالتفاصيل التالية:\n\n` +
-          `📍 *الرحلة:* ${trip}\n` +
-          `🚗 *السيارة المطلوبة:* ${vehicle}\n` +
-          `🏙️ *نقطة الانطلاق:* ${location}\n` +
-          `⏱️ *الوقت الإضافي:* ${overtimeText}\n\n` +
-          `يرجى تأكيد إتاحة الموعد وإرسال السعر النهائي. شكراً لكم!`;
+      if (isAr) {
+        let overtimeDesc = overtimeHours === 0 ? "ضمن البرنامج الرسمي (9 ساعات)" : `+ ${overtimeHours} ساعة انتظار إضافية (${overtimeCost} ج.م)`;
+        let priceBreakdown = total !== null 
+          ? `\n💵 *السعر الأساسي:* ${basePrice.toLocaleString()} ج.م` +
+            (locationSurcharge > 0 ? `\n📍 *رسوم المنطقة البعيدة:* +${locationSurcharge} ج.م` : '') +
+            (overtimeCost > 0 ? `\n⏱️ *رسوم الانتظار الإضافي:* +${overtimeCost} ج.م` : '') +
+            `\n💰 *إجمالي التكلفة التقديرية:* ${total.toLocaleString()} ج.م`
+          : `\n💰 *السعر:* حسب خط السير والاتفاق المباشر`;
+
+        message = `السلام عليكم ورحمة الله،\nأود تأكيد حجز رحلة مع أنوبيس ترافيل (إدارة / جهاد حسين):\n\n` +
+          `📍 *الرحلة:* ${tripName}\n` +
+          `🚗 *نوع السيارة:* ${vehicleName}\n` +
+          `🏙️ *نقطة الانطلاق:* ${locationText}\n` +
+          `⏱️ *مواعيد الرحلة:* ${overtimeDesc}\n` +
+          priceBreakdown + `\n\nيرجى تأكيد إتاحة الموعد النهائي. شكراً جزيلاً!`;
       } else {
-        let overtimeText = overtime === "0" ? "Standard Schedule" : `+ ${overtime} Extra Waiting Hours`;
-        message = `Hello Anubis Travel,\nI would like to book a trip with the following details:\n\n` +
-          `📍 *Tour/Destination:* ${trip}\n` +
-          `🚗 *Vehicle Type:* ${vehicle}\n` +
-          `🏙️ *Pickup Location:* ${location}\n` +
-          `⏱️ *Extra Waiting:* ${overtimeText}\n\n` +
-          `Please confirm availability and the final quotation. Thank you!`;
+        let overtimeDesc = overtimeHours === 0 ? "Standard schedule (within 9 hrs)" : `+ ${overtimeHours} Extra waiting hrs (+${overtimeCost} EGP)`;
+        let priceBreakdown = total !== null 
+          ? `\n💵 *Base Rate:* ${basePrice.toLocaleString()} EGP` +
+            (locationSurcharge > 0 ? `\n📍 *Distant Hotel Fee:* +${locationSurcharge} EGP` : '') +
+            (overtimeCost > 0 ? `\n⏱️ *Extra Waiting:* +${overtimeCost} EGP` : '') +
+            `\n💰 *Estimated Total:* ${total.toLocaleString()} EGP`
+          : `\n💰 *Rate:* Custom quotation upon itinerary confirmation`;
+
+        message = `Hello Anubis Travel,\nI would like to book a luxury transfer with the following details:\n\n` +
+          `📍 *Tour / Destination:* ${tripName}\n` +
+          `🚗 *Vehicle Type:* ${vehicleName}\n` +
+          `🏙️ *Pickup Location:* ${locationText}\n` +
+          `⏱️ *Schedule:* ${overtimeDesc}\n` +
+          priceBreakdown + `\n\nPlease confirm availability and details. Thank you!`;
       }
 
       const url = `https://wa.me/201091501160?text=${encodeURIComponent(message)}`;
