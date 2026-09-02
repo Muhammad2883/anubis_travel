@@ -1,0 +1,6 @@
+# Temporary and port files
+.active_port
+Thumbs.db
+Desktop.ini
+*.tmp
+*.log
