@@ -2161,13 +2161,6 @@
         <h3 class="qr-title" data-i18n="qr_title">رمز واتساب المباشر (WhatsApp QR)</h3>
         <p class="qr-subtitle" data-i18n="qr_sub">امسح الكود بكاميرا هاتفك لبدء محادثة فورية ومباشرة مع إدارة أنوبيس ترافيل (01091501160).</p>
 
-        <!-- QR Style Controls -->
-        <div class="qr-studio-controls" style="justify-content: center; margin-bottom: 22px;">
-          <div class="qr-style-pills">
-            <button class="qr-style-btn active" id="qr-style-gold" onclick="setQRStyle('gold')" data-i18n="qr_opt_gold">🌟 تصميم ذهبي فاخر</button>
-            <button class="qr-style-btn" id="qr-style-bw" onclick="setQRStyle('bw')" data-i18n="qr_opt_bw">⚪ أبيض وأسود للطباعة</button>
-          </div>
-        </div>
 
         <div class="qr-frame-outer" id="qr-frame-box">
           <img 
@@ -2337,8 +2330,6 @@
         note_3_t: "مميزات وضمانات الخدمة الملكية",
         qr_title: "رمز واتساب المباشر (WhatsApp QR)",
         qr_sub: "امسح الكود بكاميرا هاتفك لبدء محادثة فورية ومباشرة مع إدارة أنوبيس ترافيل (01091501160).",
-        qr_opt_gold: "🌟 تصميم ذهبي فاخر",
-        qr_opt_bw: "⚪ أبيض وأسود للطباعة",
         qr_btn_open_wa: "فتح محادثة واتساب",
         qr_btn_hd: "تحميل الـ QR بجودة فائقة (HD PNG)",
         qr_btn_share: "مشاركة الرابط",
@@ -2431,8 +2422,6 @@
         note_3_t: "Royal Quality Guarantees",
         qr_title: "Instant WhatsApp Contact (Scan QR)",
         qr_sub: "Scan with your phone camera to start a direct WhatsApp chat with Anubis Travel Management (+201091501160).",
-        qr_opt_gold: "🌟 Luxury Gold Style",
-        qr_opt_bw: "⚪ High-Contrast Print (B&W)",
         qr_btn_open_wa: "Open WhatsApp Chat",
         qr_btn_hd: "Download HD QR Code (1200px PNG)",
         qr_btn_share: "Share Price List",
@@ -3296,33 +3285,12 @@
       return 'https://wa.me/201091501160';
     }
 
-    function setQRStyle(style) {
-      currentQRStyle = style;
-      const goldBtn = document.getElementById('qr-style-gold');
-      const bwBtn = document.getElementById('qr-style-bw');
-      const frameBox = document.getElementById('qr-frame-box');
-
-      if (style === 'gold') {
-        goldBtn.classList.add('active');
-        bwBtn.classList.remove('active');
-        frameBox.classList.remove('bw-theme');
-      } else {
-        bwBtn.classList.add('active');
-        goldBtn.classList.remove('active');
-        frameBox.classList.add('bw-theme');
-      }
-      updateQRCode();
-    }
-
     function updateQRCode() {
       const data = getQRTargetData();
       const img = document.getElementById('qr-preview-img');
       if (!img) return;
 
-      const color = currentQRStyle === 'gold' ? 'd4af37' : '000000';
-      const bgcolor = currentQRStyle === 'gold' ? '14100b' : 'ffffff';
-
-      img.src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(data)}&color=${color}&bgcolor=${bgcolor}&qzone=1`;
+      img.src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(data)}&color=d4af37&bgcolor=14100b&qzone=1`;
     }
 
     async function downloadHDQRCode() {
