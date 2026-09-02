@@ -834,6 +834,31 @@
       color: #ede3d1;
     }
 
+    .calc-advance-notice {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 18px;
+      margin: 14px 0;
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.16) 0%, rgba(30, 22, 14, 0.95) 100%);
+      border: 1px solid var(--border-gold-strong);
+      border-radius: var(--radius-md);
+      color: var(--gold-100);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      box-shadow: 0 4px 20px rgba(212, 175, 55, 0.2);
+      animation: fadeInNotice 0.35s ease forwards;
+    }
+    .calc-notice-icon {
+      font-size: 1.5rem;
+      flex-shrink: 0;
+      filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.6));
+    }
+    @keyframes fadeInNotice {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     .calc-result-box {
       background: rgba(0, 0, 0, 0.4);
       border: 1px solid var(--border-gold);
@@ -2198,6 +2223,14 @@
         </div>
       </div>
 
+      <!-- Dynamic Advance Notice Banner for H1 & HiAce -->
+      <div id="calc-advance-warning" class="calc-advance-notice" style="display: none;">
+        <span class="calc-notice-icon">⏳</span>
+        <div id="calc-notice-text">
+          <strong>تنبيه هام للعميل:</strong> حجز سيارات <strong>الإتش وان (H1)</strong> و<strong>الهاي إس (HiAce)</strong> يتطلب حجزاً وتنسيقاً مسبقاً قبل موعد الرحلة <strong>بما لا يقل عن يومين (48 ساعة)</strong> لضمان توافر وتجهيز السيارة.
+        </div>
+      </div>
+
       <div class="calc-result-box">
         <div class="calc-summary-text" id="calc-summary-display">
           <span data-i18n="calc_summary_prefix">الرحلة المختارة:</span> <strong id="summary-trip-name">هرم - ممفيس - سقارة</strong> | <span data-i18n="calc_summary_vehicle">السيارة:</span> <strong id="summary-vehicle-name">ملاكي فاخر</strong>
@@ -3517,6 +3550,32 @@
       if (summaryTripEl) summaryTripEl.textContent = tripName;
       if (summaryVehEl) summaryVehEl.textContent = vehicleText;
 
+      // Dynamic advance booking notice for H1 and HiAce
+      const advanceNotice = document.getElementById('calc-advance-warning');
+      if (advanceNotice) {
+        if (vehicleKey === 'h1' || vehicleKey === 'hiace') {
+          advanceNotice.style.display = 'flex';
+          const isH1 = (vehicleKey === 'h1');
+          if (isAr) {
+            advanceNotice.innerHTML = `
+              <span class="calc-notice-icon">⏳</span>
+              <div>
+                <strong>تنبيه حجز مسبق:</strong> حجز سيارات <strong style="color: var(--gold-200);">${isH1 ? 'إتش وان VIP' : 'هاي إس سياحي'}</strong> يتطلب حجزاً وتنسيقاً مسبقاً قبل موعد الرحلة <strong style="color: #ffffff; text-decoration: underline;">بما لا يقل عن يومين (48 ساعة)</strong> لضمان توافر وتجهيز السيارة.
+              </div>
+            `;
+          } else {
+            advanceNotice.innerHTML = `
+              <span class="calc-notice-icon">⏳</span>
+              <div>
+                <strong>Advance Booking Notice:</strong> Booking <strong style="color: var(--gold-200);">${isH1 ? 'Hyundai H-1 VIP' : 'Toyota HiAce Tourist'}</strong> requires prior reservation at least <strong style="color: #ffffff; text-decoration: underline;">2 days (48 hours)</strong> in advance to guarantee vehicle readiness.
+              </div>
+            `;
+          }
+        } else {
+          advanceNotice.style.display = 'none';
+        }
+      }
+
       if (!priceDisplay) return;
 
       if (trip && typeof trip[vehicleKey] === 'number') {
@@ -3568,13 +3627,21 @@
             `\n💰 *إجمالي التكلفة التقديرية:* ${total.toLocaleString()} ج.م`
           : `\n💰 *السعر:* حسب خط السير والاتفاق المباشر`;
 
+        let advanceNoticeWa = (vehicleKey === 'h1' || vehicleKey === 'hiace')
+          ? `\n⏳ *تنبيه الحجز المسبق:* تم العلم بشرط الحجز المسبق قبل الرحلة بيومين (48 ساعة).`
+          : '';
+
         message = `السلام عليكم ورحمة الله،\nأود تأكيد حجز رحلة مع أنوبيس ترافيل (إدارة / جهاد حسين):\n\n` +
           `📍 *الرحلة:* ${tripName}\n` +
           `🚗 *نوع السيارة:* ${vehicleName}\n` +
           `🏙️ *نقطة الانطلاق:* ${locationText}\n` +
           `⏱️ *مواعيد الرحلة:* ${overtimeDesc}\n` +
-          priceBreakdown + `\n\nيرجى تأكيد إتاحة الموعد النهائي. شكراً جزيلاً!`;
+          priceBreakdown + advanceNoticeWa + `\n\nيرجى تأكيد إتاحة الموعد النهائي. شكراً جزيلاً!`;
       } else {
+        let advanceNoticeWa = (vehicleKey === 'h1' || vehicleKey === 'hiace')
+          ? `\n⏳ *Advance Notice:* 48-hour advance booking policy acknowledged.`
+          : '';
+
         let overtimeDesc = overtimeHours === 0 ? "Standard schedule (within 9 hrs)" : `+ ${overtimeHours} Extra waiting hrs (+${overtimeCost} EGP)`;
         let priceBreakdown = total !== null 
           ? `\n💵 *Base Rate:* ${basePrice.toLocaleString()} EGP` +
@@ -3588,7 +3655,7 @@
           `🚗 *Vehicle Type:* ${vehicleName}\n` +
           `🏙️ *Pickup Location:* ${locationText}\n` +
           `⏱️ *Schedule:* ${overtimeDesc}\n` +
-          priceBreakdown + `\n\nPlease confirm availability and details. Thank you!`;
+          priceBreakdown + advanceNoticeWa + `\n\nPlease confirm availability and details. Thank you!`;
       }
 
       const url = `https://wa.me/201091501160?text=${encodeURIComponent(message)}`;
