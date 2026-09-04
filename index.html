@@ -2694,10 +2694,10 @@
       en: {
         page_title: "ANUBIS TRAVEL | Luxury Limousine & Tour Services Egypt",
         intro_ar_title: "ANUBIS TRAVEL",
-        intro_sub: "Luxury Limousine & Tourism • Managed by / Gehad Hussein",
+        intro_sub: "Luxury Limousine & Tourism • Managed by / Gihad Hussien",
         intro_skip: "Skip Intro",
         brand_ar: "ANUBIS TRAVEL",
-        manager_name: "General Manager / Gehad Hussein",
+        manager_name: "General Manager / Gihad Hussien",
         nav_wa: "WhatsApp Us",
         hero_badge: "Luxury Limousine & VIP Tourist Transportation",
         hero_title_1: "ANUBIS TRAVEL",
@@ -3516,7 +3516,7 @@
       if (currentLang === 'ar') {
         message = `السلام عليكم ورحمة الله،\nأود الاستفسار وحجز:\n*${serviceName}*\nمع أنوبيس ترافيل (إدارة / جهاد حسين). يرجى تزويدي بالأسعار والتفاصيل المتاحة.`;
       } else {
-        message = `Hello Anubis Travel,\nI would like to inquire about & book the following tour:\n*${serviceName}*\n(Management / Gehad Hussein). Please provide me with the available schedule and best rates. Thank you!`;
+        message = `Hello Anubis Travel,\nI would like to inquire about & book the following tour:\n*${serviceName}*\n(Management / Gihad Hussien). Please provide me with the available schedule and best rates. Thank you!`;
       }
       const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
       window.open(url, '_blank');
@@ -3708,7 +3708,7 @@
       const shareTitle = currentLang === 'ar' ? 'أنوبيس ترافيل | ANUBIS TRAVEL' : 'ANUBIS TRAVEL | Luxury Limousine Egypt';
       const shareText = currentLang === 'ar' 
         ? 'قائمة أسعار رحلات وليموزين أنوبيس ترافيل - إدارة / جهاد حسين - ت: 01091501160' 
-        : 'Anubis Travel Egypt - Luxury Limousine & Tour Services - Gehad Hussein - Tel: +201091501160';
+        : 'Anubis Travel Egypt - Luxury Limousine & Tour Services - Gihad Hussien - Tel: +201091501160';
 
       if (navigator.share) {
         navigator.share({
@@ -3726,8 +3726,8 @@
       const vcardData = 
 `BEGIN:VCARD
 VERSION:3.0
-FN:جهاد حسين - أنوبيس ترافيل (Gehad Hussein)
-N:حسين;جهاد;;;
+FN:جهاد حسين - أنوبيس ترافيل (Gihad Hussien)
+N:Hussien;Gihad;;;
 ORG:ANUBIS TRAVEL (أنوبيس ترافيل)
 TITLE:General Manager / Luxury Tourist Transport
 TEL;TYPE=CELL,VOICE:+201091501160
@@ -3738,7 +3738,7 @@ END:VCARD`;
       const blob = new Blob([vcardData], { type: 'text/vcard;charset=utf-8;' });
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
-      link.setAttribute('download', 'Anubis_Travel_Gehad_Hussein.vcf');
+      link.setAttribute('download', 'Anubis_Travel_Gihad_Hussien.vcf');
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
