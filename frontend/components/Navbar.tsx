@@ -2,7 +2,6 @@
 
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { Currency, Locale } from '@/lib/types';
 import { translations } from '@/lib/translations';
 import { Globe, Phone, MessageCircle, ShieldCheck, Sparkles } from 'lucide-react';
@@ -127,16 +126,6 @@ export const Navbar: React.FC<NavbarProps> = ({
             <Globe className="h-3.5 w-3.5 text-[#d4af37]" />
             <span>{locale === 'ar' ? 'English' : 'عربي'}</span>
           </button>
-
-          {/* Admin Dashboard Quick Access */}
-          <Link
-            href="/admin"
-            className="flex items-center gap-1.5 rounded-lg border border-[#d4af37]/50 bg-[#1a140e] px-2.5 py-1.5 text-xs font-bold text-[#fae48c] hover:bg-[#d4af37] hover:text-black transition-all shadow-sm"
-            title="لوحة الإدارة / Admin Dashboard"
-          >
-            <ShieldCheck className="h-3.5 w-3.5" />
-            <span className="hidden md:inline">{locale === 'ar' ? 'لوحة الإدارة' : 'Admin'}</span>
-          </Link>
 
           {/* WhatsApp Direct Action */}
           <a

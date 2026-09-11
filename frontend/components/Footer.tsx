@@ -2,7 +2,6 @@
 
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { Locale } from '@/lib/types';
 import { translations } from '@/lib/translations';
 import { Phone, MessageCircle, MapPin, Mail, ShieldCheck } from 'lucide-react';
@@ -88,15 +87,6 @@ export const Footer: React.FC<FooterProps> = ({ locale, onNavigate }) => {
                 >
                   {t.nav.about}
                 </button>
-              </li>
-              <li className="pt-2 border-t border-[#d4af37]/15">
-                <Link
-                  href="/admin"
-                  className="text-[#fae48c] hover:underline flex items-center gap-1 font-bold"
-                >
-                  <span>لوحة الإدارة (Admin Panel)</span>
-                  <span className="text-[10px] bg-[#d4af37]/20 px-1.5 py-0.5 rounded border border-[#d4af37]/30">VIP</span>
-                </Link>
               </li>
             </ul>
           </div>
