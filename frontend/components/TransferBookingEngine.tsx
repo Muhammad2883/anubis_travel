@@ -24,13 +24,15 @@ import {
 interface TransferBookingEngineProps {
   locale: Locale;
   currency: Currency;
+  routes?: Route[];
 }
 
-export const TransferBookingEngine: React.FC<TransferBookingEngineProps> = ({ locale, currency }) => {
+export const TransferBookingEngine: React.FC<TransferBookingEngineProps> = ({ locale, currency, routes = ROUTES }) => {
   const t = translations[locale];
+  const routesList = routes && routes.length > 0 ? routes : ROUTES;
 
   // Form State
-  const [selectedRouteId, setSelectedRouteId] = useState<number>(ROUTES[0].id);
+  const [selectedRouteId, setSelectedRouteId] = useState<number>(() => routesList[0]?.id || 1);
   const [selectedVehicleSlug, setSelectedVehicleSlug] = useState<string>('sedan');
   const [pickupDate, setPickupDate] = useState<string>(() => {
     const tomorrow = new Date();
@@ -53,8 +55,8 @@ export const TransferBookingEngine: React.FC<TransferBookingEngineProps> = ({ lo
 
   // Active Route
   const activeRoute = useMemo(() => {
-    return ROUTES.find(r => r.id === selectedRouteId) || ROUTES[0];
-  }, [selectedRouteId]);
+    return routesList.find(r => r.id === selectedRouteId) || routesList[0] || ROUTES[0];
+  }, [routesList, selectedRouteId]);
 
   // Active Vehicle
   const activeVehicle = useMemo(() => {
@@ -162,7 +164,7 @@ export const TransferBookingEngine: React.FC<TransferBookingEngineProps> = ({ lo
                   onChange={(e) => setSelectedRouteId(Number(e.target.value))}
                   className="w-full rounded-xl border border-[#d4af37]/40 bg-[#1a140e] px-4 py-3 text-sm font-medium text-[#ede3d1] focus:border-[#d4af37] focus:outline-none focus:ring-1 focus:ring-[#d4af37]"
                 >
-                  {ROUTES.map((route) => (
+                  {routesList.map((route) => (
                     <option key={route.id} value={route.id} className="bg-[#120e0a] text-white">
                       {route.id}. {route.title[locale]} ({route.estimatedDuration[locale]})
                     </option>

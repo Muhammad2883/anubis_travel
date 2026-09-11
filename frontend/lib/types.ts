@@ -41,11 +41,20 @@ export interface Vehicle {
 
 export interface Route {
   id: number;
+  slug?: string;
   title: {
     ar: string;
     en: string;
   };
-  category: 'airport' | 'day_tour' | 'overday' | 'intercity' | 'multiday';
+  subtitle?: {
+    ar: string;
+    en: string;
+  };
+  overview?: {
+    ar: string;
+    en: string;
+  };
+  category: 'airport' | 'day_tour' | 'overday' | 'intercity' | 'multiday' | 'nile_cruise';
   estimatedDuration: {
     ar: string;
     en: string;
@@ -56,7 +65,28 @@ export interface Route {
     h1: number | null;  // in EGP (null if not available)
     hiace: number | null;
   };
+  imageUrl?: string;
+  rating?: number;
+  reviewsCount?: number;
+  highlights?: {
+    ar: string[];
+    en: string[];
+  };
+  itinerary?: {
+    time: string;
+    title: { ar: string; en: string };
+    description: { ar: string; en: string };
+  }[];
+  inclusions?: {
+    ar: string[];
+    en: string[];
+  };
+  exclusions?: {
+    ar: string[];
+    en: string[];
+  };
   isPopular?: boolean;
+  showInCatalog?: boolean;
 }
 
 export interface Tour {

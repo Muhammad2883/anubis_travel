@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { VEHICLES, ROUTES, INITIAL_REGULAR_CLIENTS } from '@/lib/data';
@@ -32,6 +32,10 @@ import {
   FileText,
   Trash2,
   Eye,
+  EyeOff,
+  Edit3,
+  Compass,
+  Check,
   CreditCard,
   Building,
   UserCheck,
@@ -118,6 +122,35 @@ export default function AdminDashboardPage() {
   const [eurRate, setEurRate] = useState<number>(53.0);
   const [farHotelSedanSurcharge, setFarHotelSedanSurcharge] = useState<number>(200);
   const [farHotelVanSurcharge, setFarHotelVanSurcharge] = useState<number>(500);
+  const [isSavingRoutes, setIsSavingRoutes] = useState(false);
+  const [routesSaveStatus, setRoutesSaveStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [editingRouteForDetails, setEditingRouteForDetails] = useState<Route | null>(null);
+
+  // Load live routes from backend API / localStorage
+  useEffect(() => {
+    const loadRoutes = async () => {
+      try {
+        const cached = localStorage.getItem('anubis_routes');
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setRoutesData(parsed);
+          }
+        }
+        const res = await fetch('/api/routes');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.success && Array.isArray(data.routes)) {
+            setRoutesData(data.routes);
+            localStorage.setItem('anubis_routes', JSON.stringify(data.routes));
+          }
+        }
+      } catch (err) {
+        console.warn('Could not fetch routes:', err);
+      }
+    };
+    loadRoutes();
+  }, []);
 
   // 3. Regular Clients & Account Statements State
   const [clients, setClients] = useState<RegularClient[]>(INITIAL_REGULAR_CLIENTS);
@@ -396,6 +429,60 @@ export default function AdminDashboardPage() {
     );
   };
 
+  // Save All Routes to Backend API and localStorage
+  const handleSaveRoutes = async () => {
+    setIsSavingRoutes(true);
+    setRoutesSaveStatus('idle');
+    try {
+      const res = await fetch('/api/routes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ routes: routesData })
+      });
+
+      if (res.ok) {
+        localStorage.setItem('anubis_routes', JSON.stringify(routesData));
+        window.dispatchEvent(new Event('anubis_routes_updated'));
+        setRoutesSaveStatus('success');
+        setTimeout(() => setRoutesSaveStatus('idle'), 4000);
+      } else {
+        throw new Error('Save failed');
+      }
+    } catch (err) {
+      console.error('Error saving routes:', err);
+      setRoutesSaveStatus('error');
+      setTimeout(() => setRoutesSaveStatus('idle'), 4000);
+    } finally {
+      setIsSavingRoutes(false);
+    }
+  };
+
+  // Toggle Route Visibility in Homepage Tours Catalog
+  const handleToggleRouteCatalog = (routeId: number) => {
+    setRoutesData(prev =>
+      prev.map(r => {
+        if (r.id === routeId) {
+          const updatedVal = r.showInCatalog === false ? true : false;
+          return { ...r, showInCatalog: updatedVal };
+        }
+        return r;
+      })
+    );
+  };
+
+  // Save Route Details from Modal
+  const handleSaveEditedRouteDetails = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingRouteForDetails) return;
+
+    setRoutesData(prev =>
+      prev.map(r => r.id === editingRouteForDetails.id ? editingRouteForDetails : r)
+    );
+    const updatedId = editingRouteForDetails.id;
+    setEditingRouteForDetails(null);
+    alert('تم حفظ تفاصيل البرنامج السياحي بنجاح! لا تنسَ الضغط على "حفظ التعديلات" لنشرها مباشرة في الموقع.');
+  };
+
   // Add Route
   const handleAddRoute = (e: React.FormEvent) => {
     e.preventDefault();
@@ -406,6 +493,7 @@ export default function AdminDashboardPage() {
 
     const newR: Route = {
       id: routesData.length + 1,
+      slug: `tour-${Date.now()}`,
       title: {
         ar: newRouteForm.titleAr.trim(),
         en: newRouteForm.titleEn.trim() || newRouteForm.titleAr.trim()
@@ -420,12 +508,21 @@ export default function AdminDashboardPage() {
         '7seater': Number(newRouteForm.seater7) || 1500,
         h1: newRouteForm.h1 ? Number(newRouteForm.h1) : null,
         hiace: newRouteForm.hiace ? Number(newRouteForm.hiace) : null
+      },
+      showInCatalog: true,
+      rating: 4.9,
+      reviewsCount: 1,
+      imageUrl: '/hero-pyramids.jpg',
+      highlights: {
+        ar: ['خدمة راقية بسيارة خاصة مكيفة', 'سائق محترف ومواعيد دقيقة'],
+        en: ['Private luxury chauffeur service', 'Punctual and professional transit']
       }
     };
 
-    setRoutesData([...routesData, newR]);
+    const updatedRoutes = [...routesData, newR];
+    setRoutesData(updatedRoutes);
     setIsAddRouteOpen(false);
-    alert('تمت إضافة المسار الجديد بنجاح!');
+    alert('تمت إضافة المسار والبرنامج بنجاح! اضغط "حفظ التعديلات" لنشره فوراً في الموقع.');
   };
 
   return (
@@ -968,10 +1065,10 @@ export default function AdminDashboardPage() {
                 <div>
                   <h3 className="text-base font-bold text-white flex items-center gap-2">
                     <MapPin className="h-5 w-5 text-[#d4af37]" />
-                    <span>إدارة المسارات الـ 19 والتسعير الموحد والعملات</span>
+                    <span>إدارة المسارات والبرامج السياحية والتسعير الموحد</span>
                   </h3>
                   <p className="text-xs text-[#a69883] mt-1">
-                    التحكم في أسعار الصرف، رسوم الفنادق البعيدة، وأسعار كل رحلة عبر فئات الأسطول الأربعة مباشرة.
+                    المسارات والتسعير متزامنة تلقائياً بين لوحة الإدارة وكتالوج الجولات ومحرك الحجز في الصفحة الرئيسية.
                   </p>
                 </div>
 
@@ -999,12 +1096,26 @@ export default function AdminDashboardPage() {
                   </div>
 
                   <button
-                    onClick={() => alert('تم حفظ أسعار الصرف ومصفوفة المسارات بنجاح!')}
-                    className="flex items-center gap-1.5 rounded-xl gold-gradient-bg px-4 py-2 text-xs font-bold text-black hover:opacity-95 cursor-pointer shadow-md"
+                    onClick={handleSaveRoutes}
+                    disabled={isSavingRoutes}
+                    className="flex items-center gap-1.5 rounded-xl gold-gradient-bg px-4 py-2 text-xs font-bold text-black hover:opacity-95 cursor-pointer shadow-md disabled:opacity-50"
                   >
                     <Save className="h-4 w-4" />
-                    <span>حفظ التعديلات</span>
+                    <span>{isSavingRoutes ? 'جاري الحفظ والتزامن...' : 'حفظ ونشر التعديلات'}</span>
                   </button>
+
+                  {routesSaveStatus === 'success' && (
+                    <span className="flex items-center gap-1 text-xs text-[#38ef7d] bg-[#38ef7d]/15 border border-[#38ef7d]/30 px-3 py-1.5 rounded-xl animate-fadeIn">
+                      <Check className="h-3.5 w-3.5" />
+                      <span>تم الحفظ والتزامن مع الصفحة الرئيسية بنجاح!</span>
+                    </span>
+                  )}
+                  {routesSaveStatus === 'error' && (
+                    <span className="flex items-center gap-1 text-xs text-[#ff4757] bg-[#ff4757]/15 border border-[#ff4757]/30 px-3 py-1.5 rounded-xl animate-fadeIn">
+                      <AlertCircle className="h-3.5 w-3.5" />
+                      <span>فشل حفظ التعديلات، حاول مجدداً</span>
+                    </span>
+                  )}
                 </div>
               </div>
 
@@ -1040,15 +1151,32 @@ export default function AdminDashboardPage() {
 
             {/* Combined Routes & Pricing Table */}
             <div className="rounded-2xl border border-[#d4af37]/30 bg-[#120e0a] overflow-hidden shadow-2xl">
-              <div className="p-4 border-b border-[#d4af37]/15 flex items-center justify-between">
-                <span className="text-xs font-bold text-[#fae48c]">قائمة المسارات والأسعار المعتمدة (19 مساراً)</span>
-                <button
-                  onClick={() => setIsAddRouteOpen(true)}
-                  className="flex items-center gap-1 rounded-lg gold-gradient-bg px-3 py-1.5 text-xs font-bold text-black"
-                >
-                  <Plus className="h-3.5 w-3.5" />
-                  <span>إضافة مسار جديد</span>
-                </button>
+              <div className="p-4 border-b border-[#d4af37]/15 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <span className="text-xs font-bold text-[#fae48c]">
+                    قائمة المسارات والبرامج السياحية المعتمدة ({routesData.length} مساراً)
+                  </span>
+                  <div className="relative">
+                    <Search className="h-3.5 w-3.5 absolute right-3 top-2.5 text-[#a69883]" />
+                    <input
+                      type="text"
+                      placeholder="بحث في المسارات..."
+                      value={routeSearch}
+                      onChange={(e) => setRouteSearch(e.target.value)}
+                      className="rounded-xl border border-[#d4af37]/30 bg-[#1a140e] pr-8 pl-3 py-1 text-xs text-[#ede3d1] focus:outline-none focus:border-[#d4af37] w-44"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setIsAddRouteOpen(true)}
+                    className="flex items-center gap-1 rounded-lg gold-gradient-bg px-3 py-1.5 text-xs font-bold text-black cursor-pointer shadow-md"
+                  >
+                    <Plus className="h-3.5 w-3.5" />
+                    <span>إضافة مسار / برنامج جديد</span>
+                  </button>
+                </div>
               </div>
 
               <div className="overflow-x-auto">
@@ -1056,76 +1184,143 @@ export default function AdminDashboardPage() {
                   <thead className="border-b border-[#d4af37]/20 bg-[#17120c] text-[#fae48c] font-bold">
                     <tr>
                       <th className="px-3 py-3 text-start w-10">#</th>
-                      <th className="px-4 py-3 text-start">البيان / خط السير</th>
+                      <th className="px-4 py-3 text-start">البرنامج / خط السير والتصنيف</th>
                       <th className="px-3 py-3 text-start">المدة</th>
-                      <th className="px-3 py-3 text-center">ملاكي سيدان</th>
-                      <th className="px-3 py-3 text-center">7 راكب عائلي</th>
-                      <th className="px-3 py-3 text-center">إتش وان H1</th>
-                      <th className="px-3 py-3 text-center">هاي إس HiAce</th>
-                      <th className="px-3 py-3 text-center">حذف</th>
+                      <th className="px-2 py-3 text-center">ملاكي سيدان</th>
+                      <th className="px-2 py-3 text-center">7 راكب عائلي</th>
+                      <th className="px-2 py-3 text-center">إتش وان H1</th>
+                      <th className="px-2 py-3 text-center">هاي إس HiAce</th>
+                      <th className="px-3 py-3 text-center">عرض بالكتالوج</th>
+                      <th className="px-3 py-3 text-center">تعديل التفاصيل</th>
+                      <th className="px-2 py-3 text-center">حذف</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#d4af37]/10 text-[#ede3d1]">
-                    {routesData.map((route) => (
-                      <tr key={route.id} className="hover:bg-[#18130d] transition-colors">
-                        <td className="px-3 py-2 font-mono text-[#a69883] font-bold">
-                          {route.id}
-                        </td>
-                        <td className="px-4 py-2 font-semibold text-white">
-                          <div>{route.title.ar}</div>
-                          <div className="text-[10px] text-[#a69883]" dir="ltr">{route.title.en}</div>
-                        </td>
-                        <td className="px-3 py-2 text-xs text-[#a69883]">
-                          {route.estimatedDuration.ar}
-                        </td>
-                        <td className="px-2 py-2 text-center">
-                          <input
-                            type="number"
-                            value={route.prices.sedan ?? ''}
-                            onChange={(e) => handlePriceChange(route.id, 'sedan', e.target.value)}
-                            className="w-20 rounded border border-[#d4af37]/30 bg-[#1a140e] px-2 py-1 text-center font-mono font-bold text-[#fae48c] focus:outline-none"
-                          />
-                        </td>
-                        <td className="px-2 py-2 text-center">
-                          <input
-                            type="number"
-                            value={route.prices['7seater'] ?? ''}
-                            onChange={(e) => handlePriceChange(route.id, '7seater', e.target.value)}
-                            className="w-20 rounded border border-[#d4af37]/30 bg-[#1a140e] px-2 py-1 text-center font-mono font-bold text-[#fae48c] focus:outline-none"
-                          />
-                        </td>
-                        <td className="px-2 py-2 text-center">
-                          <input
-                            type="number"
-                            placeholder="-"
-                            value={route.prices.h1 ?? ''}
-                            onChange={(e) => handlePriceChange(route.id, 'h1', e.target.value)}
-                            className="w-20 rounded border border-[#d4af37]/30 bg-[#1a140e] px-2 py-1 text-center font-mono font-bold text-[#fae48c] focus:outline-none placeholder-[#555]"
-                          />
-                        </td>
-                        <td className="px-2 py-2 text-center">
-                          <input
-                            type="number"
-                            placeholder="-"
-                            value={route.prices.hiace ?? ''}
-                            onChange={(e) => handlePriceChange(route.id, 'hiace', e.target.value)}
-                            className="w-20 rounded border border-[#d4af37]/30 bg-[#1a140e] px-2 py-1 text-center font-mono font-bold text-[#fae48c] focus:outline-none placeholder-[#555]"
-                          />
-                        </td>
-                        <td className="px-2 py-2 text-center">
-                          <button
-                            onClick={() => {
-                              if (confirm(`هل تريد حذف مسار "${route.title.ar}"؟`)) {
-                                setRoutesData(routesData.filter(r => r.id !== route.id));
-                              }
-                            }}
-                            className="text-[#ff4757] hover:bg-[#ff4757]/20 p-1 rounded"
-                          >
-                            <Trash2 className="h-3.5 w-3.5" />
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
+                    {routesData
+                      .filter(r => {
+                        if (!routeSearch.trim()) return true;
+                        const query = routeSearch.toLowerCase();
+                        return (
+                          r.title.ar.toLowerCase().includes(query) ||
+                          r.title.en.toLowerCase().includes(query)
+                        );
+                      })
+                      .map((route) => {
+                        const isVisibleInCatalog = route.showInCatalog !== false;
+                        const categoryLabels: Record<string, { ar: string; bg: string }> = {
+                          day_tour: { ar: 'جولة يومية', bg: 'bg-[#d4af37]/20 text-[#fae48c]' },
+                          overday: { ar: 'أوفر داي', bg: 'bg-[#0984e3]/20 text-[#74b9ff]' },
+                          multiday: { ar: 'سفاري ومبيت', bg: 'bg-[#e17055]/20 text-[#fab1a0]' },
+                          nile_cruise: { ar: 'سهرة نيلية', bg: 'bg-[#6c5ce7]/20 text-[#a29bfe]' },
+                          airport: { ar: 'توصيل مطار', bg: 'bg-[#00b894]/20 text-[#55efc4]' },
+                          intercity: { ar: 'بين المحافظات', bg: 'bg-[#fdcb6e]/20 text-[#ffeaa7]' }
+                        };
+                        const catInfo = categoryLabels[route.category] || { ar: 'مسار', bg: 'bg-[#333] text-white' };
+
+                        return (
+                          <tr key={route.id} className="hover:bg-[#18130d] transition-colors">
+                            <td className="px-3 py-2 font-mono text-[#a69883] font-bold">
+                              {route.id}
+                            </td>
+                            <td className="px-4 py-2 font-semibold text-white">
+                              <div className="flex items-center gap-2">
+                                <span>{route.title.ar}</span>
+                                <span className={`rounded px-1.5 py-0.5 text-[9px] font-bold ${catInfo.bg}`}>
+                                  {catInfo.ar}
+                                </span>
+                              </div>
+                              <div className="text-[10px] text-[#a69883]" dir="ltr">{route.title.en}</div>
+                            </td>
+                            <td className="px-3 py-2 text-xs text-[#a69883]">
+                              {route.estimatedDuration.ar}
+                            </td>
+                            <td className="px-2 py-2 text-center">
+                              <input
+                                type="number"
+                                value={route.prices.sedan ?? ''}
+                                onChange={(e) => handlePriceChange(route.id, 'sedan', e.target.value)}
+                                className="w-18 rounded border border-[#d4af37]/30 bg-[#1a140e] px-1.5 py-1 text-center font-mono font-bold text-[#fae48c] focus:outline-none"
+                              />
+                            </td>
+                            <td className="px-2 py-2 text-center">
+                              <input
+                                type="number"
+                                value={route.prices['7seater'] ?? ''}
+                                onChange={(e) => handlePriceChange(route.id, '7seater', e.target.value)}
+                                className="w-18 rounded border border-[#d4af37]/30 bg-[#1a140e] px-1.5 py-1 text-center font-mono font-bold text-[#fae48c] focus:outline-none"
+                              />
+                            </td>
+                            <td className="px-2 py-2 text-center">
+                              <input
+                                type="number"
+                                placeholder="-"
+                                value={route.prices.h1 ?? ''}
+                                onChange={(e) => handlePriceChange(route.id, 'h1', e.target.value)}
+                                className="w-18 rounded border border-[#d4af37]/30 bg-[#1a140e] px-1.5 py-1 text-center font-mono font-bold text-[#fae48c] focus:outline-none placeholder-[#555]"
+                              />
+                            </td>
+                            <td className="px-2 py-2 text-center">
+                              <input
+                                type="number"
+                                placeholder="-"
+                                value={route.prices.hiace ?? ''}
+                                onChange={(e) => handlePriceChange(route.id, 'hiace', e.target.value)}
+                                className="w-18 rounded border border-[#d4af37]/30 bg-[#1a140e] px-1.5 py-1 text-center font-mono font-bold text-[#fae48c] focus:outline-none placeholder-[#555]"
+                              />
+                            </td>
+
+                            {/* Show in Catalog Toggle Button */}
+                            <td className="px-3 py-2 text-center">
+                              <button
+                                onClick={() => handleToggleRouteCatalog(route.id)}
+                                className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-bold transition-all cursor-pointer ${
+                                  isVisibleInCatalog
+                                    ? 'bg-[#38ef7d]/20 text-[#38ef7d] border border-[#38ef7d]/40 hover:bg-[#38ef7d]/30'
+                                    : 'bg-[#555]/20 text-[#888] border border-[#555]/40 hover:bg-[#555]/30'
+                                }`}
+                                title="اضغط للتبديل بين إظهار أو إخفاء هذا البرنامج من كتالوج الصفحة الرئيسية"
+                              >
+                                {isVisibleInCatalog ? (
+                                  <>
+                                    <Eye className="h-3 w-3" />
+                                    <span>معروض بالرئيسية</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <EyeOff className="h-3 w-3" />
+                                    <span>مخفي</span>
+                                  </>
+                                )}
+                              </button>
+                            </td>
+
+                            {/* Edit Program Details Button */}
+                            <td className="px-3 py-2 text-center">
+                              <button
+                                onClick={() => setEditingRouteForDetails(route)}
+                                className="inline-flex items-center gap-1 rounded-lg border border-[#d4af37]/40 bg-[#18120c] px-2.5 py-1 text-xs font-bold text-[#fae48c] hover:bg-[#d4af37] hover:text-black transition-all cursor-pointer"
+                              >
+                                <Edit3 className="h-3 w-3" />
+                                <span>تعديل</span>
+                              </button>
+                            </td>
+
+                            {/* Delete Route */}
+                            <td className="px-2 py-2 text-center">
+                              <button
+                                onClick={() => {
+                                  if (confirm(`هل تريد حذف مسار "${route.title.ar}"؟`)) {
+                                    setRoutesData(routesData.filter(r => r.id !== route.id));
+                                  }
+                                }}
+                                className="text-[#ff4757] hover:bg-[#ff4757]/20 p-1.5 rounded cursor-pointer transition-colors"
+                              >
+                                <Trash2 className="h-3.5 w-3.5" />
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
                   </tbody>
                 </table>
               </div>
@@ -1575,40 +1770,73 @@ export default function AdminDashboardPage() {
         </div>
       )}
 
-      {/* MODAL: ADD ROUTE */}
+      {/* MODAL: ADD ROUTE / TOUR PROGRAM */}
       {isAddRouteOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4 backdrop-blur-sm animate-fadeIn">
           <div className="relative w-full max-w-md rounded-2xl border-2 border-[#d4af37] bg-[#120e0a] p-6 shadow-2xl text-start">
             <button
               onClick={() => setIsAddRouteOpen(false)}
-              className="absolute top-4 left-4 text-[#a69883] hover:text-white"
+              className="absolute top-4 left-4 text-[#a69883] hover:text-white cursor-pointer"
             >
               ✕
             </button>
 
-            <h3 className="text-base font-bold text-white mb-4">إضافة مسار جديد لجدول الرحلات</h3>
+            <h3 className="text-base font-bold text-white mb-1">إضافة مسار وبرنامج سياحي جديد</h3>
+            <p className="text-xs text-[#a69883] mb-4">
+              يمكنك ربطه بالكتالوج المعروض في الصفحة الرئيسية ومحرك الحساب الفوري.
+            </p>
 
             <form onSubmit={handleAddRoute} className="space-y-3 text-xs">
-              <div>
-                <label className="block text-[#fae48c] font-bold mb-1">اسم المسار (عربي): *</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="مثال: القاهرة - العين السخنة"
-                  value={newRouteForm.titleAr}
-                  onChange={(e) => setNewRouteForm({ ...newRouteForm, titleAr: e.target.value })}
-                  className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3.5 py-2 text-[#ede3d1] focus:outline-none"
-                />
+              <div className="grid grid-cols-2 gap-2.5">
+                <div>
+                  <label className="block text-[#fae48c] font-bold mb-1">اسم المسار (عربي): *</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="مثال: القاهرة - العين السخنة"
+                    value={newRouteForm.titleAr}
+                    onChange={(e) => setNewRouteForm({ ...newRouteForm, titleAr: e.target.value })}
+                    className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3 py-2 text-[#ede3d1] focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[#ede3d1] font-bold mb-1">اسم المسار (English):</label>
+                  <input
+                    type="text"
+                    dir="ltr"
+                    placeholder="e.g. Cairo to Sokhna"
+                    value={newRouteForm.titleEn}
+                    onChange={(e) => setNewRouteForm({ ...newRouteForm, titleEn: e.target.value })}
+                    className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3 py-2 text-[#ede3d1] focus:outline-none"
+                  />
+                </div>
               </div>
 
-              <div>
-                <label className="block text-[#ede3d1] font-bold mb-1">المدة التقديرية:</label>
-                <input
-                  type="text"
-                  value={newRouteForm.durationAr}
-                  onChange={(e) => setNewRouteForm({ ...newRouteForm, durationAr: e.target.value })}
-                  className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3.5 py-2 text-[#ede3d1] focus:outline-none"
-                />
+              <div className="grid grid-cols-2 gap-2.5">
+                <div>
+                  <label className="block text-[#ede3d1] font-bold mb-1">تصنيف البرنامج:</label>
+                  <select
+                    value={newRouteForm.category}
+                    onChange={(e) => setNewRouteForm({ ...newRouteForm, category: e.target.value as any })}
+                    className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-2.5 py-2 text-[#ede3d1] focus:outline-none"
+                  >
+                    <option value="day_tour" className="bg-[#120e0a]">جولة يومية (Day Tour)</option>
+                    <option value="overday" className="bg-[#120e0a]">رحلة أوفر داي (Overday)</option>
+                    <option value="multiday" className="bg-[#120e0a]">سفاري ومبيت (Multi-Day)</option>
+                    <option value="nile_cruise" className="bg-[#120e0a]">سهرة نيلية (Nile Cruise)</option>
+                    <option value="airport" className="bg-[#120e0a]">توصيل مطار (Airport Transfer)</option>
+                    <option value="intercity" className="bg-[#120e0a]">بين المحافظات (Intercity Transfer)</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-[#ede3d1] font-bold mb-1">المدة المقررة:</label>
+                  <input
+                    type="text"
+                    value={newRouteForm.durationAr}
+                    onChange={(e) => setNewRouteForm({ ...newRouteForm, durationAr: e.target.value })}
+                    className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3 py-2 text-[#ede3d1] focus:outline-none"
+                  />
+                </div>
               </div>
 
               <div className="grid grid-cols-2 gap-2.5">
@@ -1653,14 +1881,223 @@ export default function AdminDashboardPage() {
               <div className="pt-2 flex items-center gap-3">
                 <button
                   type="submit"
-                  className="flex-1 rounded-xl gold-gradient-bg py-2.5 font-bold text-black hover:opacity-95 shadow-lg"
+                  className="flex-1 rounded-xl gold-gradient-bg py-2.5 font-bold text-black hover:opacity-95 shadow-lg cursor-pointer"
                 >
-                  حفظ المسار
+                  إضافة المسار
                 </button>
                 <button
                   type="button"
                   onClick={() => setIsAddRouteOpen(false)}
-                  className="rounded-xl border border-[#d4af37]/40 px-4 py-2.5 font-semibold text-[#ede3d1]"
+                  className="rounded-xl border border-[#d4af37]/40 px-4 py-2.5 font-semibold text-[#ede3d1] cursor-pointer"
+                >
+                  إلغاء
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL: EDIT ROUTE / TOUR PROGRAM DETAILS */}
+      {editingRouteForDetails && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4 backdrop-blur-sm animate-fadeIn">
+          <div className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl border-2 border-[#d4af37] bg-[#120e0a] p-6 shadow-2xl text-start">
+            <button
+              onClick={() => setEditingRouteForDetails(null)}
+              className="absolute top-4 left-4 text-[#a69883] hover:text-white cursor-pointer"
+            >
+              ✕
+            </button>
+
+            <h3 className="text-base font-bold text-white mb-1 flex items-center gap-2">
+              <Edit3 className="h-4 w-4 text-[#d4af37]" />
+              <span>تعديل تفاصيل البرنامج السياحي</span>
+            </h3>
+            <p className="text-xs text-[#a69883] mb-4">
+              تعديل الوصف، المميزات، المدة، وحالة العرض في كتالوج الجولات بالصفحة الرئيسية.
+            </p>
+
+            <form onSubmit={handleSaveEditedRouteDetails} className="space-y-3.5 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[#fae48c] font-bold mb-1">اسم البرنامج (عربي): *</label>
+                  <input
+                    type="text"
+                    required
+                    value={editingRouteForDetails.title.ar}
+                    onChange={(e) =>
+                      setEditingRouteForDetails({
+                        ...editingRouteForDetails,
+                        title: { ...editingRouteForDetails.title, ar: e.target.value }
+                      })
+                    }
+                    className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3 py-2 text-[#ede3d1] focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[#ede3d1] font-bold mb-1">اسم البرنامج (English):</label>
+                  <input
+                    type="text"
+                    dir="ltr"
+                    value={editingRouteForDetails.title.en}
+                    onChange={(e) =>
+                      setEditingRouteForDetails({
+                        ...editingRouteForDetails,
+                        title: { ...editingRouteForDetails.title, en: e.target.value }
+                      })
+                    }
+                    className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3 py-2 text-[#ede3d1] focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[#ede3d1] font-bold mb-1">تصنيف البرنامج:</label>
+                  <select
+                    value={editingRouteForDetails.category}
+                    onChange={(e) =>
+                      setEditingRouteForDetails({
+                        ...editingRouteForDetails,
+                        category: e.target.value as any
+                      })
+                    }
+                    className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3 py-2 text-[#ede3d1] focus:outline-none"
+                  >
+                    <option value="day_tour" className="bg-[#120e0a]">جولة يومية (Day Tour)</option>
+                    <option value="overday" className="bg-[#120e0a]">رحلة أوفر داي (Overday)</option>
+                    <option value="multiday" className="bg-[#120e0a]">سفاري ومبيت (Multi-Day)</option>
+                    <option value="nile_cruise" className="bg-[#120e0a]">سهرة نيلية (Nile Cruise)</option>
+                    <option value="airport" className="bg-[#120e0a]">توصيل مطار (Airport Transfer)</option>
+                    <option value="intercity" className="bg-[#120e0a]">بين المحافظات (Intercity Transfer)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-[#ede3d1] font-bold mb-1">المدة المقررة:</label>
+                  <input
+                    type="text"
+                    value={editingRouteForDetails.estimatedDuration.ar}
+                    onChange={(e) =>
+                      setEditingRouteForDetails({
+                        ...editingRouteForDetails,
+                        estimatedDuration: {
+                          ar: e.target.value,
+                          en: editingRouteForDetails.estimatedDuration.en || e.target.value
+                        }
+                      })
+                    }
+                    className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3 py-2 text-[#ede3d1] focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[#ede3d1] font-bold mb-1">العنوان الفرعي / الشعار (عربي):</label>
+                <input
+                  type="text"
+                  value={editingRouteForDetails.subtitle?.ar || ''}
+                  onChange={(e) =>
+                    setEditingRouteForDetails({
+                      ...editingRouteForDetails,
+                      subtitle: {
+                        ar: e.target.value,
+                        en: editingRouteForDetails.subtitle?.en || e.target.value
+                      }
+                    })
+                  }
+                  placeholder="مثال: رحلة أسطورية إلى قلب التاريخ المصري القديم"
+                  className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3.5 py-2 text-[#ede3d1] focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[#ede3d1] font-bold mb-1">وصف البرنامج (Overview):</label>
+                <textarea
+                  rows={2}
+                  value={editingRouteForDetails.overview?.ar || ''}
+                  onChange={(e) =>
+                    setEditingRouteForDetails({
+                      ...editingRouteForDetails,
+                      overview: {
+                        ar: e.target.value,
+                        en: editingRouteForDetails.overview?.en || e.target.value
+                      }
+                    })
+                  }
+                  placeholder="نبذة تفصيلية عن مسار الرحلة والمزارات..."
+                  className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3.5 py-2 text-[#ede3d1] focus:outline-none resize-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[#ede3d1] font-bold mb-1">أبرز المحطات والمميزات (مفصولة بفاصلة):</label>
+                <input
+                  type="text"
+                  value={editingRouteForDetails.highlights?.ar?.join('، ') || ''}
+                  onChange={(e) => {
+                    const items = e.target.value.split(/[،,]/).map(s => s.trim()).filter(Boolean);
+                    setEditingRouteForDetails({
+                      ...editingRouteForDetails,
+                      highlights: {
+                        ar: items,
+                        en: editingRouteForDetails.highlights?.en || items
+                      }
+                    });
+                  }}
+                  placeholder="مثال: أهرامات الجيزة، أبو الهول، مجمع سقارة، تمثال رمسيس"
+                  className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3.5 py-2 text-[#ede3d1] focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[#ede3d1] font-bold mb-1">مسار صورة البرنامج (Image URL):</label>
+                <input
+                  type="text"
+                  dir="ltr"
+                  value={editingRouteForDetails.imageUrl || '/hero-pyramids.jpg'}
+                  onChange={(e) =>
+                    setEditingRouteForDetails({
+                      ...editingRouteForDetails,
+                      imageUrl: e.target.value
+                    })
+                  }
+                  placeholder="/hero-pyramids.jpg"
+                  className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3.5 py-2 text-[#ede3d1] focus:outline-none font-mono"
+                />
+              </div>
+
+              <div className="pt-2">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={editingRouteForDetails.showInCatalog !== false}
+                    onChange={(e) =>
+                      setEditingRouteForDetails({
+                        ...editingRouteForDetails,
+                        showInCatalog: e.target.checked
+                      })
+                    }
+                    className="h-4 w-4 rounded border-[#d4af37] text-[#d4af37]"
+                  />
+                  <span className="font-bold text-[#fae48c]">
+                    عرض هذا البرنامج في كتالوج الجولات المميزة بالصفحة الرئيسية
+                  </span>
+                </label>
+              </div>
+
+              <div className="pt-3 flex items-center gap-3">
+                <button
+                  type="submit"
+                  className="flex-1 rounded-xl gold-gradient-bg py-2.5 font-bold text-black hover:opacity-95 shadow-lg cursor-pointer"
+                >
+                  حفظ تفاصيل البرنامج
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setEditingRouteForDetails(null)}
+                  className="rounded-xl border border-[#d4af37]/40 px-4 py-2.5 font-semibold text-[#ede3d1] cursor-pointer"
                 >
                   إلغاء
                 </button>

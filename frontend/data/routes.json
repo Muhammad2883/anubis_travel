@@ -1,0 +1,1847 @@
+[
+  {
+    "id": 1,
+    "slug": "giza-pyramids-memphis-saqqara",
+    "title": {
+      "ar": "هرم - ممفيس - سقارة",
+      "en": "Giza Pyramids - Memphis - Saqqara"
+    },
+    "subtitle": {
+      "ar": "رحلة أسطورية إلى قلب التاريخ المصري القديم وأقدم بناء حجري في التاريخ",
+      "en": "Legendary day expedition to the Great Pyramids, Djoser Step Pyramid & first Egyptian capital"
+    },
+    "overview": {
+      "ar": "جولة خاصة متكاملة بصحبة مرشد سياحي مرخص وسيارة خاصة مكيفة لزيارة أهرامات الجيزة الخالدة (خوفو، خفرع، منقرع) وأبو الهول المهيب، ثم استكشاف سقارة وهرم زوسر المدرج وعاصمة مصر القديمة بممفيس.",
+      "en": "A private guided tour visiting the Great Pyramids of Giza, Great Sphinx, Valley Temple, Saqqara Step Pyramid and ancient capital of Memphis."
+    },
+    "category": "day_tour",
+    "estimatedDuration": {
+      "ar": "8-9 ساعات",
+      "en": "8-9 Hours"
+    },
+    "prices": {
+      "sedan": 1000,
+      "7seater": 1500,
+      "h1": 2300,
+      "hiace": 2600
+    },
+    "imageUrl": "/hero-pyramids.jpg",
+    "rating": 4.9,
+    "reviewsCount": 142,
+    "highlights": {
+      "ar": [
+        "مشاهدة الأهرامات الثلاثة البانورامية من هضبة الجيزة",
+        "التقاط صور مميزة مع تمثال أبو الهول العظيم",
+        "دخول مجمع هرم زوسر المدرج بسقارة",
+        "زيارة تمثال رمسيس الثاني الضخم في ممفيس"
+      ],
+      "en": [
+        "Panoramic views of Giza Pyramids plateau",
+        "Up-close photo session with the Great Sphinx",
+        "Djoser Step Pyramid complex in Saqqara",
+        "Colossal statue of Ramses II at Memphis"
+      ]
+    },
+    "itinerary": [
+      {
+        "time": "08:00 AM",
+        "title": {
+          "ar": "الاستقبال من مقر الإقامة",
+          "en": "Private Hotel Pickup"
+        },
+        "description": {
+          "ar": "استقبال خاص بسيارة سياحية فاخرة مكيفة ومياه معدنية مثلجة.",
+          "en": "Chauffeur pickup in a private climate-controlled vehicle."
+        }
+      },
+      {
+        "time": "09:00 AM",
+        "title": {
+          "ar": "أهرامات الجيزة وأبو الهول",
+          "en": "Giza Pyramids & Sphinx"
+        },
+        "description": {
+          "ar": "زيارة أهرامات خوفو وخفرع ومنقرع والبانوراما الصحراوية وأبو الهول.",
+          "en": "Comprehensive guided exploration of the Giza Plateau monuments."
+        }
+      },
+      {
+        "time": "01:00 PM",
+        "title": {
+          "ar": "استراحة غداء شرقي تقليدي",
+          "en": "Authentic Egyptian Lunch"
+        },
+        "description": {
+          "ar": "وجبة غداء شرقية شهية بمطعم سياحي ذي إطلالة أثرية.",
+          "en": "Delicious traditional Egyptian lunch at a selected viewpoint restaurant."
+        }
+      },
+      {
+        "time": "02:30 PM",
+        "title": {
+          "ar": "هرم سقارة المدرج ومتحف ممفيس",
+          "en": "Saqqara & Memphis Museum"
+        },
+        "description": {
+          "ar": "اكتشاف أقدم هرم حجري في العالم وزيارة عاصمة مصر الفرعونية الأولى.",
+          "en": "Explore the world’s oldest stone monument and ancient ruins."
+        }
+      },
+      {
+        "time": "04:30 PM",
+        "title": {
+          "ar": "العودة المريحة للفندق",
+          "en": "Return Transfer"
+        },
+        "description": {
+          "ar": "العودة بأمان وراحة إلى فندقك.",
+          "en": "Smooth private transfer back to your hotel."
+        }
+      }
+    ],
+    "inclusions": {
+      "ar": [
+        "سيارة خاصة مكيفة حديثة طوال اليوم",
+        "سائق محترف ومياه معدنية مثلجة",
+        "مرشد سياحي مرخص",
+        "جميع الضرائب ورسوم الطرق"
+      ],
+      "en": [
+        "Private air-conditioned vehicle all day",
+        "Professional driver & mineral water",
+        "Licensed Egyptologist guide",
+        "All tolls and highway taxes"
+      ]
+    },
+    "exclusions": {
+      "ar": [
+        "تذاكر دخول المزارات (تُدفع بالفيزا)",
+        "دخول الهرم الأكبر من الداخل",
+        "الإكراميات الشخصية"
+      ],
+      "en": [
+        "Site entry tickets",
+        "Interior Great Pyramid chamber pass",
+        "Gratuities"
+      ]
+    },
+    "isPopular": true,
+    "showInCatalog": true
+  },
+  {
+    "id": 2,
+    "slug": "pyramids-memphis-saqqara-dahshur",
+    "title": {
+      "ar": "هرم - ممفيس - سقارة - دهشور",
+      "en": "Pyramids - Memphis - Saqqara - Dahshur"
+    },
+    "subtitle": {
+      "ar": "جولة الأهرامات الكبرى الأربعة بما فيها الهرم المنحني والأحمر بدهشور",
+      "en": "Ultimate 4-Pyramid expedition including Bent & Red Pyramids of Dahshur"
+    },
+    "overview": {
+      "ar": "رحلة استثنائية لعشاق الآثار لزيارة تطور بناء الأهرامات المصرية من هرم زوسر بسقارة، إلى هرم سنفرو المنحني والأحمر بدهشور، وصولاً لأعظم أهرامات الجيزة.",
+      "en": "The comprehensive pyramid evolution journey spanning Dahshur, Saqqara, and the Great Pyramids of Giza."
+    },
+    "category": "day_tour",
+    "estimatedDuration": {
+      "ar": "9-10 ساعات",
+      "en": "9-10 Hours"
+    },
+    "prices": {
+      "sedan": 1200,
+      "7seater": 1700,
+      "h1": 2500,
+      "hiace": 2800
+    },
+    "imageUrl": "/hero-pyramids.jpg",
+    "rating": 4.9,
+    "reviewsCount": 95,
+    "highlights": {
+      "ar": [
+        "استكشاف الهرم الأحمر والهرم المنحني بدهشور مجاناً من الداخل",
+        "مجمع هرم زوسر المدرج بسقارة",
+        "أهرامات الجيزة الخالدة وتمثال أبو الهول",
+        "تمثال رمسيس الثاني العملاق بممفيس"
+      ],
+      "en": [
+        "Walk inside the Red and Bent Pyramids of Dahshur",
+        "Saqqara Step Pyramid funerary complex",
+        "Giza Pyramids and Great Sphinx",
+        "Colossal statue of Ramses II at Memphis"
+      ]
+    },
+    "itinerary": [
+      {
+        "time": "08:00 AM",
+        "title": {
+          "ar": "التحرك لدهشور أولاً",
+          "en": "Morning Drive to Dahshur"
+        },
+        "description": {
+          "ar": "الانطلاق في الصباح الباكر لدهشور لتجنب الزحام.",
+          "en": "Early departure south to the serene desert of Dahshur."
+        }
+      },
+      {
+        "time": "09:00 AM",
+        "title": {
+          "ar": "أهرامات دهشور المنحني والأحمر",
+          "en": "Dahshur Bent & Red Pyramids"
+        },
+        "description": {
+          "ar": "زيارة الأهرامات الأكثر هدوءاً وإمكانية الدخول المجاني لقلب الهرم الأحمر.",
+          "en": "Explore the architectural evolution of Sneferu pyramids."
+        }
+      },
+      {
+        "time": "11:30 AM",
+        "title": {
+          "ar": "سقارة وممفيس",
+          "en": "Saqqara & Memphis"
+        },
+        "description": {
+          "ar": "هرم زوسر المدرج ومتحف إيمحتب وعاصمة مصر القديمة.",
+          "en": "Visit Djoser Step Pyramid and ancient capital."
+        }
+      },
+      {
+        "time": "02:30 PM",
+        "title": {
+          "ar": "أهرامات الجيزة وأبو الهول",
+          "en": "Giza Pyramids & Sphinx"
+        },
+        "description": {
+          "ar": "ختام الرحلة بأعظم عجائب الدنيا السبع.",
+          "en": "Iconic encounter with Khufu, Khafre, Menkaure, and Sphinx."
+        }
+      },
+      {
+        "time": "05:30 PM",
+        "title": {
+          "ar": "العودة للفندق",
+          "en": "Return Transfer"
+        },
+        "description": {
+          "ar": "العودة لمقر إقامتك براحة وسلاسة.",
+          "en": "Relaxed chauffeur ride back to your hotel."
+        }
+      }
+    ],
+    "inclusions": {
+      "ar": [
+        "سيارة خاصة مكيفة لـ 10 ساعات",
+        "سائق محترف خبير بكافة الطرق",
+        "مياه معدنية مثلجة",
+        "رسوم الطرق والبوابات"
+      ],
+      "en": [
+        "Private air-conditioned car for 10 hours",
+        "Experienced driver",
+        "Chilled bottled water",
+        "Highway and parking fees"
+      ]
+    },
+    "exclusions": {
+      "ar": [
+        "تذاكر المزارات",
+        "الوجبات",
+        "الإكراميات"
+      ],
+      "en": [
+        "Entrance tickets",
+        "Meals",
+        "Tips"
+      ]
+    },
+    "isPopular": true,
+    "showInCatalog": true
+  },
+  {
+    "id": 3,
+    "slug": "cairo-city-tour-3-sights",
+    "title": {
+      "ar": "يومية بلد 3 مزارات بالقاهرة",
+      "en": "Cairo City Tour (3 Sights)"
+    },
+    "subtitle": {
+      "ar": "المتحف المصري وقلعة صلاح الدين وخان الخليلي مع شارع المعز",
+      "en": "Egyptian Museum, Saladin Citadel, Alabaster Mosque & Khan El Khalili"
+    },
+    "overview": {
+      "ar": "جولة كلاسيكية يوم كامل لاستكشاف تاريخ القاهرة من العصر الفرعوني في المتحف المصري بميدان التحرير، ثم العصر الأيوبي والمملوكي في قلعة الجبل ومسجد محمد علي، وختام اليوم في أزقة خان الخليلي التاريخية.",
+      "en": "Immerse in Cairo’s multi-layered history visiting Tahrir Egyptian Museum, Citadel of Saladin, and Khan El Khalili bazaar."
+    },
+    "category": "day_tour",
+    "estimatedDuration": {
+      "ar": "9 ساعات (8 ص - 5 م)",
+      "en": "9 Hours (8 AM - 5 PM)"
+    },
+    "prices": {
+      "sedan": 1000,
+      "7seater": 1500,
+      "h1": 2300,
+      "hiace": 2600
+    },
+    "imageUrl": "/hero-pyramids.jpg",
+    "rating": 4.8,
+    "reviewsCount": 110,
+    "highlights": {
+      "ar": [
+        "كنوز الفراعنة في المتحف المصري بميدان التحرير",
+        "بانوراما القاهرة من أعلى أسوار قلعة صلاح الدين الأيوبي",
+        "مسجد محمد علي باشا الرخامي العظيم",
+        "التسوق واحتساء الشاي بمقهى الفيشاوي بخان الخليلي"
+      ],
+      "en": [
+        "Masterpieces of antiquity at Egyptian Museum Tahrir",
+        "Panoramic Cairo view from the historic Citadel",
+        "Magnificent Alabaster Mosque of Muhammad Ali",
+        "Bustling Khan El Khalili souks & El Fishawy cafe"
+      ]
+    },
+    "itinerary": [
+      {
+        "time": "08:30 AM",
+        "title": {
+          "ar": "الانطلاق من الفندق",
+          "en": "Hotel Pickup"
+        },
+        "description": {
+          "ar": "التحرك نحو قلب القاهرة الخديوية.",
+          "en": "Private transport to Downtown Cairo."
+        }
+      },
+      {
+        "time": "09:00 AM",
+        "title": {
+          "ar": "المتحف المصري بميدان التحرير",
+          "en": "Egyptian Museum Tahrir"
+        },
+        "description": {
+          "ar": "استكشاف روائع الفنون والآثار المصرية القديمة.",
+          "en": "Touring iconic sarcophagi, statues, and ancient relics."
+        }
+      },
+      {
+        "time": "12:30 PM",
+        "title": {
+          "ar": "قلعة صلاح الدين ومسجد محمد علي",
+          "en": "Saladin Citadel"
+        },
+        "description": {
+          "ar": "زيارة القلعة التاريخية وأروع مآذن القاهرة.",
+          "en": "Medieval fortress and Ottoman alabaster dome."
+        }
+      },
+      {
+        "time": "03:00 PM",
+        "title": {
+          "ar": "خان الخليلي وشارع المعز",
+          "en": "Khan El Khalili & Moez St"
+        },
+        "description": {
+          "ar": "جولة تسوق وتصوير في أقدم شوارع القاهرة الفاطمية.",
+          "en": "Stroll through 1,000-year-old historic architecture."
+        }
+      },
+      {
+        "time": "05:00 PM",
+        "title": {
+          "ar": "العودة للفندق",
+          "en": "Hotel Drop-off"
+        },
+        "description": {
+          "ar": "توصيل مريح إلى مقر إقامتك.",
+          "en": "Drop-off at your hotel."
+        }
+      }
+    ],
+    "inclusions": {
+      "ar": [
+        "سيارة خاصة مكيفة طوال اليوم (9 ساعات)",
+        "سائق محترف ومياه معدنية",
+        "رسوم الانتظار والباركينج"
+      ],
+      "en": [
+        "Private air-conditioned car for 9 hours",
+        "Chauffeur and bottled water",
+        "Parking fees"
+      ]
+    },
+    "exclusions": {
+      "ar": [
+        "تذاكر المزارات",
+        "الوجبات والمشروبات",
+        "الإكراميات"
+      ],
+      "en": [
+        "Site entry tickets",
+        "Meals & drinks",
+        "Tips"
+      ]
+    },
+    "isPopular": true,
+    "showInCatalog": true
+  },
+  {
+    "id": 4,
+    "slug": "cairo-city-tour-4-sights",
+    "title": {
+      "ar": "يومية بلد 4 مزارات بالقاهرة",
+      "en": "Cairo City Tour (4 Sights)"
+    },
+    "subtitle": {
+      "ar": "المتحف القومي للحضارة (المومياوات الملكية)، القلعة، مجمع الأديان وخان الخليلي",
+      "en": "National Museum of Egyptian Civilization (NMEC), Citadel, Coptic Cairo & Bazaar"
+    },
+    "overview": {
+      "ar": "برنامج حافل يجمع 4 مزارات رئيسية في يوم واحد: قاعة المومياوات الملكية بالمتحف القومي للحضارة المصرية (NMEC)، قلعة صلاح الدين، الكنيسة المعلقة ومجمع الأديان بمصر القديمة، وخان الخليلي.",
+      "en": "A premier 4-stop tour including NMEC Royal Mummies Hall, Saladin Citadel, Hanging Church of Coptic Cairo, and Khan El Khalili."
+    },
+    "category": "day_tour",
+    "estimatedDuration": {
+      "ar": "9 ساعات (8 ص - 5 م)",
+      "en": "9 Hours (8 AM - 5 PM)"
+    },
+    "prices": {
+      "sedan": 1150,
+      "7seater": 1700,
+      "h1": 2500,
+      "hiace": 2800
+    },
+    "imageUrl": "/hero-pyramids.jpg",
+    "rating": 4.9,
+    "reviewsCount": 88,
+    "highlights": {
+      "ar": [
+        "قاعة المومياوات الملكية المبهرة بمتحف الحضارة (NMEC)",
+        "الكنيسة المعلقة ومعبد بن عزرا بمجمع الأديان",
+        "قلعة صلاح الدين الأيوبي وجامع محمد علي",
+        "أجواء خان الخليلي التراثية وشراء التحف"
+      ],
+      "en": [
+        "World-famous Royal Mummies Hall at NMEC",
+        "Hanging Church and Coptic Cairo heritage",
+        "Saladin Citadel and Alabaster Mosque",
+        "Authentic shopping at Khan El Khalili"
+      ]
+    },
+    "itinerary": [
+      {
+        "time": "08:00 AM",
+        "title": {
+          "ar": "التحرك لمتحف الحضارة",
+          "en": "Pickup & NMEC Transfer"
+        },
+        "description": {
+          "ar": "الاستقبال والتوجه لمتحف الحضارة بالفسطاط.",
+          "en": "Direct comfortable transfer to NMEC."
+        }
+      },
+      {
+        "time": "09:00 AM",
+        "title": {
+          "ar": "المتحف القومي للحضارة وقاعة المومياوات",
+          "en": "NMEC & Royal Mummies"
+        },
+        "description": {
+          "ar": "مشاهدة ملوك وملكات مصر القديمة وأعظم مقتنيات الحضارة.",
+          "en": "Explore 50,000 artifacts and the Royal Mummies."
+        }
+      },
+      {
+        "time": "11:30 AM",
+        "title": {
+          "ar": "مجمع الأديان والكنيسة المعلقة",
+          "en": "Coptic Cairo"
+        },
+        "description": {
+          "ar": "زيارة الكنيسة المعلقة، كنيسة أبي سرجة ومعبد بن عزرا.",
+          "en": "Walk the sacred historic quarters of Old Cairo."
+        }
+      },
+      {
+        "time": "01:30 PM",
+        "title": {
+          "ar": "قلعة صلاح الدين ومسجد محمد علي",
+          "en": "Citadel of Saladin"
+        },
+        "description": {
+          "ar": "مشاهدة المسجد الرخامي وأسوار القلعة الأيوبية.",
+          "en": "Citadel fortress and panoramic skyline."
+        }
+      },
+      {
+        "time": "03:30 PM",
+        "title": {
+          "ar": "خان الخليلي",
+          "en": "Khan El Khalili"
+        },
+        "description": {
+          "ar": "تسوق التذكارات والفضيات والبهارات.",
+          "en": "Shopping and tea at the historic bazaar."
+        }
+      },
+      {
+        "time": "05:00 PM",
+        "title": {
+          "ar": "العودة للفندق",
+          "en": "Return Transfer"
+        },
+        "description": {
+          "ar": "الوصول لمقر الإقامة بأمان.",
+          "en": "Chauffeur ride back to hotel."
+        }
+      }
+    ],
+    "inclusions": {
+      "ar": [
+        "سيارة خاصة مكيفة 9 ساعات كاملة",
+        "سائق محترف ووقود ومياه",
+        "رسوم البوابات والانتظار"
+      ],
+      "en": [
+        "Private AC car for 9 full hours",
+        "Professional driver & water",
+        "Parking & tolls"
+      ]
+    },
+    "exclusions": {
+      "ar": [
+        "تذاكر المزارات",
+        "الوجبات",
+        "الإكراميات"
+      ],
+      "en": [
+        "Site entry tickets",
+        "Meals",
+        "Tips"
+      ]
+    },
+    "isPopular": false,
+    "showInCatalog": true
+  },
+  {
+    "id": 5,
+    "slug": "half-day-sightseeing-tour",
+    "title": {
+      "ar": "نصف يومية مزار فقط",
+      "en": "Half Day Sightseeing Tour"
+    },
+    "subtitle": {
+      "ar": "زيارة سريعة مركزة لأي مزار مختار بالقاهرة أو الجيزة (4-5 ساعات)",
+      "en": "Focused 4-5 hours private transfer and visit to any single major Cairo/Giza sight"
+    },
+    "overview": {
+      "ar": "خيار مثالي لرجال الأعمال والمسافرين ذوي الجداول المزدحمة. اختر مزاراً واحداً (مثل الأهرامات، أو المتحف الكبير، أو القلعة) للاستمتاع بجولة مركزة مع سيارة وسائق خاص.",
+      "en": "Ideal for travelers with limited time or business layovers. Dedicated private car and driver for up to 5 hours."
+    },
+    "category": "day_tour",
+    "estimatedDuration": {
+      "ar": "4-5 ساعات",
+      "en": "4-5 Hours"
+    },
+    "prices": {
+      "sedan": 900,
+      "7seater": 1300,
+      "h1": 1800,
+      "hiace": 3500
+    },
+    "imageUrl": "/hero-pyramids.jpg",
+    "rating": 4.7,
+    "reviewsCount": 64,
+    "highlights": {
+      "ar": [
+        "مرونة كاملة في اختيار المزار وموعد الانطلاق",
+        "سيارة خاصة وسائق تحت الطلب لمدة 5 ساعات",
+        "توفير الوقت والجهد وتجنب مشاكل المواصلات"
+      ],
+      "en": [
+        "100% flexible timing and destination",
+        "Dedicated car and driver at your disposal for 5 hours",
+        "Stress-free direct door-to-door transit"
+      ]
+    },
+    "itinerary": [
+      {
+        "time": "مرن",
+        "title": {
+          "ar": "الاستقبال من الفندق أو المطار",
+          "en": "Pickup"
+        },
+        "description": {
+          "ar": "الانطلاق في الموعد الذي تفضله.",
+          "en": "Chauffeur pickup at your requested time."
+        }
+      },
+      {
+        "time": "4 ساعات",
+        "title": {
+          "ar": "زيارة المزار والانتظار",
+          "en": "Sightseeing & Wait"
+        },
+        "description": {
+          "ar": "جولة المزار مع انتظار السيارة والسائق لخدمتك.",
+          "en": "Private visit with chauffeur waiting on standby."
+        }
+      },
+      {
+        "time": "الختام",
+        "title": {
+          "ar": "التوصيل للوجهة المطلوبة",
+          "en": "Drop-off"
+        },
+        "description": {
+          "ar": "العودة للفندق أو التوصيل للمطار.",
+          "en": "Return transfer to your hotel or airport terminal."
+        }
+      }
+    ],
+    "inclusions": {
+      "ar": [
+        "سيارة خاصة مكيفة لمدة 5 ساعات",
+        "سائق محترف ووقود",
+        "مياه معدنية"
+      ],
+      "en": [
+        "Private AC car for 5 hours",
+        "Chauffeur & fuel",
+        "Bottled water"
+      ]
+    },
+    "exclusions": {
+      "ar": [
+        "تذاكر المزار",
+        "الساعات الإضافية بعد الـ 5 ساعات"
+      ],
+      "en": [
+        "Entrance tickets",
+        "Additional hours beyond 5 hours"
+      ]
+    },
+    "isPopular": false,
+    "showInCatalog": true
+  },
+  {
+    "id": 6,
+    "slug": "nile-dinner-cruise-show",
+    "title": {
+      "ar": "سهرة عشاء (مركب نيلي / مطعم)",
+      "en": "Evening Dinner Tour / Nile Cruise Transfer"
+    },
+    "subtitle": {
+      "ar": "أمسية نيلية ساحرة على متن باخرة 5 نجوم مع بوفيه فاخر وعرض التنورة وفلكلور شرقي",
+      "en": "Magical 5-star Nile dinner cruise with open buffet, whirling Tanoura & live Oriental folklore"
+    },
+    "overview": {
+      "ar": "عش سهرة فاخرة لا تُنسى في نيل القاهرة الساحر. إبحار لمدة ساعتين مع بوفيه عشاء مفتوح 5 نجوم غني بأشهى المأكولات والمشاوي، وعروض الفلكلور والتنورة والموسيقى الحية، مع تنقلات خاصة مكيفة من باب فندقك.",
+      "en": "A premier evening cruise along the illuminated Nile River with open buffet, live folklore band, Tanoura dervish show, and private round-trip hotel transfers."
+    },
+    "category": "nile_cruise",
+    "estimatedDuration": {
+      "ar": "4-5 ساعات",
+      "en": "4-5 Hours"
+    },
+    "prices": {
+      "sedan": 800,
+      "7seater": 1000,
+      "h1": 1500,
+      "hiace": 1700
+    },
+    "imageUrl": "/hero-pyramids.jpg",
+    "rating": 4.9,
+    "reviewsCount": 165,
+    "highlights": {
+      "ar": [
+        "إبحار لمدة ساعتين في نيل القاهرة مع إطلالة أضواء المدينة",
+        "بوفيه عشاء مفتوح 5 نجوم شامل أشهى الأصناف والحلويات",
+        "عروض التنورة التراثية الساحرة وفقرات الفلكلور المصري",
+        "سيارة وسائق خاص بانتظارك من الباب للباب"
+      ],
+      "en": [
+        "2-hour scenic Nile cruise admiring Cairo skyline lights",
+        "5-star deluxe open buffet dinner",
+        "Spectacular live Tanoura spinning dervish & Oriental show",
+        "Private chauffeur waiting for direct round-trip transport"
+      ]
+    },
+    "itinerary": [
+      {
+        "time": "06:30 PM",
+        "title": {
+          "ar": "الاستقبال من بهو الفندق",
+          "en": "Hotel Lobby Pickup"
+        },
+        "description": {
+          "ar": "التحرك بسيارة أنوبيس المريحة مباشرة إلى مرسى الباخرة.",
+          "en": "Private transfer directly to the cruise dock."
+        }
+      },
+      {
+        "time": "07:30 PM",
+        "title": {
+          "ar": "الصعود للباخرة والترحيب",
+          "en": "Boarding the Cruise"
+        },
+        "description": {
+          "ar": "الاستقرار في مقاعد الصالة المكيفة البانورامية.",
+          "en": "Welcome aboard and comfortable panoramic table seating."
+        }
+      },
+      {
+        "time": "08:00 PM",
+        "title": {
+          "ar": "بدء الإبحار والبوفيه والعروض",
+          "en": "Sail, Buffet & Folklore Show"
+        },
+        "description": {
+          "ar": "تناول العشاء والاستمتاع بعروض التنورة وتصوير النيل ليلاً.",
+          "en": "Enjoy lavish dining and authentic Egyptian folklore."
+        }
+      },
+      {
+        "time": "10:15 PM",
+        "title": {
+          "ar": "العودة المريحة للفندق",
+          "en": "Smooth Return Transfer"
+        },
+        "description": {
+          "ar": "السائق الخاص بانتظارك لنقلك إلى مقر إقامتك بأمان.",
+          "en": "Chauffeur drive back to your hotel."
+        }
+      }
+    ],
+    "inclusions": {
+      "ar": [
+        "تنقلات خاصة ذهاب وعودة بسيارة حديثة مكيفة",
+        "سائق محترف بانتظارك طوال السهرة",
+        "رسوم الطرق والانتظار"
+      ],
+      "en": [
+        "Private round-trip AC vehicle transfers",
+        "Professional chauffeur waiting throughout the evening",
+        "Parking and toll fees"
+      ]
+    },
+    "exclusions": {
+      "ar": [
+        "تذكرة الباخرة وبوفيه العشاء (تُحجز إضافياً حسب الرغبة)",
+        "المشروبات الإضافية",
+        "الإكراميات"
+      ],
+      "en": [
+        "Cruise boat ticket and buffet pass (optional add-on)",
+        "Extra beverages",
+        "Gratuities"
+      ]
+    },
+    "isPopular": true,
+    "showInCatalog": true
+  },
+  {
+    "id": 7,
+    "slug": "cairo-international-airport-transfer",
+    "title": {
+      "ar": "مطار القاهرة الدولي (استقبال أو تسفير)",
+      "en": "Cairo International Airport VIP Transfer"
+    },
+    "subtitle": {
+      "ar": "خدمة ليموزين ونقل فاخر مع متابعة الرحلة الجوية واستقبال بالاسم",
+      "en": "VIP private airport limousine transfer with live flight tracking and name-sign meet"
+    },
+    "overview": {
+      "ar": "خدمة استقبال وتسفير متميزة من وإلى مطار القاهرة الدولي لكافة الصالات (صالة 1، صالة 2، وصالة 3 VIP). سيارات حديثة مكيفة وسائقون محترفون ملتزمون بالمواعيد بدقة متناهية.",
+      "en": "Seamless Cairo International Airport arrival or departure transfers across all terminals with private chauffeur."
+    },
+    "category": "airport",
+    "estimatedDuration": {
+      "ar": "1-2 ساعة",
+      "en": "1-2 Hours"
+    },
+    "prices": {
+      "sedan": 800,
+      "7seater": 1000,
+      "h1": 1600,
+      "hiace": 1700
+    },
+    "imageUrl": "/hero-pyramids.jpg",
+    "rating": 4.9,
+    "reviewsCount": 220,
+    "highlights": {
+      "ar": [
+        "استقبال بلافتة تحمل اسمك بصالة الوصول",
+        "متابعة موعد الرحلة إلكترونياً عند التأخير",
+        "مساعدة كاملة في تحميل الحقائب"
+      ],
+      "en": [
+        "Personal name board greeting at arrival terminal",
+        "Real-time flight tracking for delays",
+        "Full luggage assistance"
+      ]
+    },
+    "isPopular": true,
+    "showInCatalog": false
+  },
+  {
+    "id": 8,
+    "slug": "sphinx-international-airport-transfer",
+    "title": {
+      "ar": "مطار سفنكس الدولي (استقبال أو تسفير)",
+      "en": "Sphinx International Airport VIP Transfer"
+    },
+    "subtitle": {
+      "ar": "خدمة نقل خاصة من وإلى مطار سفنكس لخدمة منطقة الشيخ زايد وأكتوبر والأهرامات",
+      "en": "Direct private transfer to/from Sphinx Airport serving Sheikh Zayed, October & Pyramids"
+    },
+    "overview": {
+      "ar": "توصيل مريح ومباشر بين مطار سفنكس الدولي وغرب القاهرة أو الجيزة. أسطول سيارات حديث مع سائقين مدربين.",
+      "en": "Fast and reliable limousine connection between Sphinx Airport (SPX) and your hotel or residence."
+    },
+    "category": "airport",
+    "estimatedDuration": {
+      "ar": "1-2 ساعة",
+      "en": "1-2 Hours"
+    },
+    "prices": {
+      "sedan": 800,
+      "7seater": 1000,
+      "h1": 1700,
+      "hiace": 1800
+    },
+    "imageUrl": "/hero-pyramids.jpg",
+    "rating": 4.8,
+    "reviewsCount": 85,
+    "highlights": {
+      "ar": [
+        "استقبال مباشر بصالة الوصول",
+        "سائقين محترفين ومركبات مكيفة بالكامل",
+        "التزام تام بالمواعيد"
+      ],
+      "en": [
+        "Direct terminal meet & greet",
+        "Punctual professional chauffeur",
+        "Air-conditioned modern fleet"
+      ]
+    },
+    "isPopular": true,
+    "showInCatalog": false
+  },
+  {
+    "id": 9,
+    "slug": "alexandria-full-day-overday",
+    "title": {
+      "ar": "أوفر داي إسكندرية (رحلة يوم كامل)",
+      "en": "Alexandria Full Day Tour (Overday)"
+    },
+    "subtitle": {
+      "ar": "رحلة ساحلية لزيارة قلعة قايتباي ومكتبة الإسكندرية ومقابر كوم الشقافة مع غداء سي فود",
+      "en": "Coastal day tour visiting Qaitbay Citadel, Library of Alexandria & Catacombs with fresh seafood"
+    },
+    "overview": {
+      "ar": "اكتشف عبق الحضارة اليونانية الرومانية وجمال ساحل البحر المتوسط في الإسكندرية. تشمل الجولة زيارة مقابر كوم الشقافة المنحوتة في الصخر، قلعة قايتباي في موقع فنار الإسكندرية القديم، مكتبة الإسكندرية الصرح الثقافي العالمي، مع وجبة غداء مأكولات بحرية طازجة على البحر.",
+      "en": "Uncover the Greco-Roman wonders of Alexandria. Visit the subterranean Catacombs of Kom El Shoqafa, Citadel of Qaitbay at the Lighthouse site, and futuristic Bibliotheca Alexandrina with seaside seafood dining."
+    },
+    "category": "overday",
+    "estimatedDuration": {
+      "ar": "12-14 ساعة",
+      "en": "12-14 Hours"
+    },
+    "prices": {
+      "sedan": 3000,
+      "7seater": 3500,
+      "h1": 5000,
+      "hiace": 5500
+    },
+    "imageUrl": "/hero-pyramids.jpg",
+    "rating": 4.9,
+    "reviewsCount": 145,
+    "highlights": {
+      "ar": [
+        "مقابر كوم الشقافة الأسطورية أعجوبة القرون الوسطى",
+        "قلعة السلطان قايتباي وإطلالة البحر المفتوح",
+        "صرح مكتبة الإسكندرية الحديث الفريد",
+        "غداء مأكولات بحرية طازجة مع إطلالة الكورنيش"
+      ],
+      "en": [
+        "Subterranean Kom El Shoqafa Catacombs",
+        "15th-century Qaitbay Citadel over the Mediterranean",
+        "Futuristic Bibliotheca Alexandrina complex",
+        "Seaside fresh seafood culinary experience"
+      ]
+    },
+    "itinerary": [
+      {
+        "time": "07:00 AM",
+        "title": {
+          "ar": "الانطلاق من القاهرة",
+          "en": "Cairo Departure"
+        },
+        "description": {
+          "ar": "التحرك صباحاً عبر طريق الإسكندرية الصحراوي السريع بسيارة مريحة.",
+          "en": "Early departure via the desert highway in top comfort."
+        }
+      },
+      {
+        "time": "10:00 AM",
+        "title": {
+          "ar": "مقابر كوم الشقافة وعمود السواري",
+          "en": "Catacombs & Pompey Pillar"
+        },
+        "description": {
+          "ar": "النزول لثلاثة طوابق تحت الأرض لرؤية التمازج الفني الفرعوني الروماني.",
+          "en": "Explore the fascinating underground necropolis."
+        }
+      },
+      {
+        "time": "12:30 PM",
+        "title": {
+          "ar": "قلعة قايتباي وكورنيش البحر",
+          "en": "Qaitbay Citadel on the Coast"
+        },
+        "description": {
+          "ar": "جولة داخل القلعة والتقاط الصور التذكارية على البحر المتوسط.",
+          "en": "Walk the defensive battlements overlooking the harbour."
+        }
+      },
+      {
+        "time": "02:30 PM",
+        "title": {
+          "ar": "غداء مأكولات بحرية فاخر",
+          "en": "Seafood Lunch"
+        },
+        "description": {
+          "ar": "غداء سمك طازج وجمبري وسلطات في مطعم شهير على الكورنيش.",
+          "en": "Enjoy fresh catch of the day by the sea."
+        }
+      },
+      {
+        "time": "04:00 PM",
+        "title": {
+          "ar": "مكتبة الإسكندرية وحدائق أنطونيادس",
+          "en": "Bibliotheca Alexandrina"
+        },
+        "description": {
+          "ar": "زيارة المعمار الفريد لأكبر مجمع ثقافي في المنطقة.",
+          "en": "Marvel at the spectacular modern architectural masterpiece."
+        }
+      },
+      {
+        "time": "06:00 PM",
+        "title": {
+          "ar": "رحلة العودة للقاهرة",
+          "en": "Return to Cairo"
+        },
+        "description": {
+          "ar": "العودة والوصول إلى فندقك بالمساء براحة وأمان.",
+          "en": "Evening arrival back at your Cairo hotel."
+        }
+      }
+    ],
+    "inclusions": {
+      "ar": [
+        "سيارة خاصة مكيفة ذهاباً وإياباً من القاهرة طوال اليوم",
+        "سائق محترف خبير بطريق الإسكندرية",
+        "كافة رسوم الكارتة والبوابات والمواقف",
+        "مياه معدنية مثلجة"
+      ],
+      "en": [
+        "Private round-trip AC vehicle from Cairo for the full day",
+        "Experienced highway chauffeur",
+        "All tolls, parking and checkpoint passes",
+        "Bottled mineral water"
+      ]
+    },
+    "exclusions": {
+      "ar": [
+        "تذاكر المزارات",
+        "وجبة الغداء والمشروبات",
+        "الإكراميات"
+      ],
+      "en": [
+        "Site entry tickets",
+        "Lunch & drinks",
+        "Tips"
+      ]
+    },
+    "isPopular": true,
+    "showInCatalog": true
+  },
+  {
+    "id": 10,
+    "slug": "fayoum-oasis-wadi-el-rayan-overday",
+    "title": {
+      "ar": "أوفر داي الفيوم ووادي الريان",
+      "en": "Fayoum Oasis & Wadi El Rayan Overday"
+    },
+    "subtitle": {
+      "ar": "مغامرة دفع رباعي بين الكثبان الرملية وشلالات وادي الريان والبحيرة السحرية والتزحلق على الرمال",
+      "en": "Thrilling 4x4 desert dunes, cascading waterfalls, sandboarding and Bedouin magic lake camp"
+    },
+    "overview": {
+      "ar": "اهرب من صخب المدينة إلى سحر واحة الفيوم الطبيعية. استمتع برؤية شلالات وادي الريان الوحيدة في مصر، وركوب سيارات الدفع الرباعي (4x4) في الكثبان الرملية المحيطة بالبحيرة السحرية، وتجربة التزحلق على الرمال وحفلة شواء بدوية دافئة.",
+      "en": "A premier eco-adventure into Fayoum Oasis. Witness Egypt only waterfalls at Wadi El Rayan, race across giant golden dunes by 4x4, surf the dunes with sandboards, and dine around a desert Bedouin barbecue."
+    },
+    "category": "overday",
+    "estimatedDuration": {
+      "ar": "10-12 ساعة",
+      "en": "10-12 Hours"
+    },
+    "prices": {
+      "sedan": 2800,
+      "7seater": 3250,
+      "h1": 4500,
+      "hiace": 5000
+    },
+    "imageUrl": "/hero-pyramids.jpg",
+    "rating": 4.9,
+    "reviewsCount": 98,
+    "highlights": {
+      "ar": [
+        "شلالات وادي الريان والبحيرات الطبيعية العذبة",
+        "سفاري دفع رباعي 4x4 عبر الكثبان الرملية الشاهقة",
+        "التزحلق على الرمال الناعمة (Sandboarding)",
+        "غداء شواء بدوي أصيل وشاي بالمرمرية على البحيرة السحرية"
+      ],
+      "en": [
+        "Wadi El Rayan waterfalls and natural desert lakes",
+        "Adrenaline-packed 4x4 dune safari",
+        "Sandboarding down golden sand dunes",
+        "Authentic Bedouin BBQ lunch by Magic Lake"
+      ]
+    },
+    "itinerary": [
+      {
+        "time": "07:30 AM",
+        "title": {
+          "ar": "التحرك من القاهرة",
+          "en": "Cairo Departure"
+        },
+        "description": {
+          "ar": "الانطلاق جنوباً نحو واحة الفيوم ومحمية وادي الريان.",
+          "en": "Morning drive towards Fayoum Oasis."
+        }
+      },
+      {
+        "time": "09:30 AM",
+        "title": {
+          "ar": "شلالات وادي الريان وبحيرة قارون",
+          "en": "Waterfalls & Lake Qarun"
+        },
+        "description": {
+          "ar": "زيارة الشلالات والتقاط الصور وقضاء وقت مميز.",
+          "en": "See the scenic waterfalls and take picturesque photos."
+        }
+      },
+      {
+        "time": "11:30 AM",
+        "title": {
+          "ar": "مغامرة الدفع الرباعي والكثبان",
+          "en": "4x4 Dune Bashing"
+        },
+        "description": {
+          "ar": "ركوب سيارات 4x4 والتزحلق على رمال الصحراء.",
+          "en": "Exciting off-road dune safari and sandboarding session."
+        }
+      },
+      {
+        "time": "02:00 PM",
+        "title": {
+          "ar": "غداء بدوي في مخيم البحيرة السحرية",
+          "en": "Bedouin Lunch by Magic Lake"
+        },
+        "description": {
+          "ar": "فراخ مشوية على الفحم، أرز، وسلطات وشاي بالمرمرية.",
+          "en": "Delicious freshly grilled chicken, rice, salads, and Bedouin tea."
+        }
+      },
+      {
+        "time": "05:00 PM",
+        "title": {
+          "ar": "العودة إلى القاهرة",
+          "en": "Return to Cairo"
+        },
+        "description": {
+          "ar": "الوصول إلى مقر الإقامة قبل المساء.",
+          "en": "Comfortable evening return to your hotel."
+        }
+      }
+    ],
+    "inclusions": {
+      "ar": [
+        "سيارة خاصة مكيفة من وإلى القاهرة طوال اليوم",
+        "سائق محترف ورسوم الطرق والبوابات",
+        "مياه معدنية مثلجة"
+      ],
+      "en": [
+        "Private round-trip AC vehicle from Cairo",
+        "Chauffeur, toll passes & bottled water"
+      ]
+    },
+    "exclusions": {
+      "ar": [
+        "سيارة الدفع الرباعي 4x4 والتزلج الرملي (إضافي بالموقع)",
+        "الوجبات وتذاكر المحمية",
+        "الإكراميات"
+      ],
+      "en": [
+        "4x4 desert safari & sandboards (optional on-site)",
+        "Meals & park permits",
+        "Tips"
+      ]
+    },
+    "isPopular": true,
+    "showInCatalog": true
+  },
+  {
+    "id": 11,
+    "slug": "ain-sokhna-beach-overday",
+    "title": {
+      "ar": "أوفر داي العين السخنة (يوم على البحر الأحمر)",
+      "en": "Ain Sokhna Beach Overday"
+    },
+    "subtitle": {
+      "ar": "يوم استجمام ساحر على شواطئ البحر الأحمر الصافية بالقرب من القاهرة",
+      "en": "Relaxing Red Sea coastal getaway with pristine beaches and sunshine"
+    },
+    "overview": {
+      "ar": "أقرب شواطئ البحر الأحمر إلى العاصمة القاهرة (ساعة ونصف فقط). استمتع بقضاء يوم استرخاء كامل (Day Use) بمنتجع فاخر على البحر مباشرة، سباحة وتناول وجبة غداء شاطئية مع ركوب الجت سكي الاختياري.",
+      "en": "The closest Red Sea beach to Cairo. Escape for a full relaxing beach day at a premier waterfront resort."
+    },
+    "category": "overday",
+    "estimatedDuration": {
+      "ar": "10-12 ساعة",
+      "en": "10-12 Hours"
+    },
+    "prices": {
+      "sedan": 2800,
+      "7seater": 3250,
+      "h1": 4500,
+      "hiace": 5000
+    },
+    "imageUrl": "/hero-pyramids.jpg",
+    "rating": 4.8,
+    "reviewsCount": 72,
+    "highlights": {
+      "ar": [
+        "قضاء يوم كامل على البحر الأحمر والسباحة في مياهه الدافئة",
+        "الاستمتاع بمرافق منتجع شاطئي فاخر (Day-Use)",
+        "قرب المسافة من القاهرة (ساعة ونصف فقط)",
+        "سيارة وسائق خاص بانتظارك طوال اليوم"
+      ],
+      "en": [
+        "Full day soaking in the Red Sea sunshine",
+        "Luxury beachfront resort amenities and pools",
+        "Short 90-minute scenic desert drive from Cairo",
+        "Dedicated chauffeur and car waiting all day"
+      ]
+    },
+    "itinerary": [
+      {
+        "time": "08:00 AM",
+        "title": {
+          "ar": "الانطلاق نحو العين السخنة",
+          "en": "Departure to Ain Sokhna"
+        },
+        "description": {
+          "ar": "التحرك عبر طريق القطامية - العين السخنة السريع.",
+          "en": "Scenic highway ride through the eastern desert."
+        }
+      },
+      {
+        "time": "09:45 AM",
+        "title": {
+          "ar": "الوصول للمنتجع وبدء اليوم الشاطئي",
+          "en": "Resort Beach Check-in"
+        },
+        "description": {
+          "ar": "استلام الشيزلونج وبدء السباحة والاسترخاء.",
+          "en": "Settle into beach loungers, pools, and crystal waters."
+        }
+      },
+      {
+        "time": "01:30 PM",
+        "title": {
+          "ar": "غداء ومشروبات شاطئية",
+          "en": "Seaside Lunch"
+        },
+        "description": {
+          "ar": "تناول الغداء مع إطلالة البحر الخلابة.",
+          "en": "Dine with panoramic view of the Gulf of Suez."
+        }
+      },
+      {
+        "time": "05:30 PM",
+        "title": {
+          "ar": "رحلة العودة للقاهرة",
+          "en": "Sunset Return Drive"
+        },
+        "description": {
+          "ar": "الوصول للقاهرة بالمساء.",
+          "en": "Comfortable ride back to Cairo by dusk."
+        }
+      }
+    ],
+    "inclusions": {
+      "ar": [
+        "سيارة خاصة مكيفة ذهاب وعودة مع الانتظار طوال اليوم",
+        "سائق محترف ووقود وكافة رسوم الكارتة",
+        "مياه معدنية"
+      ],
+      "en": [
+        "Private round-trip AC vehicle with full-day wait",
+        "Driver, fuel, and all highway toll fees",
+        "Bottled water"
+      ]
+    },
+    "exclusions": {
+      "ar": [
+        "تذكرة دخول المنتجع (Day-Use)",
+        "الوجبات والمشروبات",
+        "الأنشطة البحرية (جت سكي / بنانا بوت)"
+      ],
+      "en": [
+        "Resort Day-Use entrance ticket",
+        "Meals & drinks",
+        "Water sports"
+      ]
+    },
+    "isPopular": false,
+    "showInCatalog": true
+  },
+  {
+    "id": 12,
+    "slug": "minya-tell-el-amarna-historic-overday",
+    "title": {
+      "ar": "أوفر داي المنيا (آثار تل العمارنة وتونة الجبل)",
+      "en": "Minya & Tell El-Amarna Historic Overday"
+    },
+    "subtitle": {
+      "ar": "عروس الصعيد: عاصمة الملك إخناتون والملكة نفرتيتي ومقابر بني حسن الصخرية",
+      "en": "Bride of Upper Egypt: Akhenaten & Nefertiti ancient capital and Beni Hasan tombs"
+    },
+    "overview": {
+      "ar": "رحلة أثرية متعمقة إلى محافظة المنيا (عروس الصعيد). زيارة مقابر بني حسن المنحوتة في الجبل بنقوش ألعاب القوى النادرة، مدينة تل العمارنة عاصمة التوحيد لإخناتون، وسراديب تونة الجبل الأثرية والساقية الرومانية.",
+      "en": "A deep cultural journey to Middle Egypt. Explore Beni Hasan cliff tombs, Amarna city ruins of Akhenaten and Nefertiti, and Tuna El-Gebel catacombs."
+    },
+    "category": "overday",
+    "estimatedDuration": {
+      "ar": "14-16 ساعة",
+      "en": "14-16 Hours"
+    },
+    "prices": {
+      "sedan": 2500,
+      "7seater": 3000,
+      "h1": 3900,
+      "hiace": 4300
+    },
+    "imageUrl": "/hero-pyramids.jpg",
+    "rating": 4.8,
+    "reviewsCount": 45,
+    "highlights": {
+      "ar": [
+        "مقابر بني حسن المنحوتة في حافة الجبل الصخري",
+        "أطلال مدينة تل العمارنة عاصمة إخناتون الأولى",
+        "سراديب تونة الجبل ومقبرة بيتوسيريس الأسطورية",
+        "طبيعة صعيد مصر الريفية الساحرة وضفاف النيل الهادئة"
+      ],
+      "en": [
+        "Beni Hasan rock-cut tombs with wrestling scenes",
+        "Ruins of Akhetaten (Tell El-Amarna capital)",
+        "Tuna El-Gebel underground ibis and baboon galleries",
+        "Tranquil rural landscapes of Upper Egypt"
+      ]
+    },
+    "itinerary": [
+      {
+        "time": "06:00 AM",
+        "title": {
+          "ar": "الانطلاق الباكر من القاهرة",
+          "en": "Early Cairo Departure"
+        },
+        "description": {
+          "ar": "السفر جنوباً بمحاذاة طريق الصعيد الزراعي أو الصحراوي.",
+          "en": "Private highway transit heading south."
+        }
+      },
+      {
+        "time": "09:30 AM",
+        "title": {
+          "ar": "مقابر بني حسن الصخرية",
+          "en": "Beni Hasan Rock Tombs"
+        },
+        "description": {
+          "ar": "صعود الجبل ومشاهدة أقدم نقوش ألعاب الجمباز والمصارعة الفرعونية.",
+          "en": "Ascend the cliffs to explore Middle Kingdom tombs."
+        }
+      },
+      {
+        "time": "12:30 PM",
+        "title": {
+          "ar": "تل العمارنة (مدينة إخناتون)",
+          "en": "Tell El-Amarna"
+        },
+        "description": {
+          "ar": "عبور النيل وزيارة القصر الشمالي ومقابر النبلاء العمارنة.",
+          "en": "Ferry across the Nile to explore the revolutionary Sun City."
+        }
+      },
+      {
+        "time": "03:30 PM",
+        "title": {
+          "ar": "تونة الجبل والأشمونين",
+          "en": "Tuna El-Gebel"
+        },
+        "description": {
+          "ar": "زيارة مقبرة إيزادورا الرومانية وسراديب تحوت.",
+          "en": "Explore ancient underground chambers and Roman wells."
+        }
+      },
+      {
+        "time": "06:00 PM",
+        "title": {
+          "ar": "رحلة العودة إلى القاهرة",
+          "en": "Evening Return to Cairo"
+        },
+        "description": {
+          "ar": "العودة بالسلامة إلى فندقك.",
+          "en": "Relaxed ride back to your Cairo accommodation."
+        }
+      }
+    ],
+    "inclusions": {
+      "ar": [
+        "سيارة خاصة مكيفة حديثة لرحلة اليوم الكامل (16 ساعة)",
+        "سائق محترف خبير بطرق الصعيد",
+        "رسوم الطرق وكارتات السفر",
+        "مياه معدنية"
+      ],
+      "en": [
+        "Private AC vehicle for the full 16-hour expedition",
+        "Experienced Upper Egypt highway driver",
+        "All tolls and passes",
+        "Chilled water"
+      ]
+    },
+    "exclusions": {
+      "ar": [
+        "تذاكر المزارات",
+        "الوجبات",
+        "الإكراميات"
+      ],
+      "en": [
+        "Sightseeing tickets",
+        "Meals",
+        "Tips"
+      ]
+    },
+    "isPopular": false,
+    "showInCatalog": true
+  },
+  {
+    "id": 13,
+    "slug": "cairo-hurghada-private-transfer",
+    "title": {
+      "ar": "توصيل الغردقة (طريق اتجاه واحد)",
+      "en": "Cairo to Hurghada Transfer (One-Way)"
+    },
+    "subtitle": {
+      "ar": "توصيل بري خاص وفاخر من القاهرة أو المطار مباشرة لأي منتجع بالغردقة والجونة",
+      "en": "VIP private direct overland transfer from Cairo/Airport to Hurghada or El Gouna resorts"
+    },
+    "overview": {
+      "ar": "توصيل مريح وآمن من الباب للباب عبر طريق الجلالة السريع الجديد بسيارة خاصة حديثة مع وقفات استراحة حسب رغبتك.",
+      "en": "Fast, smooth, door-to-door private limousine transfer via the new Galala coastal expressway directly to your hotel."
+    },
+    "category": "intercity",
+    "estimatedDuration": {
+      "ar": "5-6 ساعات",
+      "en": "5-6 Hours"
+    },
+    "prices": {
+      "sedan": 5500,
+      "7seater": 6500,
+      "h1": 8500,
+      "hiace": 9500
+    },
+    "imageUrl": "/hero-pyramids.jpg",
+    "rating": 4.9,
+    "reviewsCount": 180,
+    "highlights": {
+      "ar": [
+        "سفر مريح ومباشر من باب الفندق للمنتجع",
+        "مركبات حديثة مكيفة وسائقين محترفين",
+        "مرونة تامة في التوقف للاستراحة وتناول الطعام"
+      ],
+      "en": [
+        "Direct door-to-door resort drop-off",
+        "Modern AC vehicles with professional drivers",
+        "Flexible stops for refreshments and rest"
+      ]
+    },
+    "isPopular": false,
+    "showInCatalog": false
+  },
+  {
+    "id": 14,
+    "slug": "cairo-sharm-el-sheikh-private-transfer",
+    "title": {
+      "ar": "توصيل شرم الشيخ (طريق اتجاه واحد)",
+      "en": "Cairo to Sharm El Sheikh Transfer (One-Way)"
+    },
+    "subtitle": {
+      "ar": "توصيل بري مباشر عبر نفق الشهيد أحمد حمدي وجنوب سيناء",
+      "en": "Private door-to-door limousine transfer from Cairo to Sharm El Sheikh hotels"
+    },
+    "overview": {
+      "ar": "خدمة ليموزين خاصة إلى شرم الشيخ ودهب ورأس سدر بسيارات مريحة مجهزة للمسافات الطويلة وسائقين معتمدين بكافة التصاريح الأمنية.",
+      "en": "Comfortable private overland transfer across Sinai to your Sharm El Sheikh resort."
+    },
+    "category": "intercity",
+    "estimatedDuration": {
+      "ar": "6-7 ساعات",
+      "en": "6-7 Hours"
+    },
+    "prices": {
+      "sedan": 6000,
+      "7seater": 7000,
+      "h1": 9000,
+      "hiace": 10000
+    },
+    "imageUrl": "/hero-pyramids.jpg",
+    "rating": 4.8,
+    "reviewsCount": 130,
+    "highlights": {
+      "ar": [
+        "سيارات حديثة مكيفة ومجهزة للمسافات الطويلة",
+        "سائقين محترفين ملمين بنقاط التفتيش وطرق سيناء",
+        "راحة وأمان تام للحقائب والركاب"
+      ],
+      "en": [
+        "Long-distance climate-controlled fleet",
+        "Sinai route certified drivers",
+        "Luggage and passenger utmost safety"
+      ]
+    },
+    "isPopular": false,
+    "showInCatalog": false
+  },
+  {
+    "id": 15,
+    "slug": "cairo-alexandria-one-way-transfer",
+    "title": {
+      "ar": "توصيلة إسكندرية (اتجاه واحد)",
+      "en": "Cairo to Alexandria Transfer (One-Way)"
+    },
+    "subtitle": {
+      "ar": "ليموزين خاص سريع ومباشر بين القاهرة والإسكندرية",
+      "en": "Fast, private one-way express limousine between Cairo and Alexandria"
+    },
+    "overview": {
+      "ar": "خدمة نقل سريعة ومريحة بين القاهرة والإسكندرية من الباب للباب عبر الطريق الصحراوي السريع.",
+      "en": "Smooth direct express transfer between Cairo and Alexandria hotels or residences."
+    },
+    "category": "intercity",
+    "estimatedDuration": {
+      "ar": "3 ساعات",
+      "en": "3 Hours"
+    },
+    "prices": {
+      "sedan": 2800,
+      "7seater": 3500,
+      "h1": 4700,
+      "hiace": 5200
+    },
+    "imageUrl": "/hero-pyramids.jpg",
+    "rating": 4.9,
+    "reviewsCount": 210,
+    "highlights": {
+      "ar": [
+        "توصيل سريع خلال 3 ساعات من الباب للباب",
+        "سيارات مكيفة حديثة وسائقين ملتزمين بالمواعيد",
+        "شامل كافة رسوم الطريق السريع"
+      ],
+      "en": [
+        "Fast 3-hour direct door-to-door transfer",
+        "Modern AC fleet and punctual drivers",
+        "Highway tolls included"
+      ]
+    },
+    "isPopular": false,
+    "showInCatalog": false
+  },
+  {
+    "id": 16,
+    "slug": "cairo-luxor-private-car-transfer",
+    "title": {
+      "ar": "توصيلة الأقصر (طريق بري)",
+      "en": "Cairo to Luxor Transfer (Private Car)"
+    },
+    "subtitle": {
+      "ar": "رحلة طريق برية خاصة ومميزة على امتداد وادي النيل وصعيد مصر",
+      "en": "Exclusive private overland journey along the Nile Valley to historic Luxor"
+    },
+    "overview": {
+      "ar": "خيار فاخر ومميز للسفر البري الخاص من القاهرة للأقصر مباشرة للاستمتاع بمشاهدة صعيد مصر وتوقفات مخصصة.",
+      "en": "Dedicated long-distance private chauffeur transit from Cairo directly to your Luxor hotel."
+    },
+    "category": "intercity",
+    "estimatedDuration": {
+      "ar": "8-9 ساعات",
+      "en": "8-9 Hours"
+    },
+    "prices": {
+      "sedan": 8500,
+      "7seater": 9500,
+      "h1": null,
+      "hiace": null
+    },
+    "imageUrl": "/hero-pyramids.jpg",
+    "rating": 4.9,
+    "reviewsCount": 38,
+    "highlights": {
+      "ar": [
+        "سفر خاص ومستقل دون قيود مواعيد القطارات أو الطيران",
+        "راحة كاملة لسيارات السيدان و7 راكب الفاخرة",
+        "سائقين محترفين للطرق الطويلة"
+      ],
+      "en": [
+        "Flexible private travel without flight delays",
+        "Top comfort in modern Sedans or SUVs",
+        "Experienced cross-country drivers"
+      ]
+    },
+    "isPopular": false,
+    "showInCatalog": false
+  },
+  {
+    "id": 17,
+    "slug": "bahariya-oasis-white-desert-safari",
+    "title": {
+      "ar": "الواحات البحرية (2 يوم / 1 ليلة)",
+      "en": "Bahariya Oasis & White Desert (2 Days / 1 Night)"
+    },
+    "subtitle": {
+      "ar": "مغامرة سريالية في الصحراء البيضاء والسوداء وجبل الكريستال مع مبيت في مخيم بدوي",
+      "en": "Surreal adventure in the White Desert, Black Desert, Crystal Mountain & Bedouin starlit camp"
+    },
+    "overview": {
+      "ar": "رحلة خيالية إلى الواحات البحرية والصحراء البيضاء التي تبدو ككوكب آخر بتكويناتها الصخرية الطباشيرية العجيبة (المشروم، الدجاجة، الأرنب). تشمل الرحلة المرور بالصحراء السوداء، جبل الكريستال، الينابيع الكبريتية الدافئة، ومبيت تحت ملايين النجوم مع عشاء شواء بدوي أصيل.",
+      "en": "An otherworldly expedition to Bahariya Oasis and the White Desert National Park with its limestone rock sculptures, Black Desert volcanic hills, Crystal Mountain, and camping under the desert stars."
+    },
+    "category": "multiday",
+    "estimatedDuration": {
+      "ar": "يومان بليلة",
+      "en": "2 Days / 1 Night"
+    },
+    "prices": {
+      "sedan": 7000,
+      "7seater": 8000,
+      "h1": 10000,
+      "hiace": 12000
+    },
+    "imageUrl": "/hero-pyramids.jpg",
+    "rating": 4.9,
+    "reviewsCount": 84,
+    "highlights": {
+      "ar": [
+        "المبيت في مخيم بدوي تحت سماء تعج بمليارات النجوم ومجرة درب التبانة",
+        "تأمل صخور الصحراء البيضاء العجيبة المنحوتة بفعل الرياح",
+        "تسلق تلال الصحراء السوداء البركانية",
+        "الاستحمام في عين ماء كبريتية ساخنة طبيعية بواحة القصر"
+      ],
+      "en": [
+        "Camp under a breathtaking canopy of desert stars",
+        "Marvel at wind-carved chalk sculptures of the White Desert",
+        "Climb volcanic hills in the Black Desert",
+        "Soak in natural warm mineral sulfur springs"
+      ]
+    },
+    "itinerary": [
+      {
+        "time": "اليوم الأول - 07:00 AM",
+        "title": {
+          "ar": "الانطلاق من القاهرة إلى الواحات البحرية",
+          "en": "Drive to Bahariya Oasis"
+        },
+        "description": {
+          "ar": "التحرك بسيارة مريحة، الوصول للواحة وتناول الغداء، ثم ركوب سيارات 4x4 نحو الصحراء السوداء وجبل الكريستال.",
+          "en": "Drive to Bahariya, transfer to 4x4 safari, explore Black Desert & Crystal Mountain."
+        }
+      },
+      {
+        "time": "اليوم الأول - 05:00 PM",
+        "title": {
+          "ar": "غروب الشمس بالصحراء البيضاء والعشاء البدوي",
+          "en": "White Desert Sunset & Camp"
+        },
+        "description": {
+          "ar": "مشاهدة تحول لون الصخور الطباشيرية مع الغروب، إقامة المخيم وعشاء شواء بدوي حول النار.",
+          "en": "Witness glowing sunset over chalk formations followed by Bedouin BBQ dinner by the fire."
+        }
+      },
+      {
+        "time": "اليوم الثاني - 08:00 AM",
+        "title": {
+          "ar": "شروق الشمس والينابيع الساخنة والعودة",
+          "en": "Sunrise, Hot Springs & Return"
+        },
+        "description": {
+          "ar": "إفطار صحراوي طازج، زيارة العيون الساخنة، ثم بدء رحلة العودة للقاهرة والوصول بعد العصر.",
+          "en": "Desert breakfast, dip in natural warm springs, and return drive to Cairo."
+        }
+      }
+    ],
+    "inclusions": {
+      "ar": [
+        "سيارة خاصة مكيفة للتنقلات ذهاباً وإياباً من القاهرة",
+        "سيارة دفع رباعي 4x4 داخل الصحراء مع سائق خبير",
+        "معدات التخييم الكاملة (خيام، بطاطين، مراتب)",
+        "وجبات كاملة (غداء، عشاء شواء، إفطار)",
+        "مرشد وسائق بدوي مرخص"
+      ],
+      "en": [
+        "Private AC vehicle from/to Cairo",
+        "4x4 desert safari vehicle & driver",
+        "Complete camping gear (tents, blankets, mattresses)",
+        "Full meals (lunch, Bedouin BBQ dinner, breakfast)",
+        "Licensed local guide"
+      ]
+    },
+    "exclusions": {
+      "ar": [
+        "المصروفات الشخصية",
+        "الإكراميات"
+      ],
+      "en": [
+        "Personal expenses",
+        "Tips"
+      ]
+    },
+    "isPopular": true,
+    "showInCatalog": true
+  },
+  {
+    "id": 18,
+    "slug": "siwa-oasis-dream-safari",
+    "title": {
+      "ar": "سيوة والواحات (3 يوم / 2 ليلة)",
+      "en": "Siwa Oasis Dream Safari (3 Days / 2 Nights)"
+    },
+    "subtitle": {
+      "ar": "رحلة الأحلام لبحر الرمال الأعظم، عيون كليوباترا، وبحيرات الملح الكريستالية الفيروزية",
+      "en": "The ultimate desert journey to the Great Sand Sea, Cleopatra Spring & turquoise salt lakes"
+    },
+    "overview": {
+      "ar": "رحلة العمر إلى واحة الأساطير والسكينة في الصحراء الغربية. اكتشف قلعة شالي القديمة، معبد تتويج الإسكندر الأكبر، السباحة في عيون كليوباترا الكبريتية والطفو في بحيرات الملح الفيروزية، وسفاري 4x4 في بحر الرمال الأعظم والمبيت تحت سماء تعج بالنجوم.",
+      "en": "A bucket-list expedition deep into the Western Desert. Explore the ancient salt-mud fortress of Shali, Oracle Temple of Alexander the Great, float weightlessly in crystal salt lakes, and traverse the massive dunes of the Great Sand Sea."
+    },
+    "category": "multiday",
+    "estimatedDuration": {
+      "ar": "3 أيام بليلتين",
+      "en": "3 Days / 2 Nights"
+    },
+    "prices": {
+      "sedan": 14000,
+      "7seater": 16000,
+      "h1": 20000,
+      "hiace": 22000
+    },
+    "imageUrl": "/hero-pyramids.jpg",
+    "rating": 5,
+    "reviewsCount": 112,
+    "highlights": {
+      "ar": [
+        "الطفو في بحيرات الملح السحرية الفيروزية الشهيرة عالمياً",
+        "سفاري 4x4 عميق في بحر الرمال والتزلج الرملي السريع",
+        "زيارة قلعة شالي الأثرية ومعبد آمون (معبد الوحي)",
+        "الاسترخاء في عين كليوباترا وتناول عشاء سيوة الأصيل"
+      ],
+      "en": [
+        "Weightless floating in therapeutic crystal turquoise salt lakes",
+        "Deep 4x4 expedition into the Great Sand Sea",
+        "Ancient mud fortress of Shali & Oracle Temple",
+        "Cleopatra Spring bath & candlelit Siwan dinner"
+      ]
+    },
+    "itinerary": [
+      {
+        "time": "اليوم الأول",
+        "title": {
+          "ar": "السفر لسيوة وزيارة قلعة شالي",
+          "en": "Day 1: Arrival & Shali Fortress"
+        },
+        "description": {
+          "ar": "الانطلاق من القاهرة، الوصول لسيوة واستلام الغرف بفندق تراثي بيئي، ثم زيارة قلعة شالي وغروب الشمس من جزيرة فطناس.",
+          "en": "Private scenic transfer, check-in to an eco-lodge, tour Old Shali, and sunset at Fatnas Island."
+        }
+      },
+      {
+        "time": "اليوم الثاني",
+        "title": {
+          "ar": "بحيرات الملح وسفاري بحر الرمال",
+          "en": "Day 2: Salt Lakes & Great Sand Sea"
+        },
+        "description": {
+          "ar": "السباحة في بحيرات الملح، عين كليوباترا، ثم انطلاق سفاري 4x4 الكثبان والتزلج على الرمال والمياه الكبريتية الساخنة.",
+          "en": "Float in salt lakes, Cleopatra spring, then high-energy 4x4 safari, sandboarding and hot spring dip."
+        }
+      },
+      {
+        "time": "اليوم الثالث",
+        "title": {
+          "ar": "جبل الموتى ومعبد آمون والعودة",
+          "en": "Day 3: Mountain of Dead & Return"
+        },
+        "description": {
+          "ar": "زيارة مقابر جبل الموتى، معبد الوحي، شراء منتجات التمور وزيت الزيتون السيوية ثم رحلة العودة للقاهرة.",
+          "en": "Tour Mountain of the Dead, Oracle of Amun, souvenir olive market, and return trip to Cairo."
+        }
+      }
+    ],
+    "inclusions": {
+      "ar": [
+        "سيارة خاصة حديثة مع وقود وسائق متفرغ طوال الرحلة (3 أيام)",
+        "سفاري دفع رباعي 4x4 داخل بحر الرمال مع رخصة المحمية",
+        "إقامة ليلتين بفندق سياحي بيئي مع الإفطار",
+        "مرشد محلي متخصص في سيوة",
+        "جميع المزارات والتصاريح الأمنية"
+      ],
+      "en": [
+        "Private luxury vehicle with chauffeur for the entire 3 days",
+        "4x4 desert safari with desert permit",
+        "2 nights eco-resort accommodation with daily breakfast",
+        "Dedicated local guide in Siwa",
+        "All entrance tickets and desert permits"
+      ]
+    },
+    "exclusions": {
+      "ar": [
+        "الغداء والعشاء والمصروفات الشخصية",
+        "الإكراميات"
+      ],
+      "en": [
+        "Lunches & dinners not specified",
+        "Personal souvenir shopping & tips"
+      ]
+    },
+    "isPopular": true,
+    "showInCatalog": true
+  },
+  {
+    "id": 19,
+    "slug": "alexandria-2d-1n-getaway",
+    "title": {
+      "ar": "إسكندرية إقامة (2 يوم / 1 ليلة)",
+      "en": "Alexandria Getaway (2 Days / 1 Night)"
+    },
+    "subtitle": {
+      "ar": "عطلة رومانسية هادئة على كورنيش الإسكندرية مع زيارة قصر المنتزه والحدائق الملكية ومتحف المجوهرات",
+      "en": "Relaxing 2-day Mediterranean coastal retreat featuring Montaza Palace gardens & Royal Jewelry Museum"
+    },
+    "overview": {
+      "ar": "إقامة هادئة لمدة ليلتين بيومين في عروس البحر المتوسط. يتيح لك هذا البرنامج وقتاً كافياً للاستمتاع بحدائق قصر المنتزه الملكية، قصر رأس التين، متحف المجوهرات الملكية النادر، قلعة قايتباي، والسهر في أشهر كافيهات ومطاعم البحر.",
+      "en": "A leisurely 2-day coastal escape to Alexandria allowing ample time to tour the Royal Montaza Palace gardens, Royal Jewelry Museum, Qaitbay Citadel, and seaside cafes without rushing."
+    },
+    "category": "multiday",
+    "estimatedDuration": {
+      "ar": "يومان بليلة",
+      "en": "2 Days / 1 Night"
+    },
+    "prices": {
+      "sedan": 5500,
+      "7seater": 7000,
+      "h1": 9000,
+      "hiace": 10000
+    },
+    "imageUrl": "/hero-pyramids.jpg",
+    "rating": 4.9,
+    "reviewsCount": 68,
+    "highlights": {
+      "ar": [
+        "جولة في حدائق قصر المنتزه الملكية وغابات النخيل الشاطئية",
+        "زيارة متحف المجوهرات الملكية لأسرة محمد علي باشا",
+        "إقامة مريحة في فندق مطل على البحر المتوسط",
+        "سيارة خاصة وسائق متاح طوال اليومين لخدمتك"
+      ],
+      "en": [
+        "Explore Royal Montaza Palace lush royal grounds",
+        "Dazzling Royal Jewelry Museum of the Egyptian monarchy",
+        "Relaxing sea-view hotel overnight stay",
+        "Private chauffeur and vehicle at your disposal for 2 full days"
+      ]
+    },
+    "itinerary": [
+      {
+        "time": "اليوم الأول - 08:00 AM",
+        "title": {
+          "ar": "السفر للإسكندرية والمنتزه",
+          "en": "Drive to Alexandria & Montaza"
+        },
+        "description": {
+          "ar": "التحرك صباحاً، استلام غرف الفندق، زيارة حدائق قصر المنتزه الملكية وجسر المعمورة، وغداء مأكولات بحرية.",
+          "en": "Scenic morning drive, hotel check-in, tour Montaza Palace Gardens and seaside lunch."
+        }
+      },
+      {
+        "time": "اليوم الأول - 07:00 PM",
+        "title": {
+          "ar": "سهرة الكورنيش ومحطة الرمل",
+          "en": "Corniche Evening"
+        },
+        "description": {
+          "ar": "جولة حرة على الكورنيش وتناول العشاء والآيس كريم السكندري الشهير.",
+          "en": "Evening stroll along the Corniche and authentic dining."
+        }
+      },
+      {
+        "time": "اليوم الثاني - 09:30 AM",
+        "title": {
+          "ar": "متحف المجوهرات والقلعة والمكتبة",
+          "en": "Jewelry Museum, Citadel & Library"
+        },
+        "description": {
+          "ar": "زيارة متحف المجوهرات الملكية، ثم التوجه لقلعة قايتباي ومكتبة الإسكندرية.",
+          "en": "Tour the opulent Royal Jewelry Museum followed by Qaitbay Citadel & Library."
+        }
+      },
+      {
+        "time": "اليوم الثاني - 05:00 PM",
+        "title": {
+          "ar": "العودة إلى القاهرة",
+          "en": "Return to Cairo"
+        },
+        "description": {
+          "ar": "العودة بالسلامة إلى مقر إقامتك بالقاهرة.",
+          "en": "Comfortable evening drive back to Cairo."
+        }
+      }
+    ],
+    "inclusions": {
+      "ar": [
+        "سيارة خاصة مكيفة مع سائق متفرغ لخدمتك طوال اليومين",
+        "كافة مصاريف الوقود وبوابات الطرق السريعة",
+        "مياه معدنية مثلجة"
+      ],
+      "en": [
+        "Dedicated private AC vehicle and chauffeur for 2 full days",
+        "All fuel and highway toll fees included",
+        "Chilled bottled water"
+      ]
+    },
+    "exclusions": {
+      "ar": [
+        "حجز الفندق والمبيت (يُحجز بمعرفة العميل أو إضافياً)",
+        "تذاكر المزارات والوجبات",
+        "الإكراميات"
+      ],
+      "en": [
+        "Hotel accommodation (can be added on request)",
+        "Monument entry tickets and meals",
+        "Tips"
+      ]
+    },
+    "isPopular": false,
+    "showInCatalog": true
+  }
+]
