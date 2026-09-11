@@ -127,8 +127,10 @@ export default function AdminDashboardPage() {
   const [editingRouteForDetails, setEditingRouteForDetails] = useState<Route | null>(null);
 
   // Load live routes from backend API / localStorage
+  // Load live routes and live bookings
   useEffect(() => {
-    const loadRoutes = async () => {
+    const loadData = async () => {
+      // 1. Routes
       try {
         const cached = localStorage.getItem('anubis_routes');
         if (cached) {
@@ -148,8 +150,49 @@ export default function AdminDashboardPage() {
       } catch (err) {
         console.warn('Could not fetch routes:', err);
       }
+
+      // 2. Bookings
+      try {
+        const cachedB = localStorage.getItem('anubis_bookings');
+        if (cachedB) {
+          const parsed = JSON.parse(cachedB);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setBookings(parsed);
+          }
+        }
+        const resB = await fetch('/api/bookings');
+        if (resB.ok) {
+          const dataB = await resB.json();
+          if (dataB.success && Array.isArray(dataB.bookings)) {
+            setBookings(dataB.bookings);
+            localStorage.setItem('anubis_bookings', JSON.stringify(dataB.bookings));
+          }
+        }
+      } catch (err) {
+        console.warn('Could not fetch bookings:', err);
+      }
     };
-    loadRoutes();
+
+    loadData();
+
+    // Real-time synchronization
+    const handleSync = () => {
+      try {
+        const cachedB = localStorage.getItem('anubis_bookings');
+        if (cachedB) {
+          const parsed = JSON.parse(cachedB);
+          if (Array.isArray(parsed)) setBookings(parsed);
+        }
+      } catch {}
+    };
+
+    window.addEventListener('storage', handleSync);
+    window.addEventListener('anubis_bookings_updated', handleSync);
+
+    return () => {
+      window.removeEventListener('storage', handleSync);
+      window.removeEventListener('anubis_bookings_updated', handleSync);
+    };
   }, []);
 
   // 3. Regular Clients & Account Statements State

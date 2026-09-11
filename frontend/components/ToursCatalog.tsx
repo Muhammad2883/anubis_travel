@@ -89,6 +89,36 @@ export const ToursCatalog: React.FC<ToursCatalogProps> = ({ locale, currency, ro
       message += `I would like to inquire and confirm this tour program with ANUBIS Travel management.`;
     }
 
+    // Record in bookings CRM
+    const newBookingAdmin = {
+      id: String(Date.now()),
+      reference: ref,
+      type: 'transfer' as const,
+      title: `برنامج: ${route.title.ar}`,
+      customerName: locale === 'ar' ? 'عميل واتساب مباشر' : 'Direct WhatsApp Client',
+      customerPhone: 'طلب عبر الواتساب',
+      pickupDate: new Date().toISOString().split('T')[0],
+      pickupTime: 'حسب الرغبة',
+      pickupLocation: 'فندق الإقامة',
+      vehicleName: 'ملاكي سيدان فاخرة',
+      amountEgp: route.prices.sedan || basePrice,
+      status: 'pending' as const,
+      createdAt: new Date().toISOString().replace('T', ' ').slice(0, 16)
+    };
+
+    try {
+      fetch('/api/bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ booking: newBookingAdmin })
+      }).catch(e => console.warn('Could not post booking:', e));
+
+      const existingCached = localStorage.getItem('anubis_bookings');
+      const list = existingCached ? JSON.parse(existingCached) : [];
+      localStorage.setItem('anubis_bookings', JSON.stringify([newBookingAdmin, ...list]));
+      window.dispatchEvent(new Event('anubis_bookings_updated'));
+    } catch {}
+
     window.open(`https://api.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(message)}`, '_blank');
   };
 

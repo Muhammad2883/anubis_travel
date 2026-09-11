@@ -87,20 +87,21 @@ export const TransferBookingEngine: React.FC<TransferBookingEngineProps> = ({ lo
     return convertPrice(currentTotalEgp, currency);
   }, [currentTotalEgp, currency]);
 
-  // Handle Booking
-  const handleBooking = (viaWhatsApp: boolean = false) => {
+  // Handle Booking - Automatically dispatches to Management WhatsApp and saves to CRM
+  const handleBooking = async () => {
     if (!customerName.trim() || !customerPhone.trim()) {
       alert(locale === 'ar' ? 'يرجى إدخال اسم العميل ورقم الهاتف / الواتساب للمتابعة.' : 'Please provide your name and phone/WhatsApp number.');
       return;
     }
 
+    const ref = generateBookingReference();
     const payload: BookingPayload = {
-      bookingReference: generateBookingReference(),
+      bookingReference: ref,
       type: 'transfer',
       itemId: activeRoute.id,
       itemName: activeRoute.title[locale],
-      customerName,
-      customerPhone,
+      customerName: customerName.trim(),
+      customerPhone: customerPhone.trim(),
       flightNumber: flightNumber.trim() || undefined,
       pickupDate,
       pickupTime,
@@ -115,6 +116,41 @@ export const TransferBookingEngine: React.FC<TransferBookingEngineProps> = ({ lo
       notes: notes.trim() || undefined
     };
 
+    // 1. Prepare Admin CRM record
+    const newBookingAdmin = {
+      id: String(Date.now()),
+      reference: ref,
+      type: 'transfer' as const,
+      title: `${activeRoute.title.ar} (${activeVehicle.name.ar})`,
+      customerName: customerName.trim(),
+      customerPhone: customerPhone.trim(),
+      pickupDate,
+      pickupTime,
+      pickupLocation: pickupLocation.trim() || (locale === 'ar' ? 'فندق العميل' : 'Hotel Lobby'),
+      dropoffLocation: dropoffLocation.trim() || undefined,
+      vehicleName: activeVehicle.name.ar,
+      amountEgp: currentTotalEgp,
+      status: 'pending' as const,
+      flightNumber: flightNumber.trim() || undefined,
+      createdAt: new Date().toISOString().replace('T', ' ').slice(0, 16)
+    };
+
+    // 2. Persist booking to /api/bookings and local sync
+    try {
+      fetch('/api/bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ booking: newBookingAdmin })
+      }).catch(e => console.warn('Could not POST /api/bookings:', e));
+
+      const existingCached = localStorage.getItem('anubis_bookings');
+      const list = existingCached ? JSON.parse(existingCached) : [];
+      localStorage.setItem('anubis_bookings', JSON.stringify([newBookingAdmin, ...list]));
+      window.dispatchEvent(new Event('anubis_bookings_updated'));
+    } catch (e) {
+      console.error('Booking sync error:', e);
+    }
+
     setBookingSuccessPayload(payload);
 
     try {
@@ -125,10 +161,9 @@ export const TransferBookingEngine: React.FC<TransferBookingEngineProps> = ({ lo
       });
     } catch {}
 
-    if (viaWhatsApp) {
-      const link = buildWhatsAppLink(payload, locale);
-      window.open(link, '_blank');
-    }
+    // 3. AUTOMATIC DISPATCH TO MANAGEMENT WHATSAPP (+20 109 150 1160)
+    const link = buildWhatsAppLink(payload, locale);
+    window.open(link, '_blank');
   };
 
   return (
@@ -410,20 +445,11 @@ export const TransferBookingEngine: React.FC<TransferBookingEngineProps> = ({ lo
               <div className="mt-5 space-y-3">
                 <button
                   type="button"
-                  onClick={() => handleBooking(true)}
-                  className="w-full flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#25D366] to-[#1ebe5d] px-5 py-3.5 text-sm font-bold text-white shadow-lg hover:opacity-95 active:scale-[0.98] transition-all cursor-pointer"
+                  onClick={handleBooking}
+                  className="w-full flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#25D366] to-[#1ebe5d] px-5 py-4 text-sm sm:text-base font-bold text-white shadow-xl shadow-[#25D366]/20 hover:opacity-95 active:scale-[0.98] transition-all cursor-pointer"
                 >
-                  <MessageCircle className="h-4 w-4" />
-                  <span>{t.transfers.bookViaWhatsApp}</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => handleBooking(false)}
-                  className="w-full flex items-center justify-center gap-2 rounded-xl border border-[#d4af37]/50 bg-[#140f0a] px-5 py-3 text-xs font-semibold text-[#fae48c] hover:bg-[#1a140d] transition-all cursor-pointer"
-                >
-                  <CheckCircle className="h-4 w-4 text-[#d4af37]" />
-                  <span>{t.transfers.submitBooking}</span>
+                  <MessageCircle className="h-5 w-5" />
+                  <span>{locale === 'ar' ? 'تأكيد الحجز والإرسال المباشر لواتساب الإدارة' : 'Confirm & Send to Management WhatsApp'}</span>
                 </button>
               </div>
 
@@ -440,7 +466,9 @@ export const TransferBookingEngine: React.FC<TransferBookingEngineProps> = ({ lo
             <div className="relative w-full max-w-lg rounded-2xl border-2 border-[#d4af37] bg-[#120e0a] p-6 shadow-2xl text-start">
               <div className="flex items-center gap-3 text-[#38ef7d] mb-4">
                 <Sparkles className="h-6 w-6" />
-                <h3 className="text-lg font-bold text-white">{t.transfers.successTitle}</h3>
+                <h3 className="text-lg font-bold text-white">
+                  {locale === 'ar' ? 'تم إرسال طلب الحجز لواتساب الإدارة بنجاح!' : 'Booking Sent to Management WhatsApp!'}
+                </h3>
               </div>
 
               <div className="rounded-xl border border-[#d4af37]/30 bg-[#1a140e] p-4 space-y-2 text-xs text-[#ede3d1] mb-5">
@@ -461,13 +489,15 @@ export const TransferBookingEngine: React.FC<TransferBookingEngineProps> = ({ lo
                   <span className="font-medium text-white">{bookingSuccessPayload.pickupDate} ({bookingSuccessPayload.pickupTime})</span>
                 </div>
                 <div className="flex justify-between border-t border-[#d4af37]/15 pt-2">
-                  <span className="text-[#a69883]">{locale === 'ar' ? 'الإجمالي:' : 'Total:'}</span>
+                  <span className="text-[#a69883]">{locale === 'ar' ? 'الإجمالي التقديري:' : 'Total:'}</span>
                   <span className="font-bold text-[#fae48c] text-sm">{bookingSuccessPayload.totalAmount} {bookingSuccessPayload.currency}</span>
                 </div>
               </div>
 
               <p className="text-xs text-[#a69883] mb-6">
-                {t.transfers.contactNotice}
+                {locale === 'ar'
+                  ? 'تم فتح تطبيق واتساب وتجهيز تفاصيل الحجز بالكامل لإرسالها مباشرة لرقم إدارة أنوبيس ترافيل (01091501160) للمتابعة والتأكيد الفوري.'
+                  : 'WhatsApp has been opened with your full reservation details addressed to ANUBIS Travel management (+20 109 150 1160).'}
               </p>
 
               <div className="flex items-center gap-3">
@@ -478,14 +508,14 @@ export const TransferBookingEngine: React.FC<TransferBookingEngineProps> = ({ lo
                   className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#25D366] to-[#1ebe5d] py-3 text-xs font-bold text-white shadow-md hover:opacity-95"
                 >
                   <MessageCircle className="h-4 w-4" />
-                  <span>فتح محادثة واتساب الآن</span>
+                  <span>{locale === 'ar' ? 'إعادة فتح محادثة الواتساب الآن' : 'Re-open WhatsApp Chat'}</span>
                 </a>
 
                 <button
                   onClick={() => setBookingSuccessPayload(null)}
                   className="rounded-xl border border-[#d4af37]/40 bg-[#1a140e] px-4 py-3 text-xs font-semibold text-[#ede3d1] hover:bg-[#241c14] cursor-pointer"
                 >
-                  إغلاق
+                  {locale === 'ar' ? 'إغلاق' : 'Close'}
                 </button>
               </div>
             </div>

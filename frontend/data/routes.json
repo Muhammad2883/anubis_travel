@@ -255,7 +255,7 @@
       ]
     },
     "isPopular": true,
-    "showInCatalog": true
+    "showInCatalog": false
   },
   {
     "id": 3,
@@ -382,7 +382,7 @@
       ]
     },
     "isPopular": true,
-    "showInCatalog": true
+    "showInCatalog": false
   },
   {
     "id": 4,
@@ -520,7 +520,7 @@
       ]
     },
     "isPopular": false,
-    "showInCatalog": true
+    "showInCatalog": false
   },
   {
     "id": 5,
@@ -621,7 +621,7 @@
       ]
     },
     "isPopular": false,
-    "showInCatalog": true
+    "showInCatalog": false
   },
   {
     "id": 6,
@@ -737,7 +737,7 @@
       ]
     },
     "isPopular": true,
-    "showInCatalog": true
+    "showInCatalog": false
   },
   {
     "id": 7,
@@ -965,7 +965,7 @@
       ]
     },
     "isPopular": true,
-    "showInCatalog": true
+    "showInCatalog": false
   },
   {
     "id": 10,
@@ -1091,7 +1091,7 @@
       ]
     },
     "isPopular": true,
-    "showInCatalog": true
+    "showInCatalog": false
   },
   {
     "id": 11,
@@ -1207,7 +1207,7 @@
       ]
     },
     "isPopular": false,
-    "showInCatalog": true
+    "showInCatalog": false
   },
   {
     "id": 12,
@@ -1336,7 +1336,7 @@
       ]
     },
     "isPopular": false,
-    "showInCatalog": true
+    "showInCatalog": false
   },
   {
     "id": 13,
@@ -1619,7 +1619,7 @@
       ]
     },
     "isPopular": true,
-    "showInCatalog": true
+    "showInCatalog": false
   },
   {
     "id": 18,
@@ -1726,7 +1726,7 @@
       ]
     },
     "isPopular": true,
-    "showInCatalog": true
+    "showInCatalog": false
   },
   {
     "id": 19,
@@ -1842,6 +1842,6 @@
       ]
     },
     "isPopular": false,
-    "showInCatalog": true
+    "showInCatalog": false
   }
 ]
