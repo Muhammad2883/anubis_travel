@@ -82,30 +82,35 @@ export const Hero: React.FC<HeroProps> = ({ locale, onNavigate }) => {
             </div>
           </div>
 
-          {/* Hero Visual Card / Brand Showcase */}
-          <div className="lg:col-span-5 relative">
-            <div className="relative overflow-hidden rounded-2xl border border-[#d4af37]/40 bg-[#120e0a] p-2 shadow-2xl shadow-[#d4af37]/10">
-              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl">
+          {/* Hero Visual Card / Brand Showcase - Large, Sharp & Clear Logo */}
+          <div className="lg:col-span-5 relative flex flex-col items-center justify-center">
+            {/* Ambient Golden Halo Glow */}
+            <div className="absolute -inset-3 rounded-3xl bg-gradient-to-r from-[#d4af37]/35 via-[#fae48c]/20 to-[#d4af37]/35 blur-2xl opacity-75 pointer-events-none transition-all duration-700 group-hover:opacity-100" />
+
+            <div className="relative w-full overflow-hidden rounded-3xl border-2 border-[#d4af37]/60 bg-gradient-to-b from-[#18120b] via-[#0d0905] to-[#050302] p-3 sm:p-4 shadow-2xl shadow-[#d4af37]/25 group">
+              {/* Grand Logo Showcase Canvas */}
+              <div className="relative aspect-square w-full max-w-[440px] mx-auto overflow-hidden rounded-2xl bg-gradient-to-b from-[#0a0704] to-[#040302] border border-[#d4af37]/30 flex items-center justify-center shadow-inner">
                 <Image
-                  src="/hero-pyramids.jpg"
-                  alt="ANUBIS Luxury Egyptian Tours"
+                  src="/anubis-hero-logo.png"
+                  alt="ANUBIS Travel Tours Egypt"
                   fill
-                  className="object-cover transition-transform duration-700 hover:scale-105"
+                  className="object-contain p-3 sm:p-4 transition-transform duration-700 group-hover:scale-105 filter drop-shadow-[0_12px_24px_rgba(212,175,55,0.3)]"
                   priority
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#070503] via-transparent to-black/30" />
+              </div>
 
-                {/* Overlaid Floating Tag */}
-                <div className="absolute bottom-4 left-4 right-4 rounded-xl border border-[#d4af37]/30 bg-[#070503]/85 p-3.5 backdrop-blur-md">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-xs font-mono uppercase tracking-widest text-[#d4af37]">Official Fleet & Tours</p>
-                      <p className="text-sm font-bold text-white">ANUBIS TRAVEL EGYPT</p>
-                    </div>
-                    <span className="rounded-full bg-[#d4af37]/20 px-2.5 py-1 text-[11px] font-bold text-[#fae48c] border border-[#d4af37]/40">
-                      ★ 4.9 / 5.0
-                    </span>
-                  </div>
+              {/* Luxury Bottom Tag - Cleanly Placed Below, NOT covering the logo */}
+              <div className="mt-3 rounded-2xl border border-[#d4af37]/30 bg-[#0e0a06]/95 px-4 py-3 backdrop-blur-md flex items-center justify-between">
+                <div>
+                  <p className="text-[10px] sm:text-xs font-mono uppercase tracking-widest text-[#d4af37]">
+                    Official Fleet & Tours
+                  </p>
+                  <p className="text-xs sm:text-sm font-bold text-white font-serif tracking-wide">
+                    ANUBIS TRAVEL EGYPT
+                  </p>
+                </div>
+                <div className="flex items-center gap-1.5 rounded-full bg-[#d4af37]/20 px-3 py-1 text-xs font-bold text-[#fae48c] border border-[#d4af37]/40 shadow-sm">
+                  <span>★ 5.0 / 4.9</span>
                 </div>
               </div>
             </div>
