@@ -66,14 +66,6 @@ export const Footer: React.FC<FooterProps> = ({ locale, onNavigate }) => {
               </li>
               <li>
                 <button
-                  onClick={() => onNavigate('tours')}
-                  className="hover:text-[#fae48c] transition-colors cursor-pointer"
-                >
-                  {t.nav.tours}
-                </button>
-              </li>
-              <li>
-                <button
                   onClick={() => onNavigate('fleet')}
                   className="hover:text-[#fae48c] transition-colors cursor-pointer"
                 >

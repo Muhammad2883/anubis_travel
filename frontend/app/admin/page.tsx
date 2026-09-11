@@ -3,15 +3,14 @@
 import React, { useState, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { VEHICLES, ROUTES, TOURS, GENERAL_TERMS } from '@/lib/data';
-import { Route, Vehicle, Tour, BookingPayload, Currency } from '@/lib/types';
-import { formatPrice, convertPrice, EXCHANGE_RATES } from '@/lib/pricing-engine';
+import { VEHICLES, ROUTES, INITIAL_REGULAR_CLIENTS } from '@/lib/data';
+import { Route, Vehicle, RegularClient, ClientTrip, CarModel, Currency } from '@/lib/types';
 import {
   LayoutDashboard,
   CalendarCheck,
   MapPin,
   Car,
-  Compass,
+  Users,
   DollarSign,
   TrendingUp,
   Clock,
@@ -30,15 +29,19 @@ import {
   ChevronRight,
   Save,
   RotateCcw,
-  Sparkles,
-  Users,
-  Briefcase
+  FileText,
+  Trash2,
+  Eye,
+  CreditCard,
+  Building,
+  UserCheck,
+  AlertTriangle
 } from 'lucide-react';
 
 interface AdminBooking {
   id: string;
   reference: string;
-  type: 'transfer' | 'tour';
+  type: 'transfer';
   title: string;
   customerName: string;
   customerPhone: string;
@@ -54,10 +57,9 @@ interface AdminBooking {
 }
 
 export default function AdminDashboardPage() {
-  const [activeTab, setActiveTab] = useState<'overview' | 'bookings' | 'pricing' | 'routes' | 'fleet' | 'tours'>('overview');
-  const [currency, setCurrency] = useState<Currency>('EGP');
+  const [activeTab, setActiveTab] = useState<'overview' | 'bookings' | 'routes' | 'clients' | 'fleet'>('overview');
 
-  // Bookings State (Initial Mock/Persisted Data)
+  // 1. Bookings State
   const [bookings, setBookings] = useState<AdminBooking[]>([
     {
       id: '1',
@@ -88,27 +90,12 @@ export default function AdminDashboardPage() {
       pickupLocation: 'مدينتي - التجمع',
       dropoffLocation: 'كورنيش الإسكندرية وقايتباي',
       vehicleName: '7 راكب عائلي (SUV)',
-      amountEgp: 3700, // 3500 + 200 far hotel
+      amountEgp: 3700,
       status: 'pending',
       createdAt: '2026-09-11 11:30'
     },
     {
       id: '3',
-      reference: 'ANB-0911-3912',
-      type: 'tour',
-      title: 'أهرامات الجيزة وسقارة وممفيس',
-      customerName: 'Mr. Johnathan Smith',
-      customerPhone: '+44 7911 123456',
-      pickupDate: '2026-09-14',
-      pickupTime: '08:30',
-      pickupLocation: 'Four Seasons Hotel Cairo',
-      vehicleName: 'هيونداي إتش وان (H1)',
-      amountEgp: 2300,
-      status: 'confirmed',
-      createdAt: '2026-09-11 12:45'
-    },
-    {
-      id: '4',
       reference: 'ANB-0910-1120',
       type: 'transfer',
       title: 'هرم - ممفيس - سقارة - دهشور',
@@ -125,19 +112,57 @@ export default function AdminDashboardPage() {
     }
   ]);
 
-  // Pricing Matrix State
+  // 2. Routes & Unified Pricing State
   const [routesData, setRoutesData] = useState<Route[]>(ROUTES);
   const [usdRate, setUsdRate] = useState<number>(48.5);
   const [eurRate, setEurRate] = useState<number>(53.0);
   const [farHotelSedanSurcharge, setFarHotelSedanSurcharge] = useState<number>(200);
   const [farHotelVanSurcharge, setFarHotelVanSurcharge] = useState<number>(500);
 
-  // Filters & Search for Bookings
-  const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState<'all' | 'pending' | 'confirmed' | 'completed' | 'cancelled'>('all');
-  const [bookingViewMode, setBookingViewMode] = useState<'table' | 'kanban'>('table');
+  // 3. Regular Clients & Account Statements State
+  const [clients, setClients] = useState<RegularClient[]>(INITIAL_REGULAR_CLIENTS);
+  const [selectedClientForStatement, setSelectedClientForStatement] = useState<RegularClient | null>(null);
+  const [isAddClientOpen, setIsAddClientOpen] = useState(false);
+  const [newClientForm, setNewClientForm] = useState({
+    name: '',
+    companyName: '',
+    phone: '',
+    email: '',
+    clientType: 'vip' as 'vip' | 'corporate' | 'hotel' | 'agency',
+    notes: ''
+  });
 
-  // New Booking Modal
+  // Record Payment / Add Trip to Client
+  const [isAddTripToClientOpen, setIsAddTripToClientOpen] = useState(false);
+  const [newTripForm, setNewTripForm] = useState({
+    date: new Date().toISOString().split('T')[0],
+    routeTitle: ROUTES[0].title.ar,
+    vehicleName: 'ملاكي سيدان فاخرة',
+    amountEgp: 800,
+    paidAmountEgp: 800,
+    driverName: 'كابتن / أحمد صلاح',
+    notes: ''
+  });
+
+  // 4. Fleet & Models State
+  const [fleetCategories, setFleetCategories] = useState<Vehicle[]>(VEHICLES);
+  const [isAddCarModalOpen, setIsAddCarModalOpen] = useState(false);
+  const [targetCategorySlug, setTargetCategorySlug] = useState<string>('sedan');
+  const [newCarForm, setNewCarForm] = useState({
+    nameAr: '',
+    nameEn: '',
+    year: 2025,
+    featuresAr: '',
+    showOnHomepage: true
+  });
+
+  // Filters & Search
+  const [bookingSearch, setBookingSearch] = useState('');
+  const [bookingStatusFilter, setBookingStatusFilter] = useState<'all' | 'pending' | 'confirmed' | 'completed' | 'cancelled'>('all');
+  const [clientSearch, setClientSearch] = useState('');
+  const [routeSearch, setRouteSearch] = useState('');
+
+  // Manual Booking Modal
   const [isAddBookingOpen, setIsAddBookingOpen] = useState(false);
   const [newBookingForm, setNewBookingForm] = useState({
     customerName: '',
@@ -150,7 +175,20 @@ export default function AdminDashboardPage() {
     flightNumber: ''
   });
 
-  // KPI Calculations
+  // Add Route Modal
+  const [isAddRouteOpen, setIsAddRouteOpen] = useState(false);
+  const [newRouteForm, setNewRouteForm] = useState({
+    titleAr: '',
+    titleEn: '',
+    category: 'day_tour' as any,
+    durationAr: '8-9 ساعات',
+    sedan: 1000,
+    seater7: 1500,
+    h1: 2300,
+    hiace: 2600
+  });
+
+  // Calculations
   const stats = useMemo(() => {
     const total = bookings.length;
     const pending = bookings.filter(b => b.status === 'pending').length;
@@ -160,6 +198,8 @@ export default function AdminDashboardPage() {
       .filter(b => b.status !== 'cancelled')
       .reduce((acc, b) => acc + b.amountEgp, 0);
 
+    const totalClientsBalance = clients.reduce((acc, c) => acc + c.accountBalanceEgp, 0);
+
     return {
       total,
       pending,
@@ -167,74 +207,177 @@ export default function AdminDashboardPage() {
       completed,
       totalRevenueEgp,
       totalRevenueUsd: Math.round(totalRevenueEgp / usdRate),
-      totalRevenueEur: Math.round(totalRevenueEgp / eurRate)
+      totalRevenueEur: Math.round(totalRevenueEgp / eurRate),
+      totalClientsCount: clients.length,
+      totalClientsBalance
     };
-  }, [bookings, usdRate, eurRate]);
+  }, [bookings, clients, usdRate, eurRate]);
 
-  // Filtered Bookings
-  const filteredBookings = useMemo(() => {
-    return bookings.filter(b => {
-      const matchesSearch =
-        b.customerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        b.customerPhone.includes(searchQuery) ||
-        b.reference.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        b.title.toLowerCase().includes(searchQuery.toLowerCase());
-
-      const matchesStatus = statusFilter === 'all' || b.status === statusFilter;
-      return matchesSearch && matchesStatus;
-    });
-  }, [bookings, searchQuery, statusFilter]);
-
-  // Update Booking Status
-  const handleUpdateStatus = (id: string, newStatus: 'pending' | 'confirmed' | 'completed' | 'cancelled') => {
-    setBookings(prev => prev.map(b => b.id === id ? { ...b, status: newStatus } : b));
-  };
-
-  // Add Booking
-  const handleCreateBooking = (e: React.FormEvent) => {
+  // Handle Client Management
+  const handleAddClient = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newBookingForm.customerName || !newBookingForm.customerPhone) {
-      alert('يرجى ملء جميع البيانات الأساسية');
+    if (!newClientForm.name.trim() || !newClientForm.phone.trim()) {
+      alert('يرجى كتابة اسم العميل ورقم الهاتف.');
       return;
     }
 
-    const route = ROUTES.find(r => r.id === Number(newBookingForm.routeId)) || ROUTES[0];
-    const vehicle = VEHICLES.find(v => v.slug === newBookingForm.vehicleSlug) || VEHICLES[0];
-    const rawPrice = route.prices[vehicle.slug as keyof typeof route.prices] || 800;
-
-    const newBooking: AdminBooking = {
-      id: String(Date.now()),
-      reference: `ANB-${new Date().getMonth() + 1}${new Date().getDate()}-${Math.floor(1000 + Math.random() * 9000)}`,
-      type: 'transfer',
-      title: route.title.ar,
-      customerName: newBookingForm.customerName,
-      customerPhone: newBookingForm.customerPhone,
-      pickupDate: newBookingForm.pickupDate,
-      pickupTime: newBookingForm.pickupTime,
-      pickupLocation: newBookingForm.pickupLocation || 'فندق العميل',
-      vehicleName: vehicle.name.ar,
-      amountEgp: rawPrice,
-      status: 'pending',
-      flightNumber: newBookingForm.flightNumber || undefined,
-      createdAt: new Date().toISOString().replace('T', ' ').slice(0, 16)
+    const newC: RegularClient = {
+      id: `c-${Date.now()}`,
+      name: newClientForm.name.trim(),
+      companyName: newClientForm.companyName.trim() || undefined,
+      phone: newClientForm.phone.trim(),
+      email: newClientForm.email.trim() || undefined,
+      clientType: newClientForm.clientType,
+      accountBalanceEgp: 0,
+      tripsCount: 0,
+      notes: newClientForm.notes.trim() || undefined,
+      createdAt: new Date().toISOString().split('T')[0],
+      trips: []
     };
 
-    setBookings([newBooking, ...bookings]);
-    setIsAddBookingOpen(false);
-    setNewBookingForm({
-      customerName: '',
-      customerPhone: '',
-      routeId: ROUTES[0].id,
-      vehicleSlug: 'sedan',
-      pickupDate: new Date().toISOString().split('T')[0],
-      pickupTime: '10:00',
-      pickupLocation: '',
-      flightNumber: ''
+    setClients([newC, ...clients]);
+    setIsAddClientOpen(false);
+    setNewClientForm({
+      name: '',
+      companyName: '',
+      phone: '',
+      email: '',
+      clientType: 'vip',
+      notes: ''
     });
-    alert('تمت إضافة الحجز بنجاح إلى جدول العمليات!');
+    alert('تمت إضافة العميل الثابت بنجاح!');
   };
 
-  // Price Change in Matrix
+  const handleDeleteClient = (clientId: string, clientName: string) => {
+    if (confirm(`هل أنت متأكد من حذف العميل "${clientName}" وكافة حساباته وسجلاته؟`)) {
+      setClients(clients.filter(c => c.id !== clientId));
+      if (selectedClientForStatement?.id === clientId) {
+        setSelectedClientForStatement(null);
+      }
+    }
+  };
+
+  // Add Trip / Transaction to Client
+  const handleAddTripToClient = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedClientForStatement) return;
+
+    const remaining = newTripForm.amountEgp - newTripForm.paidAmountEgp;
+    const tripStatus: 'paid' | 'partial' | 'unpaid' =
+      remaining <= 0 ? 'paid' : newTripForm.paidAmountEgp > 0 ? 'partial' : 'unpaid';
+
+    const newTrip: ClientTrip = {
+      id: `t-${Date.now()}`,
+      date: newTripForm.date,
+      routeTitle: newTripForm.routeTitle,
+      vehicleName: newTripForm.vehicleName,
+      amountEgp: newTripForm.amountEgp,
+      paidAmountEgp: newTripForm.paidAmountEgp,
+      status: tripStatus,
+      driverName: newTripForm.driverName || undefined,
+      notes: newTripForm.notes || undefined
+    };
+
+    const updatedClients = clients.map(c => {
+      if (c.id === selectedClientForStatement.id) {
+        const updatedTrips = [newTrip, ...c.trips];
+        const newBalance = c.accountBalanceEgp + remaining;
+        return {
+          ...c,
+          trips: updatedTrips,
+          tripsCount: updatedTrips.length,
+          accountBalanceEgp: newBalance
+        };
+      }
+      return c;
+    });
+
+    setClients(updatedClients);
+    setSelectedClientForStatement(updatedClients.find(c => c.id === selectedClientForStatement.id) || null);
+    setIsAddTripToClientOpen(false);
+    alert('تم تسجيل الرحلة وتحديث كشف حساب العميل بنجاح!');
+  };
+
+  // Handle Adding Car to Category
+  const handleAddCarToCategory = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newCarForm.nameAr.trim()) {
+      alert('يرجى كتابة اسم السيارة والموديل.');
+      return;
+    }
+
+    const featuresList = newCarForm.featuresAr
+      ? newCarForm.featuresAr.split(',').map(s => s.trim()).filter(Boolean)
+      : ['تكييف فائق', 'سائق محترف'];
+
+    const newCar: CarModel = {
+      id: `car-${Date.now()}`,
+      categorySlug: targetCategorySlug,
+      name: {
+        ar: newCarForm.nameAr.trim(),
+        en: newCarForm.nameEn.trim() || newCarForm.nameAr.trim()
+      },
+      year: newCarForm.year,
+      features: {
+        ar: featuresList,
+        en: featuresList
+      },
+      showOnHomepage: newCarForm.showOnHomepage
+    };
+
+    const updated = fleetCategories.map(cat => {
+      if (cat.slug === targetCategorySlug) {
+        return {
+          ...cat,
+          models: [...(cat.models || []), newCar]
+        };
+      }
+      return cat;
+    });
+
+    setFleetCategories(updated);
+    setIsAddCarModalOpen(false);
+    setNewCarForm({
+      nameAr: '',
+      nameEn: '',
+      year: 2025,
+      featuresAr: '',
+      showOnHomepage: true
+    });
+    alert('تمت إضافة السيارة بنجاح تحت الفئة المحددة وستظهر في الصفحة الرئيسية حسب اختيارك!');
+  };
+
+  const handleToggleCarHomepage = (categorySlug: string, carId: string) => {
+    setFleetCategories(prev =>
+      prev.map(cat => {
+        if (cat.slug === categorySlug && cat.models) {
+          return {
+            ...cat,
+            models: cat.models.map(m => m.id === carId ? { ...m, showOnHomepage: !m.showOnHomepage } : m)
+          };
+        }
+        return cat;
+      })
+    );
+  };
+
+  const handleDeleteCar = (categorySlug: string, carId: string) => {
+    if (confirm('هل أنت متأكد من حذف هذه السيارة من الأسطول؟')) {
+      setFleetCategories(prev =>
+        prev.map(cat => {
+          if (cat.slug === categorySlug && cat.models) {
+            return {
+              ...cat,
+              models: cat.models.filter(m => m.id !== carId)
+            };
+          }
+          return cat;
+        })
+      );
+    }
+  };
+
+  // Route Price Change in Combined Section
   const handlePriceChange = (routeId: number, vehicleKey: 'sedan' | '7seater' | 'h1' | 'hiace', value: string) => {
     const num = value === '' ? null : Number(value);
     setRoutesData(prev =>
@@ -253,30 +396,36 @@ export default function AdminDashboardPage() {
     );
   };
 
-  // Export CSV
-  const handleExportCsv = () => {
-    const headers = ['رقم الحجز', 'العميل', 'رقم الهاتف', 'الخدمة / المسار', 'المركبة', 'التاريخ', 'الوقت', 'السعر (ج.م)', 'الحالة'];
-    const rows = bookings.map(b => [
-      b.reference,
-      `"${b.customerName}"`,
-      `"${b.customerPhone}"`,
-      `"${b.title}"`,
-      `"${b.vehicleName}"`,
-      b.pickupDate,
-      b.pickupTime,
-      b.amountEgp,
-      b.status
-    ]);
+  // Add Route
+  const handleAddRoute = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newRouteForm.titleAr.trim()) {
+      alert('يرجى إدخال اسم المسار.');
+      return;
+    }
 
-    const csvContent = '\uFEFF' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', `ANUBIS_Bookings_${new Date().toISOString().slice(0, 10)}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const newR: Route = {
+      id: routesData.length + 1,
+      title: {
+        ar: newRouteForm.titleAr.trim(),
+        en: newRouteForm.titleEn.trim() || newRouteForm.titleAr.trim()
+      },
+      category: newRouteForm.category,
+      estimatedDuration: {
+        ar: newRouteForm.durationAr,
+        en: newRouteForm.durationAr
+      },
+      prices: {
+        sedan: Number(newRouteForm.sedan) || 1000,
+        '7seater': Number(newRouteForm.seater7) || 1500,
+        h1: newRouteForm.h1 ? Number(newRouteForm.h1) : null,
+        hiace: newRouteForm.hiace ? Number(newRouteForm.hiace) : null
+      }
+    };
+
+    setRoutesData([...routesData, newR]);
+    setIsAddRouteOpen(false);
+    alert('تمت إضافة المسار الجديد بنجاح!');
   };
 
   return (
@@ -301,7 +450,7 @@ export default function AdminDashboardPage() {
                     لوحة التحكم والإدارة
                   </span>
                   <span className="rounded bg-[#d4af37]/20 px-2 py-0.5 text-[10px] font-bold text-[#fae48c] border border-[#d4af37]/40">
-                    ANUBIS OPS v1.0
+                    ANUBIS OPS
                   </span>
                 </div>
                 <p className="text-[11px] text-[#a69883]">
@@ -311,16 +460,13 @@ export default function AdminDashboardPage() {
             </Link>
           </div>
 
-          {/* Quick Nav to Public Site */}
-          <div className="flex items-center gap-3">
-            <Link
-              href="/"
-              className="flex items-center gap-1.5 rounded-xl border border-[#d4af37]/40 bg-[#16110b] px-3.5 py-1.5 text-xs font-semibold text-[#ede3d1] hover:bg-[#20180f] hover:text-[#fae48c] transition-all"
-            >
-              <span>عرض الموقع للجمهور</span>
-              <ArrowRight className="h-3.5 w-3.5 text-[#d4af37]" />
-            </Link>
-          </div>
+          <Link
+            href="/"
+            className="flex items-center gap-1.5 rounded-xl border border-[#d4af37]/40 bg-[#16110b] px-3.5 py-1.5 text-xs font-semibold text-[#ede3d1] hover:bg-[#20180f] hover:text-[#fae48c] transition-all"
+          >
+            <span>عرض الموقع للجمهور</span>
+            <ArrowRight className="h-3.5 w-3.5 text-[#d4af37]" />
+          </Link>
         </div>
       </header>
 
@@ -349,7 +495,7 @@ export default function AdminDashboardPage() {
             }`}
           >
             <CalendarCheck className="h-4 w-4" />
-            <span>إدارة الحجوزات والـ CRM</span>
+            <span>جدول الحجوزات والـ CRM</span>
             {stats.pending > 0 && (
               <span className="rounded-full bg-[#ff4757] px-2 py-0.2 text-[10px] font-black text-white">
                 {stats.pending}
@@ -358,15 +504,18 @@ export default function AdminDashboardPage() {
           </button>
 
           <button
-            onClick={() => setActiveTab('pricing')}
+            onClick={() => setActiveTab('clients')}
             className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs sm:text-sm font-bold transition-all cursor-pointer ${
-              activeTab === 'pricing'
+              activeTab === 'clients'
                 ? 'gold-gradient-bg shadow-md shadow-[#d4af37]/20 text-black'
                 : 'border border-[#d4af37]/25 bg-[#120e0a] text-[#ede3d1] hover:border-[#d4af37] hover:text-[#fae48c]'
             }`}
           >
-            <DollarSign className="h-4 w-4" />
-            <span>مصفوفة الأسعار والعملات</span>
+            <Users className="h-4 w-4" />
+            <span>العملاء الثابتين والحسابات</span>
+            <span className="rounded-full bg-[#d4af37]/20 px-2 py-0.2 text-[10px] font-bold text-[#fae48c]">
+              {clients.length}
+            </span>
           </button>
 
           <button
@@ -378,7 +527,7 @@ export default function AdminDashboardPage() {
             }`}
           >
             <MapPin className="h-4 w-4" />
-            <span>المسارات الـ 19</span>
+            <span>المسارات الـ 19 والتسعير والعملات</span>
           </button>
 
           <button
@@ -390,28 +539,14 @@ export default function AdminDashboardPage() {
             }`}
           >
             <Car className="h-4 w-4" />
-            <span>أسطول المركبات (4)</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('tours')}
-            className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs sm:text-sm font-bold transition-all cursor-pointer ${
-              activeTab === 'tours'
-                ? 'gold-gradient-bg shadow-md shadow-[#d4af37]/20 text-black'
-                : 'border border-[#d4af37]/25 bg-[#120e0a] text-[#ede3d1] hover:border-[#d4af37] hover:text-[#fae48c]'
-            }`}
-          >
-            <Compass className="h-4 w-4" />
-            <span>كتالوج الجولات (6)</span>
+            <span>أسطول المركبات والسيارات</span>
           </button>
         </div>
 
         {/* 1. OVERVIEW TAB */}
         {activeTab === 'overview' && (
           <div className="space-y-8 animate-fadeIn">
-            {/* KPI Metric Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-              {/* Metric 1 */}
               <div className="rounded-2xl border border-[#d4af37]/30 bg-[#120e0a] p-5 shadow-xl">
                 <div className="flex items-center justify-between text-[#a69883] text-xs">
                   <span>إجمالي الحجوزات</span>
@@ -421,30 +556,29 @@ export default function AdminDashboardPage() {
                 <p className="mt-1 text-[11px] text-[#38ef7d]">سجلات تشغيل نشطة</p>
               </div>
 
-              {/* Metric 2 */}
               <div className="rounded-2xl border border-[#f5d34c]/40 bg-[#1a140b] p-5 shadow-xl">
                 <div className="flex items-center justify-between text-[#a69883] text-xs">
-                  <span>قيد الانتظار / جديد</span>
+                  <span>حجوزات قيد الانتظار</span>
                   <Clock className="h-4 w-4 text-[#f5d34c]" />
                 </div>
                 <div className="mt-3 text-3xl font-black text-[#f5d34c]">{stats.pending}</div>
                 <p className="mt-1 text-[11px] text-[#f5d34c]">تحتاج تأكيد وتعيين سائق</p>
               </div>
 
-              {/* Metric 3 */}
               <div className="rounded-2xl border border-[#38ef7d]/30 bg-[#0d160f] p-5 shadow-xl">
                 <div className="flex items-center justify-between text-[#a69883] text-xs">
-                  <span>حجوزات مؤكدة</span>
-                  <CheckCircle2 className="h-4 w-4 text-[#38ef7d]" />
+                  <span>العملاء الثابتين</span>
+                  <Users className="h-4 w-4 text-[#38ef7d]" />
                 </div>
-                <div className="mt-3 text-3xl font-black text-[#38ef7d]">{stats.confirmed}</div>
-                <p className="mt-1 text-[11px] text-[#38ef7d]">جاهزة للتنفيذ والاستقبال</p>
+                <div className="mt-3 text-3xl font-black text-[#38ef7d]">{stats.totalClientsCount}</div>
+                <p className="mt-1 text-[11px] text-[#a69883]">
+                  إجمالي المديونية المستحقة: <strong className="text-[#fae48c]">{stats.totalClientsBalance.toLocaleString('en-US')} ج.م</strong>
+                </p>
               </div>
 
-              {/* Metric 4 */}
               <div className="rounded-2xl border-2 border-[#d4af37] bg-gradient-to-br from-[#1c160e] to-[#120e0a] p-5 shadow-2xl">
                 <div className="flex items-center justify-between text-[#a69883] text-xs">
-                  <span>الإيرادات التقديرية</span>
+                  <span>إجمالي الإيرادات التقديرية</span>
                   <TrendingUp className="h-4 w-4 text-[#d4af37]" />
                 </div>
                 <div className="mt-3 text-2xl sm:text-3xl font-black text-[#fae48c]">
@@ -456,184 +590,87 @@ export default function AdminDashboardPage() {
               </div>
             </div>
 
-            {/* Quick Operations & Recent Inquiries */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-              {/* Urgent Action Feed */}
-              <div className="lg:col-span-8 rounded-2xl border border-[#d4af37]/30 bg-[#120e0a] p-6 shadow-xl space-y-4">
-                <div className="flex items-center justify-between pb-3 border-b border-[#d4af37]/15">
-                  <h3 className="text-base font-bold text-white flex items-center gap-2">
-                    <AlertCircle className="h-4 w-4 text-[#d4af37]" />
-                    <span>أحدث الحجوزات والطلبات الواردة</span>
-                  </h3>
-                  <button
-                    onClick={() => setActiveTab('bookings')}
-                    className="text-xs font-semibold text-[#fae48c] hover:underline cursor-pointer"
-                  >
-                    عرض الكل ({bookings.length})
-                  </button>
+            {/* Quick Actions Strip */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <button
+                onClick={() => setActiveTab('clients')}
+                className="flex items-center justify-between rounded-2xl border border-[#d4af37]/30 bg-[#120e0a] p-5 hover:border-[#d4af37] transition-all text-start group cursor-pointer"
+              >
+                <div>
+                  <h4 className="text-sm font-bold text-white group-hover:text-[#fae48c]">العملاء الثابتين</h4>
+                  <p className="text-xs text-[#a69883] mt-1">كشوفات الحساب والمديونيات والتسويات</p>
                 </div>
+                <Users className="h-6 w-6 text-[#d4af37]" />
+              </button>
 
-                <div className="space-y-3">
-                  {bookings.slice(0, 3).map((b) => (
-                    <div
-                      key={b.id}
-                      className="rounded-xl border border-[#d4af37]/20 bg-[#17120c] p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
-                    >
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <span className="font-mono text-xs font-bold text-[#fae48c]">{b.reference}</span>
-                          <span className={`rounded px-2 py-0.5 text-[10px] font-bold ${
-                            b.status === 'confirmed' ? 'bg-[#38ef7d]/20 text-[#38ef7d]' :
-                            b.status === 'pending' ? 'bg-[#f5d34c]/20 text-[#f5d34c]' :
-                            b.status === 'completed' ? 'bg-[#209cee]/20 text-[#209cee]' : 'bg-[#ff4757]/20 text-[#ff4757]'
-                          }`}>
-                            {b.status === 'confirmed' ? 'مؤكد' : b.status === 'pending' ? 'جديد / معلق' : b.status === 'completed' ? 'مكتمل' : 'ملغي'}
-                          </span>
-                        </div>
-                        <h4 className="text-sm font-bold text-white mt-1">{b.customerName} - {b.title}</h4>
-                        <div className="flex items-center gap-3 text-xs text-[#a69883] mt-1">
-                          <span>📅 {b.pickupDate} ({b.pickupTime})</span>
-                          <span>•</span>
-                          <span>🚗 {b.vehicleName}</span>
-                          <span>•</span>
-                          <span className="text-[#fae48c] font-bold">{b.amountEgp} ج.م</span>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-2 shrink-0">
-                        <a
-                          href={`https://api.whatsapp.com/send?phone=${b.customerPhone.replace(/[^0-9]/g, '')}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-1 rounded-lg bg-[#25D366] px-3 py-1.5 text-xs font-bold text-white hover:opacity-90"
-                        >
-                          <MessageCircle className="h-3.5 w-3.5" />
-                          <span>واتساب</span>
-                        </a>
-
-                        {b.status === 'pending' && (
-                          <button
-                            onClick={() => handleUpdateStatus(b.id, 'confirmed')}
-                            className="rounded-lg bg-[#38ef7d]/20 border border-[#38ef7d]/40 px-3 py-1.5 text-xs font-bold text-[#38ef7d] hover:bg-[#38ef7d]/30 cursor-pointer"
-                          >
-                            تأكيد الآن
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                  ))}
+              <button
+                onClick={() => setActiveTab('routes')}
+                className="flex items-center justify-between rounded-2xl border border-[#d4af37]/30 bg-[#120e0a] p-5 hover:border-[#d4af37] transition-all text-start group cursor-pointer"
+              >
+                <div>
+                  <h4 className="text-sm font-bold text-white group-hover:text-[#fae48c]">المسارات والتسعير</h4>
+                  <p className="text-xs text-[#a69883] mt-1">تعديل أسعار المسارات والعملات والفنادق البعيدة</p>
                 </div>
-              </div>
+                <MapPin className="h-6 w-6 text-[#d4af37]" />
+              </button>
 
-              {/* Quick Config & System Rules */}
-              <div className="lg:col-span-4 rounded-2xl border border-[#d4af37]/30 bg-[#120e0a] p-6 shadow-xl space-y-4">
-                <h3 className="text-base font-bold text-[#fae48c] flex items-center gap-2 pb-3 border-b border-[#d4af37]/15">
-                  <Settings className="h-4 w-4 text-[#d4af37]" />
-                  <span>ثوابت التسعير والتشغيل</span>
-                </h3>
-
-                <div className="space-y-3 text-xs">
-                  <div className="flex justify-between border-b border-[#d4af37]/10 pb-2">
-                    <span className="text-[#a69883]">سعر تحويل الدولار (USD):</span>
-                    <strong className="text-white font-mono">{usdRate} ج.م</strong>
-                  </div>
-
-                  <div className="flex justify-between border-b border-[#d4af37]/10 pb-2">
-                    <span className="text-[#a69883]">سعر تحويل اليورو (EUR):</span>
-                    <strong className="text-white font-mono">{eurRate} ج.م</strong>
-                  </div>
-
-                  <div className="flex justify-between border-b border-[#d4af37]/10 pb-2">
-                    <span className="text-[#a69883]">رسوم الفنادق البعيدة (سيدان / 7 راكب):</span>
-                    <strong className="text-[#fae48c]">+{farHotelSedanSurcharge} ج.م</strong>
-                  </div>
-
-                  <div className="flex justify-between border-b border-[#d4af37]/10 pb-2">
-                    <span className="text-[#a69883]">رسوم الفنادق البعيدة (H1 / هاي إس):</span>
-                    <strong className="text-[#fae48c]">+{farHotelVanSurcharge} ج.م</strong>
-                  </div>
-
-                  <div className="flex justify-between border-b border-[#d4af37]/10 pb-2">
-                    <span className="text-[#a69883]">ساعات اليومية المعتمدة:</span>
-                    <strong className="text-white">9 ساعات (8 ص - 5 م)</strong>
-                  </div>
-
-                  <div className="rounded-xl border border-[#f5d34c]/30 bg-[#241c09] p-3 text-[11px] text-[#f5d34c] leading-relaxed">
-                    ⚠️ شرط معتمد: حجز مركبات H1 وهاي إس يتطلب إشعاراً مسبقاً قبل الموعد بيومين.
-                  </div>
+              <button
+                onClick={() => setActiveTab('fleet')}
+                className="flex items-center justify-between rounded-2xl border border-[#d4af37]/30 bg-[#120e0a] p-5 hover:border-[#d4af37] transition-all text-start group cursor-pointer"
+              >
+                <div>
+                  <h4 className="text-sm font-bold text-white group-hover:text-[#fae48c]">إدارة سيارات الأسطول</h4>
+                  <p className="text-xs text-[#a69883] mt-1">إضافة سيارات وتحديد ظهورها بالرئيسية</p>
                 </div>
-
-                <button
-                  onClick={() => setActiveTab('pricing')}
-                  className="w-full rounded-xl gold-gradient-bg py-2.5 text-xs font-bold text-black hover:opacity-95 transition-all cursor-pointer"
-                >
-                  تعديل مصفوفة الأسعار والعملات
-                </button>
-              </div>
+                <Car className="h-6 w-6 text-[#d4af37]" />
+              </button>
             </div>
           </div>
         )}
 
-        {/* 2. BOOKINGS & CRM TAB */}
+        {/* 2. BOOKINGS CRM TAB */}
         {activeTab === 'bookings' && (
           <div className="space-y-6 animate-fadeIn">
-            {/* Action & Filter Bar */}
-            <div className="rounded-2xl border border-[#d4af37]/30 bg-[#120e0a] p-4 sm:p-5 shadow-xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+            <div className="rounded-2xl border border-[#d4af37]/30 bg-[#120e0a] p-5 shadow-xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
               <div className="flex flex-1 flex-col sm:flex-row items-center gap-3">
-                {/* Search */}
                 <div className="relative w-full sm:w-72">
                   <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#a69883]" />
                   <input
                     type="text"
-                    placeholder="بحث باسم العميل، الهاتف، أو الرقم المرجعي..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="بحث باسم العميل أو الهاتف..."
+                    value={bookingSearch}
+                    onChange={(e) => setBookingSearch(e.target.value)}
                     className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] pr-9 pl-4 py-2 text-xs text-[#ede3d1] focus:border-[#d4af37] focus:outline-none"
                   />
                 </div>
 
-                {/* Status Filter */}
-                <div className="flex items-center gap-2 w-full sm:w-auto">
-                  <Filter className="h-4 w-4 text-[#d4af37]" />
-                  <select
-                    value={statusFilter}
-                    onChange={(e) => setStatusFilter(e.target.value as any)}
-                    className="rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3 py-2 text-xs text-[#fae48c] focus:outline-none cursor-pointer"
-                  >
-                    <option value="all">جميع الحالات ({bookings.length})</option>
-                    <option value="pending">جديد / معلق ({stats.pending})</option>
-                    <option value="confirmed">مؤكد ({stats.confirmed})</option>
-                    <option value="completed">مكتمل ({stats.completed})</option>
-                    <option value="cancelled">ملغي</option>
-                  </select>
-                </div>
+                <select
+                  value={bookingStatusFilter}
+                  onChange={(e) => setBookingStatusFilter(e.target.value as any)}
+                  className="rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3 py-2 text-xs text-[#fae48c] focus:outline-none cursor-pointer"
+                >
+                  <option value="all">جميع الحالات ({bookings.length})</option>
+                  <option value="pending">معلق / جديد ({stats.pending})</option>
+                  <option value="confirmed">مؤكد ({stats.confirmed})</option>
+                  <option value="completed">مكتمل ({stats.completed})</option>
+                  <option value="cancelled">ملغي</option>
+                </select>
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={handleExportCsv}
-                  className="flex items-center gap-1.5 rounded-xl border border-[#d4af37]/40 bg-[#1a140e] px-3.5 py-2 text-xs font-semibold text-[#ede3d1] hover:bg-[#281e13] hover:text-[#fae48c] transition-all cursor-pointer"
-                >
-                  <Download className="h-3.5 w-3.5 text-[#d4af37]" />
-                  <span>تصدير Excel / CSV</span>
-                </button>
-
-                <button
-                  onClick={() => setIsAddBookingOpen(true)}
-                  className="flex items-center gap-1.5 rounded-xl gold-gradient-bg px-4 py-2 text-xs font-bold text-black hover:opacity-95 transition-all cursor-pointer shadow-md"
-                >
-                  <Plus className="h-4 w-4" />
-                  <span>إضافة حجز جديد</span>
-                </button>
-              </div>
+              <button
+                onClick={() => setIsAddBookingOpen(true)}
+                className="flex items-center gap-1.5 rounded-xl gold-gradient-bg px-4 py-2 text-xs font-bold text-black hover:opacity-95 transition-all cursor-pointer shadow-md"
+              >
+                <Plus className="h-4 w-4" />
+                <span>إضافة حجز يدوي جديد</span>
+              </button>
             </div>
 
             {/* Bookings Table */}
             <div className="rounded-2xl border border-[#d4af37]/30 bg-[#120e0a] overflow-hidden shadow-2xl">
               <div className="overflow-x-auto">
                 <table className="w-full text-start text-xs">
-                  <thead className="border-b border-[#d4af37]/20 bg-[#17120c] text-[#fae48c] uppercase font-bold tracking-wider">
+                  <thead className="border-b border-[#d4af37]/20 bg-[#17120c] text-[#fae48c] uppercase font-bold">
                     <tr>
                       <th className="px-4 py-3.5 text-start">الرقم المرجعي</th>
                       <th className="px-4 py-3.5 text-start">العميل والتواصل</th>
@@ -646,87 +683,65 @@ export default function AdminDashboardPage() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#d4af37]/10 text-[#ede3d1]">
-                    {filteredBookings.length === 0 ? (
-                      <tr>
-                        <td colSpan={8} className="px-4 py-8 text-center text-sm text-[#a69883]">
-                          لا توجد حجوزات مطابقة لمعايير البحث.
+                    {bookings.map((b) => (
+                      <tr key={b.id} className="hover:bg-[#18130d] transition-colors">
+                        <td className="px-4 py-3 font-mono font-bold text-[#fae48c] whitespace-nowrap">
+                          {b.reference}
+                        </td>
+                        <td className="px-4 py-3">
+                          <strong className="block text-white font-bold">{b.customerName}</strong>
+                          <span className="text-[11px] text-[#a69883] font-mono">{b.customerPhone}</span>
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className="font-semibold text-white block">{b.title}</span>
+                          {b.flightNumber && (
+                            <span className="text-[10px] text-[#d4af37] font-mono">✈️ {b.flightNumber}</span>
+                          )}
+                        </td>
+                        <td className="px-4 py-3 whitespace-nowrap text-[#ede3d1]">
+                          {b.vehicleName}
+                        </td>
+                        <td className="px-4 py-3 whitespace-nowrap">
+                          <span className="block text-white font-medium">{b.pickupDate}</span>
+                          <span className="text-[11px] text-[#a69883] font-mono">{b.pickupTime}</span>
+                        </td>
+                        <td className="px-4 py-3 font-black text-[#fae48c] whitespace-nowrap text-sm">
+                          {b.amountEgp.toLocaleString('en-US')} ج.م
+                        </td>
+                        <td className="px-4 py-3 whitespace-nowrap">
+                          <span className={`rounded-lg px-2.5 py-1 text-xs font-bold ${
+                            b.status === 'confirmed' ? 'bg-[#38ef7d]/20 text-[#38ef7d]' :
+                            b.status === 'pending' ? 'bg-[#f5d34c]/20 text-[#f5d34c]' :
+                            b.status === 'completed' ? 'bg-[#209cee]/20 text-[#209cee]' : 'bg-[#ff4757]/20 text-[#ff4757]'
+                          }`}>
+                            {b.status === 'confirmed' ? 'مؤكد' : b.status === 'pending' ? 'معلق' : b.status === 'completed' ? 'مكتمل' : 'ملغي'}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 whitespace-nowrap">
+                          <div className="flex items-center gap-2">
+                            <a
+                              href={`https://api.whatsapp.com/send?phone=${b.customerPhone.replace(/[^0-9]/g, '')}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="rounded-lg bg-[#25D366] p-1.5 text-white hover:opacity-90"
+                              title="محادثة واتساب"
+                            >
+                              <MessageCircle className="h-3.5 w-3.5" />
+                            </a>
+                            <button
+                              onClick={() => {
+                                if (confirm('هل أنت متأكد من حذف الحجز؟')) {
+                                  setBookings(bookings.filter(x => x.id !== b.id));
+                                }
+                              }}
+                              className="rounded-lg border border-[#ff4757]/40 p-1.5 text-[#ff4757] hover:bg-[#ff4757]/20"
+                            >
+                              <Trash2 className="h-3.5 w-3.5" />
+                            </button>
+                          </div>
                         </td>
                       </tr>
-                    ) : (
-                      filteredBookings.map((b) => (
-                        <tr key={b.id} className="hover:bg-[#18130d] transition-colors">
-                          <td className="px-4 py-3 font-mono font-bold text-[#fae48c] whitespace-nowrap">
-                            {b.reference}
-                          </td>
-                          <td className="px-4 py-3">
-                            <strong className="block text-white font-bold">{b.customerName}</strong>
-                            <a
-                              href={`tel:${b.customerPhone}`}
-                              className="text-[11px] text-[#a69883] hover:text-[#d4af37] block font-mono mt-0.5"
-                            >
-                              📞 {b.customerPhone}
-                            </a>
-                          </td>
-                          <td className="px-4 py-3">
-                            <span className="font-semibold text-white block">{b.title}</span>
-                            {b.flightNumber && (
-                              <span className="text-[10px] text-[#d4af37] font-mono">✈️ رحلة: {b.flightNumber}</span>
-                            )}
-                          </td>
-                          <td className="px-4 py-3 whitespace-nowrap text-[#ede3d1]">
-                            {b.vehicleName}
-                          </td>
-                          <td className="px-4 py-3 whitespace-nowrap">
-                            <span className="block text-white font-medium">{b.pickupDate}</span>
-                            <span className="text-[11px] text-[#a69883] font-mono">{b.pickupTime}</span>
-                          </td>
-                          <td className="px-4 py-3 font-black text-[#fae48c] whitespace-nowrap text-sm">
-                            {b.amountEgp.toLocaleString('en-US')} ج.م
-                          </td>
-                          <td className="px-4 py-3 whitespace-nowrap">
-                            <select
-                              value={b.status}
-                              onChange={(e) => handleUpdateStatus(b.id, e.target.value as any)}
-                              className={`rounded-lg px-2 py-1 text-xs font-bold border cursor-pointer ${
-                                b.status === 'confirmed' ? 'border-[#38ef7d]/40 bg-[#38ef7d]/15 text-[#38ef7d]' :
-                                b.status === 'pending' ? 'border-[#f5d34c]/40 bg-[#f5d34c]/15 text-[#f5d34c]' :
-                                b.status === 'completed' ? 'border-[#209cee]/40 bg-[#209cee]/15 text-[#209cee]' : 'border-[#ff4757]/40 bg-[#ff4757]/15 text-[#ff4757]'
-                              }`}
-                            >
-                              <option value="pending" className="bg-[#120e0a] text-[#f5d34c]">جديد / معلق</option>
-                              <option value="confirmed" className="bg-[#120e0a] text-[#38ef7d]">مؤكد</option>
-                              <option value="completed" className="bg-[#120e0a] text-[#209cee]">مكتمل</option>
-                              <option value="cancelled" className="bg-[#120e0a] text-[#ff4757]">ملغي</option>
-                            </select>
-                          </td>
-                          <td className="px-4 py-3 whitespace-nowrap">
-                            <div className="flex items-center gap-2">
-                              <a
-                                href={`https://api.whatsapp.com/send?phone=${b.customerPhone.replace(/[^0-9]/g, '')}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                title="محادثة واتساب"
-                                className="rounded-lg bg-[#25D366] p-1.5 text-white hover:opacity-90"
-                              >
-                                <MessageCircle className="h-3.5 w-3.5" />
-                              </a>
-
-                              <button
-                                onClick={() => {
-                                  if (confirm(`هل أنت متأكد من حذف الحجز ${b.reference}؟`)) {
-                                    setBookings(prev => prev.filter(x => x.id !== b.id));
-                                  }
-                                }}
-                                title="حذف الحجز"
-                                className="rounded-lg border border-[#ff4757]/40 p-1.5 text-[#ff4757] hover:bg-[#ff4757]/20 cursor-pointer"
-                              >
-                                <XCircle className="h-3.5 w-3.5" />
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      ))
-                    )}
+                    ))}
                   </tbody>
                 </table>
               </div>
@@ -734,23 +749,233 @@ export default function AdminDashboardPage() {
           </div>
         )}
 
-        {/* 3. PRICING MATRIX TAB */}
-        {activeTab === 'pricing' && (
+        {/* 3. REGULAR CLIENTS & ACCOUNT STATEMENTS TAB */}
+        {activeTab === 'clients' && (
           <div className="space-y-6 animate-fadeIn">
-            {/* Currency & Rules Controls */}
+            {/* Header & Controls */}
+            <div className="rounded-2xl border border-[#d4af37]/30 bg-[#120e0a] p-5 shadow-xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+              <div>
+                <h3 className="text-base font-bold text-white flex items-center gap-2">
+                  <Users className="h-5 w-5 text-[#d4af37]" />
+                  <span>سجل العملاء الثابتين والحسابات التفصيلية</span>
+                </h3>
+                <p className="text-xs text-[#a69883] mt-1">
+                  إدارة بيانات العملاء الدائمين، متابعة مديونياتهم، وكشوفات الحساب بالرحلات والمدفوعات.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => setIsAddClientOpen(true)}
+                  className="flex items-center gap-1.5 rounded-xl gold-gradient-bg px-4 py-2 text-xs font-bold text-black hover:opacity-95 transition-all cursor-pointer shadow-md"
+                >
+                  <Plus className="h-4 w-4" />
+                  <span>إضافة عميل ثابت جديد</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Clients List & Detail Split Screen */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+              {/* Clients Directory (5 Cols) */}
+              <div className="lg:col-span-5 space-y-3">
+                {clients.map((client) => {
+                  const isSelected = selectedClientForStatement?.id === client.id;
+
+                  return (
+                    <div
+                      key={client.id}
+                      onClick={() => setSelectedClientForStatement(client)}
+                      className={`rounded-2xl border p-4 transition-all cursor-pointer ${
+                        isSelected
+                          ? 'border-[#d4af37] bg-[#1a140d] shadow-xl shadow-[#d4af37]/15 ring-1 ring-[#d4af37]'
+                          : 'border-[#d4af37]/25 bg-[#120e0a] hover:border-[#d4af37]/60 hover:bg-[#16110c]'
+                      }`}
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <h4 className="text-sm font-bold text-white">{client.name}</h4>
+                            <span className="rounded bg-[#d4af37]/20 px-2 py-0.5 text-[10px] font-semibold text-[#fae48c]">
+                              {client.clientType === 'vip' ? 'فرد VIP' : client.clientType === 'hotel' ? 'فندق' : client.clientType === 'corporate' ? 'شركة' : 'وكالة'}
+                            </span>
+                          </div>
+                          {client.companyName && (
+                            <p className="text-xs text-[#a69883] mt-0.5">{client.companyName}</p>
+                          )}
+                          <p className="text-xs text-[#fae48c] font-mono mt-1">📞 {client.phone}</p>
+                        </div>
+
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteClient(client.id, client.name);
+                          }}
+                          className="text-[#ff4757] hover:bg-[#ff4757]/20 p-1 rounded-lg"
+                          title="حذف العميل"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
+
+                      <div className="mt-3 pt-2.5 border-t border-[#d4af37]/15 flex items-center justify-between text-xs">
+                        <span className="text-[#a69883]">عدد الرحلات: <strong className="text-white">{client.trips.length}</strong></span>
+                        <div>
+                          <span className="text-[#a69883] ml-1">الرصيد:</span>
+                          <strong className={client.accountBalanceEgp > 0 ? 'text-[#ff4757] font-mono font-bold' : 'text-[#38ef7d] font-mono font-bold'}>
+                            {client.accountBalanceEgp > 0 ? `${client.accountBalanceEgp.toLocaleString('en-US')} ج.م مستحق` : 'خالص'}
+                          </strong>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Detailed Statement of Account (7 Cols) */}
+              <div className="lg:col-span-7 rounded-2xl border border-[#d4af37]/30 bg-[#120e0a] p-5 sm:p-6 shadow-2xl min-h-[450px]">
+                {selectedClientForStatement ? (
+                  <div className="space-y-6">
+                    {/* Statement Header */}
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#d4af37]/20">
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <h4 className="text-lg font-bold text-white">{selectedClientForStatement.name}</h4>
+                          <span className="rounded bg-[#d4af37]/20 px-2 py-0.5 text-xs text-[#fae48c]">
+                            كشف حساب تفصيلي
+                          </span>
+                        </div>
+                        <p className="text-xs text-[#a69883] mt-0.5">
+                          {selectedClientForStatement.companyName || selectedClientForStatement.phone}
+                        </p>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <a
+                          href={`https://api.whatsapp.com/send?phone=${selectedClientForStatement.phone.replace(/[^0-9]/g, '')}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1 rounded-xl bg-[#25D366] px-3 py-1.5 text-xs font-bold text-white hover:opacity-90"
+                        >
+                          <MessageCircle className="h-3.5 w-3.5" />
+                          <span>واتساب</span>
+                        </a>
+
+                        <button
+                          onClick={() => setIsAddTripToClientOpen(true)}
+                          className="flex items-center gap-1 rounded-xl gold-gradient-bg px-3 py-1.5 text-xs font-bold text-black hover:opacity-95"
+                        >
+                          <Plus className="h-3.5 w-3.5" />
+                          <span>إضافة رحلة / فاتورة</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Financial Summary Card */}
+                    <div className="grid grid-cols-3 gap-3">
+                      <div className="rounded-xl border border-[#d4af37]/20 bg-[#18120c] p-3 text-center">
+                        <span className="text-[11px] text-[#a69883] block">إجمالي قيمة الرحلات</span>
+                        <strong className="text-sm font-mono font-black text-white mt-1 block">
+                          {selectedClientForStatement.trips.reduce((acc, t) => acc + t.amountEgp, 0).toLocaleString('en-US')} ج.م
+                        </strong>
+                      </div>
+
+                      <div className="rounded-xl border border-[#38ef7d]/20 bg-[#0d160f] p-3 text-center">
+                        <span className="text-[11px] text-[#38ef7d] block">إجمالي المسدد</span>
+                        <strong className="text-sm font-mono font-black text-[#38ef7d] mt-1 block">
+                          {selectedClientForStatement.trips.reduce((acc, t) => acc + t.paidAmountEgp, 0).toLocaleString('en-US')} ج.م
+                        </strong>
+                      </div>
+
+                      <div className="rounded-xl border border-[#ff4757]/30 bg-[#1c1010] p-3 text-center">
+                        <span className="text-[11px] text-[#ff4757] block">المتبقي / الرصيد</span>
+                        <strong className="text-sm font-mono font-black text-[#ff4757] mt-1 block">
+                          {selectedClientForStatement.accountBalanceEgp.toLocaleString('en-US')} ج.م
+                        </strong>
+                      </div>
+                    </div>
+
+                    {/* Notes if any */}
+                    {selectedClientForStatement.notes && (
+                      <div className="rounded-xl border border-[#d4af37]/20 bg-[#16110b] p-3 text-xs text-[#a69883]">
+                        <strong className="text-[#fae48c] block mb-1">ملاحظات العميل الخاصة:</strong>
+                        {selectedClientForStatement.notes}
+                      </div>
+                    )}
+
+                    {/* Trips List in Statement */}
+                    <div>
+                      <h5 className="text-xs font-bold uppercase tracking-wider text-[#fae48c] mb-3 flex items-center gap-1.5">
+                        <FileText className="h-4 w-4 text-[#d4af37]" />
+                        <span>سجل الرحلات والفواتير:</span>
+                      </h5>
+
+                      {selectedClientForStatement.trips.length === 0 ? (
+                        <div className="text-center py-8 text-xs text-[#a69883] border border-dashed border-[#d4af37]/20 rounded-xl">
+                          لا توجد رحلات مسجلة لهذا العميل حتى الآن. يمكنك إضافة رحلة جديدة بالضغط على &quot;إضافة رحلة / فاتورة&quot;.
+                        </div>
+                      ) : (
+                        <div className="space-y-2.5 max-h-72 overflow-y-auto">
+                          {selectedClientForStatement.trips.map((trip) => (
+                            <div
+                              key={trip.id}
+                              className="rounded-xl border border-[#d4af37]/20 bg-[#16110c] p-3 text-xs flex items-center justify-between gap-3"
+                            >
+                              <div>
+                                <span className="font-mono text-[#fae48c] font-bold text-[11px]">{trip.date}</span>
+                                <h6 className="font-bold text-white mt-0.5">{trip.routeTitle}</h6>
+                                <p className="text-[11px] text-[#a69883]">
+                                  المركبة: {trip.vehicleName} {trip.driverName && `• السائق: ${trip.driverName}`}
+                                </p>
+                              </div>
+
+                              <div className="text-end shrink-0">
+                                <div className="font-black text-sm text-white font-mono">
+                                  {trip.amountEgp.toLocaleString('en-US')} ج.م
+                                </div>
+                                <span className={`inline-block rounded px-2 py-0.5 text-[10px] font-bold mt-1 ${
+                                  trip.status === 'paid' ? 'bg-[#38ef7d]/20 text-[#38ef7d]' :
+                                  trip.status === 'partial' ? 'bg-[#f5d34c]/20 text-[#f5d34c]' : 'bg-[#ff4757]/20 text-[#ff4757]'
+                                }`}>
+                                  {trip.status === 'paid' ? 'مدفوع بالكامل' :
+                                   trip.status === 'partial' ? `مسدد ${trip.paidAmountEgp.toLocaleString('en-US')} ج.م` : 'غير مسدد'}
+                                </span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center h-full text-center py-16 text-[#a69883]">
+                    <Users className="h-12 w-12 text-[#d4af37]/40 mb-3" />
+                    <p className="text-sm font-bold text-white">اختر عميلاً من القائمة الجانبية</p>
+                    <p className="text-xs mt-1">لعرض حسابه التفصيلي وكافة رحلاته وفواتيره ومتبقي المديونية.</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 4. ROUTES, COMBINED PRICING & CURRENCIES TAB */}
+        {activeTab === 'routes' && (
+          <div className="space-y-6 animate-fadeIn">
+            {/* Top Currency Rates & Outer Zone Surcharges Bar */}
             <div className="rounded-2xl border border-[#d4af37]/30 bg-[#120e0a] p-5 shadow-xl">
-              <div className="flex items-center justify-between pb-4 border-b border-[#d4af37]/15 mb-4">
+              <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 pb-4 border-b border-[#d4af37]/15">
                 <div>
                   <h3 className="text-base font-bold text-white flex items-center gap-2">
-                    <DollarSign className="h-4 w-4 text-[#d4af37]" />
-                    <span>مصفوفة أسعار المسارات الرسمية (المعتمدة من الإكسيل)</span>
+                    <MapPin className="h-5 w-5 text-[#d4af37]" />
+                    <span>إدارة المسارات الـ 19 والتسعير الموحد والعملات</span>
                   </h3>
                   <p className="text-xs text-[#a69883] mt-1">
-                    يمكنك تعديل أي سعر مباشرة في الجدول وحفظ التغييرات اللحظية.
+                    التحكم في أسعار الصرف، رسوم الفنادق البعيدة، وأسعار كل رحلة عبر فئات الأسطول الأربعة مباشرة.
                   </p>
                 </div>
 
-                <div className="flex items-center gap-3">
+                <div className="flex flex-wrap items-center gap-3">
                   <div className="flex items-center gap-2 bg-[#1a140e] px-3 py-1.5 rounded-xl border border-[#d4af37]/30 text-xs">
                     <span className="text-[#a69883]">1 USD =</span>
                     <input
@@ -774,7 +999,7 @@ export default function AdminDashboardPage() {
                   </div>
 
                   <button
-                    onClick={() => alert('تم تحديث أسعار الصرف ومصفوفة الأسعار بنجاح في المنظومة!')}
+                    onClick={() => alert('تم حفظ أسعار الصرف ومصفوفة المسارات بنجاح!')}
                     className="flex items-center gap-1.5 rounded-xl gold-gradient-bg px-4 py-2 text-xs font-bold text-black hover:opacity-95 cursor-pointer shadow-md"
                   >
                     <Save className="h-4 w-4" />
@@ -783,8 +1008,8 @@ export default function AdminDashboardPage() {
                 </div>
               </div>
 
-              {/* Surcharges strip */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+              {/* Surcharges Controllers */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 text-xs">
                 <div className="flex items-center justify-between rounded-xl border border-[#d4af37]/20 bg-[#16110b] p-3">
                   <span className="text-[#ede3d1]">فارق الفنادق البعيدة (سيدان و 7 راكب):</span>
                   <div className="flex items-center gap-1 font-bold text-[#fae48c]">
@@ -813,66 +1038,91 @@ export default function AdminDashboardPage() {
               </div>
             </div>
 
-            {/* Matrix Table */}
+            {/* Combined Routes & Pricing Table */}
             <div className="rounded-2xl border border-[#d4af37]/30 bg-[#120e0a] overflow-hidden shadow-2xl">
+              <div className="p-4 border-b border-[#d4af37]/15 flex items-center justify-between">
+                <span className="text-xs font-bold text-[#fae48c]">قائمة المسارات والأسعار المعتمدة (19 مساراً)</span>
+                <button
+                  onClick={() => setIsAddRouteOpen(true)}
+                  className="flex items-center gap-1 rounded-lg gold-gradient-bg px-3 py-1.5 text-xs font-bold text-black"
+                >
+                  <Plus className="h-3.5 w-3.5" />
+                  <span>إضافة مسار جديد</span>
+                </button>
+              </div>
+
               <div className="overflow-x-auto">
                 <table className="w-full text-start text-xs">
                   <thead className="border-b border-[#d4af37]/20 bg-[#17120c] text-[#fae48c] font-bold">
                     <tr>
-                      <th className="px-4 py-3.5 text-start w-12">#</th>
-                      <th className="px-4 py-3.5 text-start">البيان / خط السير</th>
-                      <th className="px-4 py-3.5 text-start">المدة التقديرية</th>
-                      <th className="px-4 py-3.5 text-center">ملاكي سيدان (ج.م)</th>
-                      <th className="px-4 py-3.5 text-center">7 راكب عائلي (ج.م)</th>
-                      <th className="px-4 py-3.5 text-center">إتش وان H1 (ج.م)</th>
-                      <th className="px-4 py-3.5 text-center">هاي إس HiAce (ج.م)</th>
+                      <th className="px-3 py-3 text-start w-10">#</th>
+                      <th className="px-4 py-3 text-start">البيان / خط السير</th>
+                      <th className="px-3 py-3 text-start">المدة</th>
+                      <th className="px-3 py-3 text-center">ملاكي سيدان</th>
+                      <th className="px-3 py-3 text-center">7 راكب عائلي</th>
+                      <th className="px-3 py-3 text-center">إتش وان H1</th>
+                      <th className="px-3 py-3 text-center">هاي إس HiAce</th>
+                      <th className="px-3 py-3 text-center">حذف</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#d4af37]/10 text-[#ede3d1]">
                     {routesData.map((route) => (
                       <tr key={route.id} className="hover:bg-[#18130d] transition-colors">
-                        <td className="px-4 py-3 font-mono text-[#a69883] font-bold">
+                        <td className="px-3 py-2 font-mono text-[#a69883] font-bold">
                           {route.id}
                         </td>
-                        <td className="px-4 py-3 font-semibold text-white">
-                          {route.title.ar}
+                        <td className="px-4 py-2 font-semibold text-white">
+                          <div>{route.title.ar}</div>
+                          <div className="text-[10px] text-[#a69883]" dir="ltr">{route.title.en}</div>
                         </td>
-                        <td className="px-4 py-3 text-xs text-[#a69883]">
+                        <td className="px-3 py-2 text-xs text-[#a69883]">
                           {route.estimatedDuration.ar}
                         </td>
-                        <td className="px-4 py-2 text-center">
+                        <td className="px-2 py-2 text-center">
                           <input
                             type="number"
                             value={route.prices.sedan ?? ''}
                             onChange={(e) => handlePriceChange(route.id, 'sedan', e.target.value)}
-                            className="w-24 rounded-lg border border-[#d4af37]/30 bg-[#1a140e] px-2 py-1 text-center font-mono font-bold text-[#fae48c] focus:border-[#d4af37] focus:outline-none"
+                            className="w-20 rounded border border-[#d4af37]/30 bg-[#1a140e] px-2 py-1 text-center font-mono font-bold text-[#fae48c] focus:outline-none"
                           />
                         </td>
-                        <td className="px-4 py-2 text-center">
+                        <td className="px-2 py-2 text-center">
                           <input
                             type="number"
                             value={route.prices['7seater'] ?? ''}
                             onChange={(e) => handlePriceChange(route.id, '7seater', e.target.value)}
-                            className="w-24 rounded-lg border border-[#d4af37]/30 bg-[#1a140e] px-2 py-1 text-center font-mono font-bold text-[#fae48c] focus:border-[#d4af37] focus:outline-none"
+                            className="w-20 rounded border border-[#d4af37]/30 bg-[#1a140e] px-2 py-1 text-center font-mono font-bold text-[#fae48c] focus:outline-none"
                           />
                         </td>
-                        <td className="px-4 py-2 text-center">
+                        <td className="px-2 py-2 text-center">
                           <input
                             type="number"
-                            placeholder="غير متاح"
+                            placeholder="-"
                             value={route.prices.h1 ?? ''}
                             onChange={(e) => handlePriceChange(route.id, 'h1', e.target.value)}
-                            className="w-24 rounded-lg border border-[#d4af37]/30 bg-[#1a140e] px-2 py-1 text-center font-mono font-bold text-[#fae48c] focus:border-[#d4af37] focus:outline-none placeholder-[#555]"
+                            className="w-20 rounded border border-[#d4af37]/30 bg-[#1a140e] px-2 py-1 text-center font-mono font-bold text-[#fae48c] focus:outline-none placeholder-[#555]"
                           />
                         </td>
-                        <td className="px-4 py-2 text-center">
+                        <td className="px-2 py-2 text-center">
                           <input
                             type="number"
-                            placeholder="غير متاح"
+                            placeholder="-"
                             value={route.prices.hiace ?? ''}
                             onChange={(e) => handlePriceChange(route.id, 'hiace', e.target.value)}
-                            className="w-24 rounded-lg border border-[#d4af37]/30 bg-[#1a140e] px-2 py-1 text-center font-mono font-bold text-[#fae48c] focus:border-[#d4af37] focus:outline-none placeholder-[#555]"
+                            className="w-20 rounded border border-[#d4af37]/30 bg-[#1a140e] px-2 py-1 text-center font-mono font-bold text-[#fae48c] focus:outline-none placeholder-[#555]"
                           />
+                        </td>
+                        <td className="px-2 py-2 text-center">
+                          <button
+                            onClick={() => {
+                              if (confirm(`هل تريد حذف مسار "${route.title.ar}"؟`)) {
+                                setRoutesData(routesData.filter(r => r.id !== route.id));
+                              }
+                            }}
+                            className="text-[#ff4757] hover:bg-[#ff4757]/20 p-1 rounded"
+                          >
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </button>
                         </td>
                       </tr>
                     ))}
@@ -883,173 +1133,130 @@ export default function AdminDashboardPage() {
           </div>
         )}
 
-        {/* 4. ROUTES TAB */}
-        {activeTab === 'routes' && (
-          <div className="space-y-6 animate-fadeIn">
-            <div className="rounded-2xl border border-[#d4af37]/30 bg-[#120e0a] p-5 shadow-xl flex items-center justify-between">
-              <div>
-                <h3 className="text-base font-bold text-white flex items-center gap-2">
-                  <MapPin className="h-4 w-4 text-[#d4af37]" />
-                  <span>دليل مسارات أنوبيس ترافيل (إجمالي 19 مساراً معتمداً)</span>
-                </h3>
-                <p className="text-xs text-[#a69883] mt-1">
-                  المسارات مقسمة حسب الفئات: مطارات، جولات يومية، أوفر داي، وسفر محافظات.
-                </p>
-              </div>
-
-              <button
-                onClick={() => alert('تم تفعيل واجهة إنشاء مسار جديد في جدول التشغيل.')}
-                className="flex items-center gap-1.5 rounded-xl gold-gradient-bg px-4 py-2 text-xs font-bold text-black hover:opacity-95 cursor-pointer shadow-md"
-              >
-                <Plus className="h-4 w-4" />
-                <span>إضافة مسار جديد</span>
-              </button>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {ROUTES.map((route) => (
-                <div
-                  key={route.id}
-                  className="rounded-xl border border-[#d4af37]/25 bg-[#120e0a] p-4 flex flex-col justify-between hover:border-[#d4af37] transition-all"
-                >
-                  <div>
-                    <div className="flex items-center justify-between">
-                      <span className="font-mono text-xs text-[#d4af37] font-bold">مسار #{route.id}</span>
-                      <span className="rounded-full bg-[#d4af37]/15 px-2 py-0.5 text-[10px] font-semibold text-[#fae48c]">
-                        {route.category === 'airport' ? 'استقبال وتوديع مطار' :
-                         route.category === 'day_tour' ? 'جولة يومية' :
-                         route.category === 'overday' ? 'أوفر داي خارجي' :
-                         route.category === 'intercity' ? 'سفر محافظات' : 'برنامج ممتد'}
-                      </span>
-                    </div>
-
-                    <h4 className="text-sm font-bold text-white mt-2">{route.title.ar}</h4>
-                    <p className="text-xs text-[#a69883] mt-0.5 font-sans" dir="ltr">{route.title.en}</p>
-                  </div>
-
-                  <div className="mt-4 pt-3 border-t border-[#d4af37]/15 flex items-center justify-between text-xs">
-                    <span className="text-[#a69883]">المدة: <strong className="text-[#ede3d1]">{route.estimatedDuration.ar}</strong></span>
-                    <span className="text-[#38ef7d] font-semibold">✓ نشط ومعتمد</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* 5. FLEET TAB */}
+        {/* 5. FLEET & CARS MANAGEMENT TAB */}
         {activeTab === 'fleet' && (
           <div className="space-y-6 animate-fadeIn">
-            <div className="rounded-2xl border border-[#d4af37]/30 bg-[#120e0a] p-5 shadow-xl">
-              <h3 className="text-base font-bold text-white flex items-center gap-2">
-                <Car className="h-4 w-4 text-[#d4af37]" />
-                <span>إدارة أسطول المركبات والاشتراطات اللوجستية</span>
-              </h3>
-              <p className="text-xs text-[#a69883] mt-1">
-                التحكم في سعة الركاب والحقائب والمميزات وشرط الحجز المسبق لكل فئة مركبة.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {VEHICLES.map((vehicle) => (
-                <div
-                  key={vehicle.slug}
-                  className="rounded-2xl border border-[#d4af37]/30 bg-[#120e0a] p-6 flex flex-col justify-between shadow-xl"
-                >
-                  <div>
-                    <div className="text-4xl mb-3">{vehicle.image_url}</div>
-                    <h4 className="text-base font-bold text-white">{vehicle.name.ar}</h4>
-                    <p className="text-xs text-[#a69883] mt-0.5" dir="ltr">{vehicle.name.en}</p>
-
-                    <div className="mt-4 space-y-2 border-t border-[#d4af37]/15 pt-3 text-xs">
-                      <div className="flex justify-between">
-                        <span className="text-[#a69883]">سعة الركاب:</span>
-                        <strong className="text-white font-bold">{vehicle.passenger_capacity} ركاب</strong>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-[#a69883]">سعة الحقائب:</span>
-                        <strong className="text-white font-bold">{vehicle.luggage_capacity} حقائب</strong>
-                      </div>
-                    </div>
-
-                    <div className="mt-4">
-                      <span className="text-[11px] text-[#a69883] block mb-1">المميزات والراحة:</span>
-                      <ul className="space-y-1 text-xs text-[#ede3d1]">
-                        {vehicle.features.ar.map((f, i) => (
-                          <li key={i}>• {f}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-
-                  {vehicle.requiresAdvanceNoticeDays ? (
-                    <div className="mt-5 rounded-lg border border-[#f5d34c]/30 bg-[#241c09] p-2 text-[11px] text-[#f5d34c]">
-                      ⚠️ يتطلب حجز مسبق بيومين
-                    </div>
-                  ) : (
-                    <div className="mt-5 rounded-lg border border-[#38ef7d]/30 bg-[#0d160f] p-2 text-[11px] text-[#38ef7d]">
-                      ✓ جاهز للحجز الفوري
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* 6. TOURS TAB */}
-        {activeTab === 'tours' && (
-          <div className="space-y-6 animate-fadeIn">
-            <div className="rounded-2xl border border-[#d4af37]/30 bg-[#120e0a] p-5 shadow-xl flex items-center justify-between">
+            <div className="rounded-2xl border border-[#d4af37]/30 bg-[#120e0a] p-5 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
               <div>
                 <h3 className="text-base font-bold text-white flex items-center gap-2">
-                  <Compass className="h-4 w-4 text-[#d4af37]" />
-                  <span>كتالوج الجولات والبرامج السياحية (CMS)</span>
+                  <Car className="h-5 w-5 text-[#d4af37]" />
+                  <span>أسطول المركبات: الفئات الـ 4 الأساسية والسيارات التابعة</span>
                 </h3>
                 <p className="text-xs text-[#a69883] mt-1">
-                  البرامج السياحية الفاخرة، مواعيد الجولات، خط السير، والمشمول في الباقات.
+                  الفئات الأربعة ثابتة كأقسام رئيسية، ويمكنك إضافة سيارات محددة تحت كل فئة وتحديد ما يُعرض منها في الصفحة الرئيسية.
                 </p>
               </div>
 
               <button
-                onClick={() => alert('تم تفعيل نموذج إضافة برنامج سياحي جديد.')}
-                className="flex items-center gap-1.5 rounded-xl gold-gradient-bg px-4 py-2 text-xs font-bold text-black hover:opacity-95 cursor-pointer shadow-md"
+                onClick={() => {
+                  setTargetCategorySlug('sedan');
+                  setIsAddCarModalOpen(true);
+                }}
+                className="flex items-center gap-1.5 rounded-xl gold-gradient-bg px-4 py-2 text-xs font-bold text-black hover:opacity-95 transition-all cursor-pointer shadow-md"
               >
                 <Plus className="h-4 w-4" />
-                <span>إضافة برنامج سياحي</span>
+                <span>إضافة سيارة جديدة لأسطول</span>
               </button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {TOURS.map((tour) => (
+            {/* 4 Main Categories with Sub-cars */}
+            <div className="space-y-6">
+              {fleetCategories.map((category) => (
                 <div
-                  key={tour.id}
-                  className="rounded-2xl border border-[#d4af37]/25 bg-[#120e0a] p-5 flex flex-col justify-between shadow-xl"
+                  key={category.slug}
+                  className="rounded-2xl border border-[#d4af37]/30 bg-[#120e0a] p-6 shadow-xl"
                 >
-                  <div>
-                    <span className="rounded bg-[#d4af37]/20 px-2 py-0.5 text-[10px] font-bold text-[#fae48c]">
-                      {tour.category === 'cultural' ? 'تاريخي وثقافي' :
-                       tour.category === 'day_trip' ? 'يوم واحد' :
-                       tour.category === 'adventure' ? 'مغامرات وسفاري' : 'نايل كروز'}
-                    </span>
-
-                    <h4 className="text-base font-bold text-white mt-2">{tour.title.ar}</h4>
-                    <p className="text-xs text-[#a69883] mt-1 line-clamp-2">{tour.subtitle.ar}</p>
-
-                    <div className="mt-4 pt-3 border-t border-[#d4af37]/15 flex items-center justify-between text-xs">
-                      <span className="text-[#a69883]">المدة: <strong className="text-white">{tour.duration.ar}</strong></span>
-                      <span className="text-[#fae48c] font-black text-sm">يبدأ من {tour.basePriceEgp} ج.م</span>
+                  <div className="flex items-center justify-between pb-4 border-b border-[#d4af37]/15">
+                    <div className="flex items-center gap-3">
+                      <span className="text-3xl">{category.image_url}</span>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <h4 className="text-base font-bold text-white">{category.name.ar}</h4>
+                          <span className="rounded-full bg-[#d4af37]/15 px-2.5 py-0.5 text-[10px] font-bold text-[#fae48c] border border-[#d4af37]/30">
+                            فئة أساسية
+                          </span>
+                        </div>
+                        <p className="text-xs text-[#a69883] mt-0.5">
+                          سعة {category.passenger_capacity} ركاب • {category.luggage_capacity} حقائب
+                        </p>
+                      </div>
                     </div>
+
+                    <button
+                      onClick={() => {
+                        setTargetCategorySlug(category.slug);
+                        setIsAddCarModalOpen(true);
+                      }}
+                      className="flex items-center gap-1 rounded-xl border border-[#d4af37]/40 bg-[#1a140e] px-3 py-1.5 text-xs font-bold text-[#fae48c] hover:bg-[#261c12] cursor-pointer"
+                    >
+                      <Plus className="h-3.5 w-3.5" />
+                      <span>إضافة سيارة لهذه الفئة</span>
+                    </button>
                   </div>
 
-                  <div className="mt-4 pt-3 border-t border-[#d4af37]/10 flex items-center justify-between">
-                    <span className="text-xs text-[#38ef7d]">★ {tour.rating} ({tour.reviewsCount} تقييم)</span>
-                    <button
-                      onClick={() => alert(`تعديل باقة: ${tour.title.ar}`)}
-                      className="text-xs text-[#fae48c] hover:underline cursor-pointer"
-                    >
-                      تعديل البرنامج
-                    </button>
+                  {/* Cars under this category */}
+                  <div className="mt-5">
+                    <h5 className="text-xs font-bold text-[#a69883] uppercase tracking-wider mb-3">
+                      السيارات والموديلات المسجلة ({category.models?.length || 0}):
+                    </h5>
+
+                    {(!category.models || category.models.length === 0) ? (
+                      <div className="rounded-xl border border-dashed border-[#d4af37]/20 p-6 text-center text-xs text-[#a69883]">
+                        لا توجد سيارات مضافة حالياً تحت هذه الفئة. اضغط على &quot;إضافة سيارة لهذه الفئة&quot; لإدراج موديل جديد.
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {category.models.map((car) => (
+                          <div
+                            key={car.id}
+                            className="rounded-xl border border-[#d4af37]/20 bg-[#16110b] p-4 flex flex-col justify-between hover:border-[#d4af37]/60 transition-all"
+                          >
+                            <div>
+                              <div className="flex items-center justify-between">
+                                <h6 className="text-sm font-bold text-white">{car.name.ar}</h6>
+                                {car.year && (
+                                  <span className="rounded bg-[#d4af37]/20 px-2 py-0.5 text-[10px] font-mono text-[#fae48c]">
+                                    {car.year}
+                                  </span>
+                                )}
+                              </div>
+
+                              <ul className="mt-2.5 space-y-1 text-xs text-[#a69883]">
+                                {car.features.ar.map((f, idx) => (
+                                  <li key={idx} className="flex items-center gap-1.5">
+                                    <span className="text-[#d4af37]">•</span>
+                                    <span>{f}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+
+                            <div className="mt-4 pt-3 border-t border-[#d4af37]/10 flex items-center justify-between text-xs">
+                              {/* Show on Homepage Toggle */}
+                              <label className="flex items-center gap-1.5 cursor-pointer text-[11px]">
+                                <input
+                                  type="checkbox"
+                                  checked={car.showOnHomepage}
+                                  onChange={() => handleToggleCarHomepage(category.slug, car.id)}
+                                  className="h-3.5 w-3.5 rounded border-[#d4af37] text-[#d4af37] focus:ring-[#d4af37]"
+                                />
+                                <span className={car.showOnHomepage ? 'text-[#38ef7d] font-bold' : 'text-[#a69883]'}>
+                                  {car.showOnHomepage ? 'معروضة بالرئيسية' : 'مخفية بالرئيسية'}
+                                </span>
+                              </label>
+
+                              <button
+                                onClick={() => handleDeleteCar(category.slug, car.id)}
+                                className="text-[#ff4757] hover:bg-[#ff4757]/20 p-1 rounded"
+                                title="حذف السيارة"
+                              >
+                                <Trash2 className="h-3.5 w-3.5" />
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
@@ -1058,10 +1265,415 @@ export default function AdminDashboardPage() {
         )}
       </div>
 
-      {/* Manual Booking Modal */}
-      {isAddBookingOpen && (
+      {/* MODAL: ADD REGULAR CLIENT */}
+      {isAddClientOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4 backdrop-blur-sm animate-fadeIn">
           <div className="relative w-full max-w-lg rounded-2xl border-2 border-[#d4af37] bg-[#120e0a] p-6 shadow-2xl text-start">
+            <button
+              onClick={() => setIsAddClientOpen(false)}
+              className="absolute top-4 left-4 text-[#a69883] hover:text-white"
+            >
+              ✕
+            </button>
+
+            <h3 className="text-base font-bold text-white mb-4 flex items-center gap-2">
+              <Users className="h-5 w-5 text-[#d4af37]" />
+              <span>إضافة عميل ثابت جديد إلى السجلات</span>
+            </h3>
+
+            <form onSubmit={handleAddClient} className="space-y-4 text-xs">
+              <div>
+                <label className="block text-[#fae48c] font-bold mb-1">اسم العميل أو الجهة: *</label>
+                <input
+                  type="text"
+                  required
+                  value={newClientForm.name}
+                  onChange={(e) => setNewClientForm({ ...newClientForm, name: e.target.value })}
+                  placeholder="مثال: أ. عبد الرحمن المنصور"
+                  className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3.5 py-2.5 text-[#ede3d1] focus:border-[#d4af37] focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[#ede3d1] font-bold mb-1">اسم الشركة / الفندق (إن وجد):</label>
+                <input
+                  type="text"
+                  value={newClientForm.companyName}
+                  onChange={(e) => setNewClientForm({ ...newClientForm, companyName: e.target.value })}
+                  placeholder="مثال: فندق كمبينسكي / شركة بترول"
+                  className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3.5 py-2.5 text-[#ede3d1] focus:outline-none"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[#fae48c] font-bold mb-1">رقم الهاتف / الواتساب: *</label>
+                  <input
+                    type="tel"
+                    required
+                    value={newClientForm.phone}
+                    onChange={(e) => setNewClientForm({ ...newClientForm, phone: e.target.value })}
+                    placeholder="010XXXXXXXX"
+                    className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3.5 py-2.5 text-[#ede3d1] focus:outline-none font-mono"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[#ede3d1] font-bold mb-1">تصنيف العميل:</label>
+                  <select
+                    value={newClientForm.clientType}
+                    onChange={(e) => setNewClientForm({ ...newClientForm, clientType: e.target.value as any })}
+                    className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3 py-2.5 text-[#ede3d1] focus:outline-none"
+                  >
+                    <option value="vip" className="bg-[#120e0a]">فرد VIP</option>
+                    <option value="corporate" className="bg-[#120e0a]">شركة / قطاع أعمال</option>
+                    <option value="hotel" className="bg-[#120e0a]">فندق / كونسيرج</option>
+                    <option value="agency" className="bg-[#120e0a]">وكالة سياحة</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[#ede3d1] font-bold mb-1">البريد الإلكتروني:</label>
+                <input
+                  type="email"
+                  value={newClientForm.email}
+                  onChange={(e) => setNewClientForm({ ...newClientForm, email: e.target.value })}
+                  placeholder="name@example.com"
+                  className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3.5 py-2.5 text-[#ede3d1] focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[#ede3d1] font-bold mb-1">ملاحظات وشروط التعامل:</label>
+                <textarea
+                  rows={2}
+                  value={newClientForm.notes}
+                  onChange={(e) => setNewClientForm({ ...newClientForm, notes: e.target.value })}
+                  placeholder="مثال: يفضل الدفع شهرياً، يحتاج سيارات H1..."
+                  className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3.5 py-2 text-[#ede3d1] focus:outline-none resize-none"
+                />
+              </div>
+
+              <div className="pt-2 flex items-center gap-3">
+                <button
+                  type="submit"
+                  className="flex-1 rounded-xl gold-gradient-bg py-2.5 font-bold text-black hover:opacity-95 shadow-lg"
+                >
+                  حفظ العميل
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsAddClientOpen(false)}
+                  className="rounded-xl border border-[#d4af37]/40 px-4 py-2.5 font-semibold text-[#ede3d1]"
+                >
+                  إلغاء
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL: ADD TRIP TO CLIENT */}
+      {isAddTripToClientOpen && selectedClientForStatement && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4 backdrop-blur-sm animate-fadeIn">
+          <div className="relative w-full max-w-md rounded-2xl border-2 border-[#d4af37] bg-[#120e0a] p-6 shadow-2xl text-start">
+            <button
+              onClick={() => setIsAddTripToClientOpen(false)}
+              className="absolute top-4 left-4 text-[#a69883] hover:text-white"
+            >
+              ✕
+            </button>
+
+            <h3 className="text-base font-bold text-white mb-4">
+              إضافة رحلة لكشف حساب: <span className="text-[#fae48c]">{selectedClientForStatement.name}</span>
+            </h3>
+
+            <form onSubmit={handleAddTripToClient} className="space-y-4 text-xs">
+              <div>
+                <label className="block text-[#ede3d1] font-bold mb-1">تاريخ الرحلة:</label>
+                <input
+                  type="date"
+                  required
+                  value={newTripForm.date}
+                  onChange={(e) => setNewTripForm({ ...newTripForm, date: e.target.value })}
+                  className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3 py-2 text-[#ede3d1] focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[#ede3d1] font-bold mb-1">بيان المسار / الخدمة:</label>
+                <input
+                  type="text"
+                  required
+                  value={newTripForm.routeTitle}
+                  onChange={(e) => setNewTripForm({ ...newTripForm, routeTitle: e.target.value })}
+                  className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3.5 py-2 text-[#ede3d1] focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[#ede3d1] font-bold mb-1">نوع المركبة:</label>
+                <input
+                  type="text"
+                  value={newTripForm.vehicleName}
+                  onChange={(e) => setNewTripForm({ ...newTripForm, vehicleName: e.target.value })}
+                  className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3.5 py-2 text-[#ede3d1] focus:outline-none"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[#fae48c] font-bold mb-1">إجمالي الحساب (ج.م):</label>
+                  <input
+                    type="number"
+                    required
+                    value={newTripForm.amountEgp}
+                    onChange={(e) => setNewTripForm({ ...newTripForm, amountEgp: Number(e.target.value) })}
+                    className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3 py-2 text-[#ede3d1] font-mono focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[#38ef7d] font-bold mb-1">المسدد نقداً (ج.م):</label>
+                  <input
+                    type="number"
+                    required
+                    value={newTripForm.paidAmountEgp}
+                    onChange={(e) => setNewTripForm({ ...newTripForm, paidAmountEgp: Number(e.target.value) })}
+                    className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3 py-2 text-[#ede3d1] font-mono focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[#ede3d1] font-bold mb-1">اسم السائق المنفذ (اختياري):</label>
+                <input
+                  type="text"
+                  value={newTripForm.driverName}
+                  onChange={(e) => setNewTripForm({ ...newTripForm, driverName: e.target.value })}
+                  placeholder="كابتن / ..."
+                  className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3.5 py-2 text-[#ede3d1] focus:outline-none"
+                />
+              </div>
+
+              <div className="pt-2 flex items-center gap-3">
+                <button
+                  type="submit"
+                  className="flex-1 rounded-xl gold-gradient-bg py-2.5 font-bold text-black hover:opacity-95 shadow-lg"
+                >
+                  تسجيل الرحلة بالحساب
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsAddTripToClientOpen(false)}
+                  className="rounded-xl border border-[#d4af37]/40 px-4 py-2.5 font-semibold text-[#ede3d1]"
+                >
+                  إلغاء
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL: ADD CAR TO CATEGORY */}
+      {isAddCarModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4 backdrop-blur-sm animate-fadeIn">
+          <div className="relative w-full max-w-md rounded-2xl border-2 border-[#d4af37] bg-[#120e0a] p-6 shadow-2xl text-start">
+            <button
+              onClick={() => setIsAddCarModalOpen(false)}
+              className="absolute top-4 left-4 text-[#a69883] hover:text-white"
+            >
+              ✕
+            </button>
+
+            <h3 className="text-base font-bold text-white mb-4 flex items-center gap-2">
+              <Car className="h-5 w-5 text-[#d4af37]" />
+              <span>إضافة سيارة جديدة لأسطول أنوبيس</span>
+            </h3>
+
+            <form onSubmit={handleAddCarToCategory} className="space-y-4 text-xs">
+              <div>
+                <label className="block text-[#ede3d1] font-bold mb-1">الفئة الأساسية:</label>
+                <select
+                  value={targetCategorySlug}
+                  onChange={(e) => setTargetCategorySlug(e.target.value)}
+                  className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3 py-2 text-[#fae48c] focus:outline-none"
+                >
+                  {fleetCategories.map(c => (
+                    <option key={c.slug} value={c.slug} className="bg-[#120e0a]">
+                      {c.name.ar}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-[#fae48c] font-bold mb-1">اسم السيارة والموديل: *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="مثال: مرسيدس E-Class 200 أو كيا كرنفال"
+                  value={newCarForm.nameAr}
+                  onChange={(e) => setNewCarForm({ ...newCarForm, nameAr: e.target.value })}
+                  className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3.5 py-2 text-[#ede3d1] focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[#ede3d1] font-bold mb-1">سنة الصنع / الموديل:</label>
+                <input
+                  type="number"
+                  value={newCarForm.year}
+                  onChange={(e) => setNewCarForm({ ...newCarForm, year: Number(e.target.value) })}
+                  className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3.5 py-2 text-[#ede3d1] font-mono focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[#ede3d1] font-bold mb-1">المميزات والتجهيزات (مفصولة بفاصلة):</label>
+                <input
+                  type="text"
+                  placeholder="مثال: مقاعد جلد، تكييف مزدوج، شاحن لاسلكي"
+                  value={newCarForm.featuresAr}
+                  onChange={(e) => setNewCarForm({ ...newCarForm, featuresAr: e.target.value })}
+                  className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3.5 py-2 text-[#ede3d1] focus:outline-none"
+                />
+              </div>
+
+              <div className="pt-1">
+                <label className="flex items-center gap-2 text-[#ede3d1] cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={newCarForm.showOnHomepage}
+                    onChange={(e) => setNewCarForm({ ...newCarForm, showOnHomepage: e.target.checked })}
+                    className="h-4 w-4 rounded border-[#d4af37] text-[#d4af37]"
+                  />
+                  <span className="font-bold text-[#fae48c]">عرض هذه السيارة في الصفحة الرئيسية للموقع</span>
+                </label>
+              </div>
+
+              <div className="pt-2 flex items-center gap-3">
+                <button
+                  type="submit"
+                  className="flex-1 rounded-xl gold-gradient-bg py-2.5 font-bold text-black hover:opacity-95 shadow-lg"
+                >
+                  إضافة السيارة للأسطول
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsAddCarModalOpen(false)}
+                  className="rounded-xl border border-[#d4af37]/40 px-4 py-2.5 font-semibold text-[#ede3d1]"
+                >
+                  إلغاء
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL: ADD ROUTE */}
+      {isAddRouteOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4 backdrop-blur-sm animate-fadeIn">
+          <div className="relative w-full max-w-md rounded-2xl border-2 border-[#d4af37] bg-[#120e0a] p-6 shadow-2xl text-start">
+            <button
+              onClick={() => setIsAddRouteOpen(false)}
+              className="absolute top-4 left-4 text-[#a69883] hover:text-white"
+            >
+              ✕
+            </button>
+
+            <h3 className="text-base font-bold text-white mb-4">إضافة مسار جديد لجدول الرحلات</h3>
+
+            <form onSubmit={handleAddRoute} className="space-y-3 text-xs">
+              <div>
+                <label className="block text-[#fae48c] font-bold mb-1">اسم المسار (عربي): *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="مثال: القاهرة - العين السخنة"
+                  value={newRouteForm.titleAr}
+                  onChange={(e) => setNewRouteForm({ ...newRouteForm, titleAr: e.target.value })}
+                  className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3.5 py-2 text-[#ede3d1] focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[#ede3d1] font-bold mb-1">المدة التقديرية:</label>
+                <input
+                  type="text"
+                  value={newRouteForm.durationAr}
+                  onChange={(e) => setNewRouteForm({ ...newRouteForm, durationAr: e.target.value })}
+                  className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3.5 py-2 text-[#ede3d1] focus:outline-none"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-2.5">
+                <div>
+                  <label className="block text-[#ede3d1] font-bold mb-1">ملاكي سيدان (ج.م):</label>
+                  <input
+                    type="number"
+                    value={newRouteForm.sedan}
+                    onChange={(e) => setNewRouteForm({ ...newRouteForm, sedan: Number(e.target.value) })}
+                    className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-2.5 py-1.5 font-mono text-[#fae48c]"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[#ede3d1] font-bold mb-1">7 راكب عائلي (ج.م):</label>
+                  <input
+                    type="number"
+                    value={newRouteForm.seater7}
+                    onChange={(e) => setNewRouteForm({ ...newRouteForm, seater7: Number(e.target.value) })}
+                    className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-2.5 py-1.5 font-mono text-[#fae48c]"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[#ede3d1] font-bold mb-1">إتش وان H1 (ج.م):</label>
+                  <input
+                    type="number"
+                    value={newRouteForm.h1}
+                    onChange={(e) => setNewRouteForm({ ...newRouteForm, h1: Number(e.target.value) })}
+                    className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-2.5 py-1.5 font-mono text-[#fae48c]"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[#ede3d1] font-bold mb-1">هاي إس HiAce (ج.م):</label>
+                  <input
+                    type="number"
+                    value={newRouteForm.hiace}
+                    onChange={(e) => setNewRouteForm({ ...newRouteForm, hiace: Number(e.target.value) })}
+                    className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-2.5 py-1.5 font-mono text-[#fae48c]"
+                  />
+                </div>
+              </div>
+
+              <div className="pt-2 flex items-center gap-3">
+                <button
+                  type="submit"
+                  className="flex-1 rounded-xl gold-gradient-bg py-2.5 font-bold text-black hover:opacity-95 shadow-lg"
+                >
+                  حفظ المسار
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsAddRouteOpen(false)}
+                  className="rounded-xl border border-[#d4af37]/40 px-4 py-2.5 font-semibold text-[#ede3d1]"
+                >
+                  إلغاء
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL: MANUAL BOOKING */}
+      {isAddBookingOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4 backdrop-blur-sm animate-fadeIn">
+          <div className="relative w-full max-w-md rounded-2xl border-2 border-[#d4af37] bg-[#120e0a] p-6 shadow-2xl text-start">
             <button
               onClick={() => setIsAddBookingOpen(false)}
               className="absolute top-4 left-4 text-[#a69883] hover:text-white"
@@ -1069,44 +1681,68 @@ export default function AdminDashboardPage() {
               ✕
             </button>
 
-            <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-              <Plus className="h-4 w-4 text-[#d4af37]" />
-              <span>تسجيل حجز جديد يدوياً في جدول العمليات</span>
-            </h3>
+            <h3 className="text-base font-bold text-white mb-4">تسجيل حجز جديد يدوياً</h3>
 
-            <form onSubmit={handleCreateBooking} className="space-y-4 text-xs">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                const route = routesData.find(r => r.id === Number(newBookingForm.routeId)) || routesData[0];
+                const vehicle = fleetCategories.find(v => v.slug === newBookingForm.vehicleSlug) || fleetCategories[0];
+                const rawPrice = route.prices[vehicle.slug as keyof typeof route.prices] || 800;
+
+                const newBooking: AdminBooking = {
+                  id: String(Date.now()),
+                  reference: `ANB-${new Date().getMonth() + 1}${new Date().getDate()}-${Math.floor(1000 + Math.random() * 9000)}`,
+                  type: 'transfer',
+                  title: route.title.ar,
+                  customerName: newBookingForm.customerName,
+                  customerPhone: newBookingForm.customerPhone,
+                  pickupDate: newBookingForm.pickupDate,
+                  pickupTime: newBookingForm.pickupTime,
+                  pickupLocation: newBookingForm.pickupLocation || 'فندق العميل',
+                  vehicleName: vehicle.name.ar,
+                  amountEgp: rawPrice,
+                  status: 'pending',
+                  flightNumber: newBookingForm.flightNumber || undefined,
+                  createdAt: new Date().toISOString().replace('T', ' ').slice(0, 16)
+                };
+
+                setBookings([newBooking, ...bookings]);
+                setIsAddBookingOpen(false);
+                alert('تمت إضافة الحجز بنجاح!');
+              }}
+              className="space-y-3 text-xs"
+            >
               <div>
-                <label className="block text-[#fae48c] font-bold mb-1">اسم العميل:</label>
+                <label className="block text-[#fae48c] font-bold mb-1">اسم العميل: *</label>
                 <input
                   type="text"
                   required
                   value={newBookingForm.customerName}
                   onChange={(e) => setNewBookingForm({ ...newBookingForm, customerName: e.target.value })}
-                  placeholder="مثال: د. محمد الشريف"
-                  className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3.5 py-2 text-[#ede3d1] focus:border-[#d4af37] focus:outline-none"
+                  className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3.5 py-2 text-[#ede3d1] focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-[#fae48c] font-bold mb-1">رقم الهاتف / الواتساب:</label>
+                <label className="block text-[#fae48c] font-bold mb-1">رقم الهاتف / الواتساب: *</label>
                 <input
                   type="tel"
                   required
                   value={newBookingForm.customerPhone}
                   onChange={(e) => setNewBookingForm({ ...newBookingForm, customerPhone: e.target.value })}
-                  placeholder="010XXXXXXXX"
-                  className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3.5 py-2 text-[#ede3d1] focus:border-[#d4af37] focus:outline-none font-mono"
+                  className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3.5 py-2 text-[#ede3d1] focus:outline-none font-mono"
                 />
               </div>
 
               <div>
-                <label className="block text-[#ede3d1] font-bold mb-1">خط السير / الخدمة:</label>
+                <label className="block text-[#ede3d1] font-bold mb-1">المسار:</label>
                 <select
                   value={newBookingForm.routeId}
                   onChange={(e) => setNewBookingForm({ ...newBookingForm, routeId: Number(e.target.value) })}
-                  className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3.5 py-2 text-[#ede3d1] focus:outline-none"
+                  className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3 py-2 text-[#ede3d1] focus:outline-none"
                 >
-                  {ROUTES.map((r) => (
+                  {routesData.map(r => (
                     <option key={r.id} value={r.id} className="bg-[#120e0a]">
                       {r.id}. {r.title.ar}
                     </option>
@@ -1115,13 +1751,13 @@ export default function AdminDashboardPage() {
               </div>
 
               <div>
-                <label className="block text-[#ede3d1] font-bold mb-1">نوع المركبة:</label>
+                <label className="block text-[#ede3d1] font-bold mb-1">المركبة:</label>
                 <select
                   value={newBookingForm.vehicleSlug}
                   onChange={(e) => setNewBookingForm({ ...newBookingForm, vehicleSlug: e.target.value })}
-                  className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3.5 py-2 text-[#ede3d1] focus:outline-none"
+                  className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3 py-2 text-[#ede3d1] focus:outline-none"
                 >
-                  {VEHICLES.map((v) => (
+                  {fleetCategories.map(v => (
                     <option key={v.slug} value={v.slug} className="bg-[#120e0a]">
                       {v.name.ar}
                     </option>
@@ -1129,9 +1765,9 @@ export default function AdminDashboardPage() {
                 </select>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-2.5">
                 <div>
-                  <label className="block text-[#ede3d1] font-bold mb-1">تاريخ الرحلة:</label>
+                  <label className="block text-[#ede3d1] font-bold mb-1">التاريخ:</label>
                   <input
                     type="date"
                     value={newBookingForm.pickupDate}
@@ -1140,7 +1776,7 @@ export default function AdminDashboardPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-[#ede3d1] font-bold mb-1">وقت الانطلاق:</label>
+                  <label className="block text-[#ede3d1] font-bold mb-1">الوقت:</label>
                   <input
                     type="time"
                     value={newBookingForm.pickupTime}
@@ -1150,28 +1786,17 @@ export default function AdminDashboardPage() {
                 </div>
               </div>
 
-              <div>
-                <label className="block text-[#ede3d1] font-bold mb-1">مكان الانطلاق / الفندق:</label>
-                <input
-                  type="text"
-                  value={newBookingForm.pickupLocation}
-                  onChange={(e) => setNewBookingForm({ ...newBookingForm, pickupLocation: e.target.value })}
-                  placeholder="اسم الفندق أو المطار..."
-                  className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3.5 py-2 text-[#ede3d1] focus:outline-none"
-                />
-              </div>
-
               <div className="pt-2 flex items-center gap-3">
                 <button
                   type="submit"
-                  className="flex-1 rounded-xl gold-gradient-bg py-2.5 font-bold text-black hover:opacity-95 cursor-pointer shadow-lg"
+                  className="flex-1 rounded-xl gold-gradient-bg py-2.5 font-bold text-black hover:opacity-95 shadow-lg"
                 >
-                  حفظ الحجز في السجلات
+                  حفظ الحجز
                 </button>
                 <button
                   type="button"
                   onClick={() => setIsAddBookingOpen(false)}
-                  className="rounded-xl border border-[#d4af37]/40 px-4 py-2.5 font-semibold text-[#ede3d1] hover:bg-[#1f1810] cursor-pointer"
+                  className="rounded-xl border border-[#d4af37]/40 px-4 py-2.5 font-semibold text-[#ede3d1]"
                 >
                   إلغاء
                 </button>
