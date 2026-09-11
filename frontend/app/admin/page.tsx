@@ -39,7 +39,12 @@ import {
   CreditCard,
   Building,
   UserCheck,
-  AlertTriangle
+  AlertTriangle,
+  Calendar as CalendarIcon,
+  CalendarDays,
+  ChevronLeft,
+  List,
+  Plane
 } from 'lucide-react';
 
 interface AdminBooking {
@@ -66,8 +71,41 @@ export default function AdminDashboardPage() {
   // 1. Bookings State
   const [bookings, setBookings] = useState<AdminBooking[]>([
     {
-      id: '1',
-      reference: 'ANB-0911-8841',
+      id: 'b-today-1',
+      reference: 'ANB-0911-9921',
+      type: 'transfer',
+      title: 'مطار القاهرة الدولي (صالة 3 وصول)',
+      customerName: 'المستشار عصام الشريف',
+      customerPhone: '01012345678',
+      pickupDate: '2026-09-11',
+      pickupTime: '15:45',
+      pickupLocation: 'مطار القاهرة - صالة 3',
+      dropoffLocation: 'كمبوند قطامية ديونز - التجمع الخامس',
+      vehicleName: 'ملاكي سيدان فاخرة',
+      amountEgp: 950,
+      status: 'confirmed',
+      flightNumber: 'MS 880',
+      createdAt: '2026-09-11 08:30'
+    },
+    {
+      id: 'b-today-2',
+      reference: 'ANB-0911-4432',
+      type: 'transfer',
+      title: 'جولة الأهرامات والمتحف المصري الكبير',
+      customerName: 'وفد شركة إعمار للاستثمار',
+      customerPhone: '01234567890',
+      pickupDate: '2026-09-11',
+      pickupTime: '18:00',
+      pickupLocation: 'فندق الفورسيزونز نايل بلازا',
+      dropoffLocation: 'المتحف الكبير ومنطقة الأهرامات',
+      vehicleName: 'ميني باص سياحي هيونداي H1',
+      amountEgp: 2800,
+      status: 'pending',
+      createdAt: '2026-09-11 11:20'
+    },
+    {
+      id: 'b-tomorrow-1',
+      reference: 'ANB-0912-8841',
       type: 'transfer',
       title: 'مطار القاهرة الدولي (استقبال صالة 3)',
       customerName: 'د. خالد عبد الرحمن',
@@ -83,8 +121,24 @@ export default function AdminDashboardPage() {
       createdAt: '2026-09-11 10:15'
     },
     {
-      id: '2',
-      reference: 'ANB-0911-5420',
+      id: 'b-tomorrow-2',
+      reference: 'ANB-0912-6178',
+      type: 'transfer',
+      title: 'انتقال العين السخنة (ذهاب فقط)',
+      customerName: 'أ. طارق عبد العزيز',
+      customerPhone: '01055566778',
+      pickupDate: '2026-09-12',
+      pickupTime: '09:00',
+      pickupLocation: 'الشيخ زايد - بيفرلي هيلز',
+      dropoffLocation: 'منتجع ستيلا دي ماري - السخنة',
+      vehicleName: '7 راكب عائلي (SUV)',
+      amountEgp: 2900,
+      status: 'confirmed',
+      createdAt: '2026-09-11 12:40'
+    },
+    {
+      id: 'b-2',
+      reference: 'ANB-0913-5420',
       type: 'transfer',
       title: 'أوفر داي إسكندرية (رحلة يوم كامل)',
       customerName: 'عائلة المهندس أحمد فؤاد',
@@ -99,7 +153,7 @@ export default function AdminDashboardPage() {
       createdAt: '2026-09-11 11:30'
     },
     {
-      id: '3',
+      id: 'b-3',
       reference: 'ANB-0910-1120',
       type: 'transfer',
       title: 'هرم - ممفيس - سقارة - دهشور',
@@ -113,6 +167,38 @@ export default function AdminDashboardPage() {
       amountEgp: 1200,
       status: 'completed',
       createdAt: '2026-09-10 09:00'
+    },
+    {
+      id: 'b-4',
+      reference: 'ANB-0915-7731',
+      type: 'transfer',
+      title: 'وادي الحيتان ووادي الريان (سفاري الفيوم)',
+      customerName: 'فوج سياحي ألماني (مستر هانز)',
+      customerPhone: '01066778899',
+      pickupDate: '2026-09-15',
+      pickupTime: '06:30',
+      pickupLocation: 'فندق ماريوت مينا هاوس',
+      dropoffLocation: 'محمية وادي الريان بالفيوم',
+      vehicleName: 'تويوتا هاي أس سياحي 14 راكب',
+      amountEgp: 4500,
+      status: 'confirmed',
+      createdAt: '2026-09-11 13:00'
+    },
+    {
+      id: 'b-5',
+      reference: 'ANB-0918-3209',
+      type: 'transfer',
+      title: 'عشاء نيلي فاخر بالباخرة وإبحار',
+      customerName: 'عائلة د. منى زكي',
+      customerPhone: '01221144332',
+      pickupDate: '2026-09-18',
+      pickupTime: '19:30',
+      pickupLocation: 'مصر الجديدة - الكوربة',
+      dropoffLocation: 'مرسى البواخر بالمعادي',
+      vehicleName: 'ملاكي سيدان فاخرة',
+      amountEgp: 1100,
+      status: 'pending',
+      createdAt: '2026-09-11 14:10'
     }
   ]);
 
@@ -238,6 +324,13 @@ export default function AdminDashboardPage() {
   const [clientSearch, setClientSearch] = useState('');
   const [routeSearch, setRouteSearch] = useState('');
 
+  // Calendar & Operations State
+  const [bookingViewMode, setBookingViewMode] = useState<'calendar' | 'table'>('calendar');
+  const [calendarDate, setCalendarDate] = useState<Date>(new Date());
+  const [selectedCalendarDateStr, setSelectedCalendarDateStr] = useState<string>(
+    new Date().toISOString().split('T')[0]
+  );
+
   // Manual Booking Modal
   const [isAddBookingOpen, setIsAddBookingOpen] = useState(false);
   const [newBookingForm, setNewBookingForm] = useState({
@@ -248,8 +341,218 @@ export default function AdminDashboardPage() {
     pickupDate: new Date().toISOString().split('T')[0],
     pickupTime: '10:00',
     pickupLocation: '',
+    dropoffLocation: '',
     flightNumber: ''
   });
+
+  const handleOpenAddBookingForDate = (dateStr: string) => {
+    setNewBookingForm(prev => ({
+      ...prev,
+      pickupDate: dateStr
+    }));
+    setIsAddBookingOpen(true);
+  };
+
+  // Persist Bookings to backend and localStorage
+  const persistBookings = async (updatedList: AdminBooking[]) => {
+    setBookings(updatedList);
+    try {
+      localStorage.setItem('anubis_bookings', JSON.stringify(updatedList));
+      window.dispatchEvent(new Event('anubis_bookings_updated'));
+      await fetch('/api/bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ bookings: updatedList })
+      });
+    } catch (err) {
+      console.error('Failed to sync bookings to backend:', err);
+    }
+  };
+
+  const handleUpdateBookingStatus = (bookingId: string, newStatus: AdminBooking['status']) => {
+    const updated = bookings.map(b => b.id === bookingId ? { ...b, status: newStatus } : b);
+    persistBookings(updated);
+  };
+
+  const handleDeleteBooking = (bookingId: string, customerName: string) => {
+    if (confirm(`هل أنت متأكد من حذف حجز العميل "${customerName}"؟`)) {
+      const updated = bookings.filter(b => b.id !== bookingId);
+      persistBookings(updated);
+    }
+  };
+
+  // Date Helpers
+  const getFormattedDateEn = (d: Date) => {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  };
+
+  const ARABIC_MONTHS = [
+    'يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو',
+    'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'
+  ];
+
+  const ARABIC_WEEKDAYS_SAT_FIRST = [
+    { name: 'السبت', short: 'سبت' },
+    { name: 'الأحد', short: 'أحد' },
+    { name: 'الإثنين', short: 'إثنين' },
+    { name: 'الثلاثاء', short: 'ثلاثاء' },
+    { name: 'الأربعاء', short: 'أربعاء' },
+    { name: 'الخميس', short: 'خميس' },
+    { name: 'الجمعة', short: 'جمعة' },
+  ];
+
+  const ARABIC_DAYS_FROM_SUNDAY = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+
+  const formatArabicFriendlyDate = (dateStr: string) => {
+    if (!dateStr) return '';
+    const parts = dateStr.split('-');
+    if (parts.length !== 3) return dateStr;
+    const y = Number(parts[0]);
+    const m = Number(parts[1]) - 1;
+    const d = Number(parts[2]);
+    const dateObj = new Date(y, m, d);
+    const dayName = ARABIC_DAYS_FROM_SUNDAY[dateObj.getDay()];
+    const monthName = ARABIC_MONTHS[m];
+    return `${dayName}، ${d} ${monthName} ${y}`;
+  };
+
+  const todayStr = useMemo(() => getFormattedDateEn(new Date()), []);
+  const tomorrowStr = useMemo(() => {
+    const d = new Date();
+    d.setDate(d.getDate() + 1);
+    return getFormattedDateEn(d);
+  }, []);
+
+  const todayBookings = useMemo(() => {
+    return bookings.filter(b => b.pickupDate === todayStr);
+  }, [bookings, todayStr]);
+
+  const tomorrowBookings = useMemo(() => {
+    return bookings.filter(b => b.pickupDate === tomorrowStr);
+  }, [bookings, tomorrowStr]);
+
+  const todayRevenueEgp = useMemo(() => {
+    return todayBookings.reduce((acc, b) => acc + (b.status !== 'cancelled' ? b.amountEgp : 0), 0);
+  }, [todayBookings]);
+
+  const tomorrowRevenueEgp = useMemo(() => {
+    return tomorrowBookings.reduce((acc, b) => acc + (b.status !== 'cancelled' ? b.amountEgp : 0), 0);
+  }, [tomorrowBookings]);
+
+  // Filtered Bookings for Search and Status Filter
+  const filteredBookings = useMemo(() => {
+    return bookings.filter(b => {
+      const q = bookingSearch.trim().toLowerCase();
+      const matchesSearch =
+        !q ||
+        b.customerName.toLowerCase().includes(q) ||
+        b.customerPhone.includes(q) ||
+        b.reference.toLowerCase().includes(q) ||
+        b.title.toLowerCase().includes(q);
+
+      const matchesStatus = bookingStatusFilter === 'all' || b.status === bookingStatusFilter;
+
+      return matchesSearch && matchesStatus;
+    });
+  }, [bookings, bookingSearch, bookingStatusFilter]);
+
+  // Calendar Day Cells (Saturday First)
+  const calendarDays = useMemo(() => {
+    const year = calendarDate.getFullYear();
+    const month = calendarDate.getMonth();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const firstDayJs = new Date(year, month, 1).getDay(); // 0=Sun, ..., 6=Sat
+    const satOffset = (firstDayJs + 1) % 7;
+    const prevMonthDays = new Date(year, month, 0).getDate();
+
+    const cells: Array<{
+      dayNumber: number;
+      dateStr: string;
+      isCurrentMonth: boolean;
+      isToday: boolean;
+      isSelected: boolean;
+    }> = [];
+
+    // Previous month padding
+    for (let i = satOffset - 1; i >= 0; i--) {
+      const day = prevMonthDays - i;
+      const d = new Date(year, month - 1, day);
+      const dStr = getFormattedDateEn(d);
+      cells.push({
+        dayNumber: day,
+        dateStr: dStr,
+        isCurrentMonth: false,
+        isToday: dStr === todayStr,
+        isSelected: dStr === selectedCalendarDateStr
+      });
+    }
+
+    // Current month days
+    for (let day = 1; day <= daysInMonth; day++) {
+      const d = new Date(year, month, day);
+      const dStr = getFormattedDateEn(d);
+      cells.push({
+        dayNumber: day,
+        dateStr: dStr,
+        isCurrentMonth: true,
+        isToday: dStr === todayStr,
+        isSelected: dStr === selectedCalendarDateStr
+      });
+    }
+
+    // Next month padding to reach complete week row
+    const remaining = (7 - (cells.length % 7)) % 7;
+    for (let day = 1; day <= remaining; day++) {
+      const d = new Date(year, month + 1, day);
+      const dStr = getFormattedDateEn(d);
+      cells.push({
+        dayNumber: day,
+        dateStr: dStr,
+        isCurrentMonth: false,
+        isToday: dStr === todayStr,
+        isSelected: dStr === selectedCalendarDateStr
+      });
+    }
+
+    return cells;
+  }, [calendarDate, todayStr, selectedCalendarDateStr]);
+
+  // Bookings grouped by date string
+  const bookingsByDate = useMemo(() => {
+    const map: Record<string, AdminBooking[]> = {};
+    filteredBookings.forEach(b => {
+      if (!map[b.pickupDate]) map[b.pickupDate] = [];
+      map[b.pickupDate].push(b);
+    });
+    return map;
+  }, [filteredBookings]);
+
+  // Selected Day Details
+  const selectedDayBookings = useMemo(() => {
+    if (!selectedCalendarDateStr) return [];
+    return filteredBookings.filter(b => b.pickupDate === selectedCalendarDateStr);
+  }, [filteredBookings, selectedCalendarDateStr]);
+
+  const selectedDayRevenueEgp = useMemo(() => {
+    return selectedDayBookings.reduce((acc, b) => acc + (b.status !== 'cancelled' ? b.amountEgp : 0), 0);
+  }, [selectedDayBookings]);
+
+  const handlePrevMonth = () => {
+    setCalendarDate(prev => new Date(prev.getFullYear(), prev.getMonth() - 1, 1));
+  };
+
+  const handleNextMonth = () => {
+    setCalendarDate(prev => new Date(prev.getFullYear(), prev.getMonth() + 1, 1));
+  };
+
+  const handleGoToToday = () => {
+    const now = new Date();
+    setCalendarDate(now);
+    setSelectedCalendarDateStr(getFormattedDateEn(now));
+  };
 
   // Add Route Modal
   const [isAddRouteOpen, setIsAddRouteOpen] = useState(false);
@@ -765,25 +1068,313 @@ export default function AdminDashboardPage() {
                 <Car className="h-6 w-6 text-[#d4af37]" />
               </button>
             </div>
+
+            {/* EXECUTIVE OPERATIONAL BOARD: TODAY & TOMORROW TRIPS */}
+            <div className="rounded-2xl border-2 border-[#d4af37]/40 bg-gradient-to-b from-[#18120b] to-[#0f0b07] p-6 shadow-2xl">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-[#d4af37]/20">
+                <div className="flex items-center gap-3">
+                  <div className="rounded-xl bg-[#d4af37]/20 p-3 text-[#fae48c] border border-[#d4af37]/40">
+                    <CalendarCheck className="h-6 w-6 text-[#d4af37]" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-lg font-bold text-white">
+                        حجوزات وتشغيل اليوم والغد
+                      </h3>
+                      <span className="rounded-full bg-[#38ef7d]/20 px-2.5 py-0.5 text-[11px] font-bold text-[#38ef7d] border border-[#38ef7d]/30">
+                        متابعة فورية
+                      </span>
+                    </div>
+                    <p className="text-xs text-[#a69883] mt-0.5">
+                      نظرة تشغيلية سريعة وموجزة لمواعيد رحلات اليوم الميدانية وتجهيزات أسطول الغد
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => {
+                    setActiveTab('bookings');
+                    setBookingViewMode('calendar');
+                  }}
+                  className="flex items-center gap-2 rounded-xl gold-gradient-bg px-4 py-2.5 text-xs font-bold text-black hover:opacity-95 transition-all cursor-pointer shadow-md self-start sm:self-auto"
+                >
+                  <CalendarDays className="h-4 w-4" />
+                  <span>فتح التقويم الشهري الكامل</span>
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </button>
+              </div>
+
+              {/* Today & Tomorrow Side-by-Side Cards */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+                {/* 1. TODAY TRIPS CARD */}
+                <div className="rounded-2xl border border-[#38ef7d]/40 bg-[#111712] p-5 shadow-xl">
+                  <div className="flex items-center justify-between border-b border-[#38ef7d]/20 pb-3 mb-4">
+                    <div className="flex items-center gap-2.5">
+                      <span className="flex h-3 w-3 relative">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#38ef7d] opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-3 w-3 bg-[#38ef7d]"></span>
+                      </span>
+                      <div>
+                        <h4 className="text-sm font-bold text-white flex items-center gap-2">
+                          <span>رحلات وتشغيل اليوم</span>
+                          <span className="rounded-md bg-[#38ef7d]/20 px-2 py-0.5 text-[10px] font-bold text-[#38ef7d]">
+                            {todayBookings.length} رحلات
+                          </span>
+                        </h4>
+                        <p className="text-[11px] text-[#a69883] mt-0.5 font-medium">
+                          {formatArabicFriendlyDate(todayStr)}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="text-end">
+                      <span className="text-[10px] text-[#a69883] block">قيمة تشغيل اليوم</span>
+                      <span className="text-sm font-black text-[#fae48c]">
+                        {todayRevenueEgp.toLocaleString('en-US')} ج.م
+                      </span>
+                    </div>
+                  </div>
+
+                  {todayBookings.length === 0 ? (
+                    <div className="py-8 text-center">
+                      <CalendarIcon className="mx-auto h-8 w-8 text-[#a69883]/50 mb-2" />
+                      <p className="text-xs text-[#a69883]">لا توجد رحلات مجدولة لليوم حتى الآن</p>
+                      <button
+                        onClick={() => handleOpenAddBookingForDate(todayStr)}
+                        className="mt-3 inline-flex items-center gap-1.5 rounded-lg border border-[#38ef7d]/40 bg-[#38ef7d]/10 px-3 py-1.5 text-xs font-semibold text-[#38ef7d] hover:bg-[#38ef7d]/20 cursor-pointer"
+                      >
+                        <Plus className="h-3.5 w-3.5" />
+                        <span>تسجيل حجز لليوم</span>
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      {todayBookings.map((b) => (
+                        <div
+                          key={b.id}
+                          className="rounded-xl border border-[#d4af37]/20 bg-[#16120c] p-3.5 hover:border-[#38ef7d]/50 transition-all"
+                        >
+                          <div className="flex items-start justify-between gap-2">
+                            <div>
+                              <div className="flex items-center gap-2">
+                                <span className="flex items-center gap-1 rounded bg-[#d4af37]/20 px-2 py-0.5 text-[11px] font-black text-[#fae48c] font-mono">
+                                  <Clock className="h-3 w-3" />
+                                  {b.pickupTime}
+                                </span>
+                                <h5 className="text-xs font-bold text-white">{b.title}</h5>
+                              </div>
+                              <p className="text-xs text-[#ede3d1] mt-1.5">
+                                <strong className="text-white">{b.customerName}</strong>
+                                <span className="text-[11px] text-[#a69883] font-mono mr-2">({b.customerPhone})</span>
+                              </p>
+                              <div className="flex items-center gap-2 mt-1 text-[11px] text-[#a69883]">
+                                <span>🚗 {b.vehicleName}</span>
+                                {b.flightNumber && (
+                                  <span className="text-[#fae48c] font-mono">✈️ {b.flightNumber}</span>
+                                )}
+                              </div>
+                            </div>
+
+                            <div className="flex flex-col items-end gap-2">
+                              <span
+                                className={`rounded px-2 py-0.5 text-[10px] font-bold ${
+                                  b.status === 'confirmed'
+                                    ? 'bg-[#38ef7d]/20 text-[#38ef7d]'
+                                    : b.status === 'pending'
+                                    ? 'bg-[#f5d34c]/20 text-[#f5d34c]'
+                                    : b.status === 'completed'
+                                    ? 'bg-[#209cee]/20 text-[#209cee]'
+                                    : 'bg-[#ff4757]/20 text-[#ff4757]'
+                                }`}
+                              >
+                                {b.status === 'confirmed'
+                                  ? 'مؤكد'
+                                  : b.status === 'pending'
+                                  ? 'معلق'
+                                  : b.status === 'completed'
+                                  ? 'مكتمل'
+                                  : 'ملغي'}
+                              </span>
+                              <span className="text-xs font-black text-[#fae48c]">
+                                {b.amountEgp.toLocaleString('en-US')} ج.م
+                              </span>
+                              <a
+                                href={`https://api.whatsapp.com/send?phone=${b.customerPhone.replace(/[^0-9]/g, '')}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-1 rounded bg-[#25D366] px-2 py-1 text-[10px] font-bold text-white hover:opacity-90 transition-all"
+                                title="محادثة واتساب"
+                              >
+                                <MessageCircle className="h-3 w-3" />
+                                <span>واتساب</span>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* 2. TOMORROW TRIPS CARD */}
+                <div className="rounded-2xl border border-[#d4af37]/40 bg-[#16120b] p-5 shadow-xl">
+                  <div className="flex items-center justify-between border-b border-[#d4af37]/20 pb-3 mb-4">
+                    <div className="flex items-center gap-2.5">
+                      <div className="rounded-full bg-[#d4af37]/20 p-1.5 text-[#fae48c]">
+                        <Car className="h-4 w-4 text-[#d4af37]" />
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-bold text-white flex items-center gap-2">
+                          <span>تجهيزات ورحلات الغد</span>
+                          <span className="rounded-md bg-[#d4af37]/20 px-2 py-0.5 text-[10px] font-bold text-[#fae48c]">
+                            {tomorrowBookings.length} رحلات
+                          </span>
+                        </h4>
+                        <p className="text-[11px] text-[#a69883] mt-0.5 font-medium">
+                          {formatArabicFriendlyDate(tomorrowStr)}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="text-end">
+                      <span className="text-[10px] text-[#a69883] block">قيمة تشغيل الغد</span>
+                      <span className="text-sm font-black text-[#fae48c]">
+                        {tomorrowRevenueEgp.toLocaleString('en-US')} ج.م
+                      </span>
+                    </div>
+                  </div>
+
+                  {tomorrowBookings.length === 0 ? (
+                    <div className="py-8 text-center">
+                      <CalendarIcon className="mx-auto h-8 w-8 text-[#a69883]/50 mb-2" />
+                      <p className="text-xs text-[#a69883]">لا توجد رحلات مجدولة للغد حتى الآن</p>
+                      <button
+                        onClick={() => handleOpenAddBookingForDate(tomorrowStr)}
+                        className="mt-3 inline-flex items-center gap-1.5 rounded-lg border border-[#d4af37]/40 bg-[#d4af37]/10 px-3 py-1.5 text-xs font-semibold text-[#fae48c] hover:bg-[#d4af37]/20 cursor-pointer"
+                      >
+                        <Plus className="h-3.5 w-3.5" />
+                        <span>تسجيل حجز للغد</span>
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      {tomorrowBookings.map((b) => (
+                        <div
+                          key={b.id}
+                          className="rounded-xl border border-[#d4af37]/20 bg-[#120e0a] p-3.5 hover:border-[#d4af37]/60 transition-all"
+                        >
+                          <div className="flex items-start justify-between gap-2">
+                            <div>
+                              <div className="flex items-center gap-2">
+                                <span className="flex items-center gap-1 rounded bg-[#d4af37]/20 px-2 py-0.5 text-[11px] font-black text-[#fae48c] font-mono">
+                                  <Clock className="h-3 w-3" />
+                                  {b.pickupTime}
+                                </span>
+                                <h5 className="text-xs font-bold text-white">{b.title}</h5>
+                              </div>
+                              <p className="text-xs text-[#ede3d1] mt-1.5">
+                                <strong className="text-white">{b.customerName}</strong>
+                                <span className="text-[11px] text-[#a69883] font-mono mr-2">({b.customerPhone})</span>
+                              </p>
+                              <div className="flex items-center gap-2 mt-1 text-[11px] text-[#a69883]">
+                                <span>🚗 {b.vehicleName}</span>
+                                {b.flightNumber && (
+                                  <span className="text-[#fae48c] font-mono">✈️ {b.flightNumber}</span>
+                                )}
+                              </div>
+                            </div>
+
+                            <div className="flex flex-col items-end gap-2">
+                              <span
+                                className={`rounded px-2 py-0.5 text-[10px] font-bold ${
+                                  b.status === 'confirmed'
+                                    ? 'bg-[#38ef7d]/20 text-[#38ef7d]'
+                                    : b.status === 'pending'
+                                    ? 'bg-[#f5d34c]/20 text-[#f5d34c]'
+                                    : b.status === 'completed'
+                                    ? 'bg-[#209cee]/20 text-[#209cee]'
+                                    : 'bg-[#ff4757]/20 text-[#ff4757]'
+                                }`}
+                              >
+                                {b.status === 'confirmed'
+                                  ? 'مؤكد'
+                                  : b.status === 'pending'
+                                  ? 'معلق'
+                                  : b.status === 'completed'
+                                  ? 'مكتمل'
+                                  : 'ملغي'}
+                              </span>
+                              <span className="text-xs font-black text-[#fae48c]">
+                                {b.amountEgp.toLocaleString('en-US')} ج.م
+                              </span>
+                              <a
+                                href={`https://api.whatsapp.com/send?phone=${b.customerPhone.replace(/[^0-9]/g, '')}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-1 rounded bg-[#25D366] px-2 py-1 text-[10px] font-bold text-white hover:opacity-90 transition-all"
+                                title="تأكيد الموعد عبر واتساب"
+                              >
+                                <MessageCircle className="h-3 w-3" />
+                                <span>تأكيد واتساب</span>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
         )}
 
-        {/* 2. BOOKINGS CRM TAB */}
+        {/* 2. BOOKINGS CRM & CALENDAR TAB */}
         {activeTab === 'bookings' && (
           <div className="space-y-6 animate-fadeIn">
-            <div className="rounded-2xl border border-[#d4af37]/30 bg-[#120e0a] p-5 shadow-xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
-              <div className="flex flex-1 flex-col sm:flex-row items-center gap-3">
-                <div className="relative w-full sm:w-72">
+            {/* Top Toolbar: Search, Filters, View Mode Toggle & Add Booking */}
+            <div className="rounded-2xl border border-[#d4af37]/30 bg-[#120e0a] p-5 shadow-xl flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
+              <div className="flex flex-1 flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                {/* View Switcher: Calendar vs Table */}
+                <div className="flex items-center rounded-xl border border-[#d4af37]/40 bg-[#1a140e] p-1">
+                  <button
+                    onClick={() => setBookingViewMode('calendar')}
+                    className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-all cursor-pointer ${
+                      bookingViewMode === 'calendar'
+                        ? 'gold-gradient-bg text-black shadow-sm'
+                        : 'text-[#ede3d1] hover:text-[#fae48c]'
+                    }`}
+                  >
+                    <CalendarDays className="h-3.5 w-3.5" />
+                    <span>عرض التقويم الشهري</span>
+                  </button>
+
+                  <button
+                    onClick={() => setBookingViewMode('table')}
+                    className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-all cursor-pointer ${
+                      bookingViewMode === 'table'
+                        ? 'gold-gradient-bg text-black shadow-sm'
+                        : 'text-[#ede3d1] hover:text-[#fae48c]'
+                    }`}
+                  >
+                    <List className="h-3.5 w-3.5" />
+                    <span>عرض جدول القائمة</span>
+                  </button>
+                </div>
+
+                {/* Search Input */}
+                <div className="relative flex-1 max-w-sm">
                   <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#a69883]" />
                   <input
                     type="text"
-                    placeholder="بحث باسم العميل أو الهاتف..."
+                    placeholder="بحث باسم العميل، الهاتف، أو المسار..."
                     value={bookingSearch}
                     onChange={(e) => setBookingSearch(e.target.value)}
                     className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] pr-9 pl-4 py-2 text-xs text-[#ede3d1] focus:border-[#d4af37] focus:outline-none"
                   />
                 </div>
 
+                {/* Status Filter */}
                 <select
                   value={bookingStatusFilter}
                   onChange={(e) => setBookingStatusFilter(e.target.value as any)}
@@ -799,93 +1390,410 @@ export default function AdminDashboardPage() {
 
               <button
                 onClick={() => setIsAddBookingOpen(true)}
-                className="flex items-center gap-1.5 rounded-xl gold-gradient-bg px-4 py-2 text-xs font-bold text-black hover:opacity-95 transition-all cursor-pointer shadow-md"
+                className="flex items-center justify-center gap-1.5 rounded-xl gold-gradient-bg px-4 py-2 text-xs font-bold text-black hover:opacity-95 transition-all cursor-pointer shadow-md"
               >
                 <Plus className="h-4 w-4" />
                 <span>إضافة حجز يدوي جديد</span>
               </button>
             </div>
 
-            {/* Bookings Table */}
-            <div className="rounded-2xl border border-[#d4af37]/30 bg-[#120e0a] overflow-hidden shadow-2xl">
-              <div className="overflow-x-auto">
-                <table className="w-full text-start text-xs">
-                  <thead className="border-b border-[#d4af37]/20 bg-[#17120c] text-[#fae48c] uppercase font-bold">
-                    <tr>
-                      <th className="px-4 py-3.5 text-start">الرقم المرجعي</th>
-                      <th className="px-4 py-3.5 text-start">العميل والتواصل</th>
-                      <th className="px-4 py-3.5 text-start">الخدمة / خط السير</th>
-                      <th className="px-4 py-3.5 text-start">المركبة</th>
-                      <th className="px-4 py-3.5 text-start">الموعد</th>
-                      <th className="px-4 py-3.5 text-start">السعر</th>
-                      <th className="px-4 py-3.5 text-start">الحالة</th>
-                      <th className="px-4 py-3.5 text-start">الإجراءات</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-[#d4af37]/10 text-[#ede3d1]">
-                    {bookings.map((b) => (
-                      <tr key={b.id} className="hover:bg-[#18130d] transition-colors">
-                        <td className="px-4 py-3 font-mono font-bold text-[#fae48c] whitespace-nowrap">
-                          {b.reference}
-                        </td>
-                        <td className="px-4 py-3">
-                          <strong className="block text-white font-bold">{b.customerName}</strong>
-                          <span className="text-[11px] text-[#a69883] font-mono">{b.customerPhone}</span>
-                        </td>
-                        <td className="px-4 py-3">
-                          <span className="font-semibold text-white block">{b.title}</span>
-                          {b.flightNumber && (
-                            <span className="text-[10px] text-[#d4af37] font-mono">✈️ {b.flightNumber}</span>
-                          )}
-                        </td>
-                        <td className="px-4 py-3 whitespace-nowrap text-[#ede3d1]">
-                          {b.vehicleName}
-                        </td>
-                        <td className="px-4 py-3 whitespace-nowrap">
-                          <span className="block text-white font-medium">{b.pickupDate}</span>
-                          <span className="text-[11px] text-[#a69883] font-mono">{b.pickupTime}</span>
-                        </td>
-                        <td className="px-4 py-3 font-black text-[#fae48c] whitespace-nowrap text-sm">
-                          {b.amountEgp.toLocaleString('en-US')} ج.م
-                        </td>
-                        <td className="px-4 py-3 whitespace-nowrap">
-                          <span className={`rounded-lg px-2.5 py-1 text-xs font-bold ${
-                            b.status === 'confirmed' ? 'bg-[#38ef7d]/20 text-[#38ef7d]' :
-                            b.status === 'pending' ? 'bg-[#f5d34c]/20 text-[#f5d34c]' :
-                            b.status === 'completed' ? 'bg-[#209cee]/20 text-[#209cee]' : 'bg-[#ff4757]/20 text-[#ff4757]'
-                          }`}>
-                            {b.status === 'confirmed' ? 'مؤكد' : b.status === 'pending' ? 'معلق' : b.status === 'completed' ? 'مكتمل' : 'ملغي'}
+            {/* VIEW 1: MONTHLY CALENDAR VIEW */}
+            {bookingViewMode === 'calendar' && (
+              <div className="space-y-6">
+                <div className="rounded-2xl border border-[#d4af37]/30 bg-[#120e0a] p-5 shadow-2xl">
+                  {/* Calendar Month Navigation Header */}
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pb-4 border-b border-[#d4af37]/20">
+                    <div className="flex items-center gap-3">
+                      <button
+                        onClick={handlePrevMonth}
+                        className="rounded-xl border border-[#d4af37]/30 bg-[#1a140e] p-2 text-[#ede3d1] hover:border-[#d4af37] hover:text-[#fae48c] transition-all cursor-pointer"
+                        title="الشهر السابق"
+                      >
+                        <ChevronRight className="h-4 w-4" />
+                      </button>
+
+                      <div className="text-center sm:text-start">
+                        <h3 className="text-base sm:text-lg font-black text-white font-serif tracking-wide">
+                          {ARABIC_MONTHS[calendarDate.getMonth()]} {calendarDate.getFullYear()}
+                        </h3>
+                        <p className="text-[11px] text-[#a69883]">
+                          إجمالي حجوزات هذا الشهر: {
+                            bookings.filter(b => {
+                              const [y, m] = b.pickupDate.split('-').map(Number);
+                              return y === calendarDate.getFullYear() && m === calendarDate.getMonth() + 1;
+                            }).length
+                          } حجز
+                        </p>
+                      </div>
+
+                      <button
+                        onClick={handleNextMonth}
+                        className="rounded-xl border border-[#d4af37]/30 bg-[#1a140e] p-2 text-[#ede3d1] hover:border-[#d4af37] hover:text-[#fae48c] transition-all cursor-pointer"
+                        title="الشهر التالي"
+                      >
+                        <ChevronLeft className="h-4 w-4" />
+                      </button>
+
+                      <button
+                        onClick={handleGoToToday}
+                        className="rounded-xl border border-[#d4af37]/50 bg-[#1e1710] px-3 py-1.5 text-xs font-bold text-[#fae48c] hover:bg-[#281f14] hover:border-[#d4af37] transition-all cursor-pointer"
+                      >
+                        اليوم
+                      </button>
+                    </div>
+
+                    {/* Status Color Legend */}
+                    <div className="flex items-center gap-3 text-[11px] text-[#a69883] self-center sm:self-auto flex-wrap">
+                      <div className="flex items-center gap-1.5">
+                        <span className="h-2.5 w-2.5 rounded-full bg-[#38ef7d]"></span>
+                        <span>مؤكد</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="h-2.5 w-2.5 rounded-full bg-[#f5d34c]"></span>
+                        <span>معلق</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="h-2.5 w-2.5 rounded-full bg-[#209cee]"></span>
+                        <span>مكتمل</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="h-2.5 w-2.5 rounded-full bg-[#ff4757]"></span>
+                        <span>ملغي</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 7-Days Calendar Grid */}
+                  <div className="mt-4 overflow-x-auto">
+                    <div className="min-w-[700px]">
+                      {/* Weekday Headers */}
+                      <div className="grid grid-cols-7 gap-2 pb-2 text-center text-xs font-bold text-[#fae48c] border-b border-[#d4af37]/15">
+                        {ARABIC_WEEKDAYS_SAT_FIRST.map((d, idx) => (
+                          <div key={idx} className="py-1">
+                            {d.name}
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Month Days Grid */}
+                      <div className="grid grid-cols-7 gap-2 pt-2">
+                        {calendarDays.map((cell, idx) => {
+                          const dayBookings = bookingsByDate[cell.dateStr] || [];
+                          const isSelected = cell.dateStr === selectedCalendarDateStr;
+
+                          return (
+                            <div
+                              key={idx}
+                              onClick={() => setSelectedCalendarDateStr(cell.dateStr)}
+                              className={`group relative min-h-[115px] rounded-xl p-2.5 transition-all cursor-pointer flex flex-col justify-between ${
+                                !cell.isCurrentMonth
+                                  ? 'bg-[#0b0805]/60 opacity-40 border border-dashed border-[#d4af37]/10'
+                                  : isSelected
+                                  ? 'border-2 border-[#d4af37] bg-[#1a140d] shadow-lg shadow-[#d4af37]/20 ring-1 ring-[#d4af37]'
+                                  : cell.isToday
+                                  ? 'border-2 border-[#38ef7d]/70 bg-[#0e1610] shadow-md'
+                                  : 'border border-[#d4af37]/20 bg-[#140f0a] hover:border-[#d4af37]/60 hover:bg-[#18130d]'
+                              }`}
+                            >
+                              {/* Day Header Inside Cell */}
+                              <div className="flex items-center justify-between">
+                                <span
+                                  className={`font-mono text-sm font-bold ${
+                                    cell.isToday
+                                      ? 'text-[#38ef7d]'
+                                      : isSelected
+                                      ? 'text-[#fae48c]'
+                                      : 'text-white'
+                                  }`}
+                                >
+                                  {cell.dayNumber}
+                                </span>
+
+                                <div className="flex items-center gap-1">
+                                  {cell.isToday && (
+                                    <span className="rounded bg-[#38ef7d]/20 px-1.5 py-0.2 text-[9px] font-bold text-[#38ef7d]">
+                                      اليوم
+                                    </span>
+                                  )}
+                                  {dayBookings.length > 0 && (
+                                    <span className="rounded-full bg-[#d4af37]/25 px-1.5 py-0.2 text-[10px] font-bold text-[#fae48c]">
+                                      {dayBookings.length}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+
+                              {/* Bookings Pills inside Cell */}
+                              <div className="mt-1.5 space-y-1 overflow-hidden">
+                                {dayBookings.slice(0, 2).map((b) => (
+                                  <div
+                                    key={b.id}
+                                    className={`truncate rounded px-1.5 py-0.5 text-[10px] font-medium flex items-center gap-1 border ${
+                                      b.status === 'confirmed'
+                                        ? 'border-[#38ef7d]/40 bg-[#38ef7d]/15 text-[#38ef7d]'
+                                        : b.status === 'pending'
+                                        ? 'border-[#f5d34c]/40 bg-[#f5d34c]/15 text-[#f5d34c]'
+                                        : b.status === 'completed'
+                                        ? 'border-[#209cee]/40 bg-[#209cee]/15 text-[#209cee]'
+                                        : 'border-[#ff4757]/40 bg-[#ff4757]/15 text-[#ff4757]'
+                                    }`}
+                                    title={`${b.pickupTime} - ${b.customerName} (${b.title})`}
+                                  >
+                                    <span className="font-mono font-bold text-[9px]">{b.pickupTime}</span>
+                                    <span className="truncate">{b.customerName.split(' ')[0]}</span>
+                                  </div>
+                                ))}
+
+                                {dayBookings.length > 2 && (
+                                  <div className="text-[9px] font-bold text-[#a69883] text-center">
+                                    +{dayBookings.length - 2} رحلات إضافية
+                                  </div>
+                                )}
+                              </div>
+
+                              {/* Footer indicator */}
+                              <div className="mt-1 text-[9px] text-[#a69883] text-end font-mono">
+                                {dayBookings.length > 0 ? (
+                                  <span className="text-[#fae48c] font-bold">
+                                    {dayBookings.reduce((acc, x) => acc + (x.status !== 'cancelled' ? x.amountEgp : 0), 0).toLocaleString('en-US')} ج.م
+                                  </span>
+                                ) : (
+                                  <span className="opacity-0 group-hover:opacity-100 text-[#d4af37]">+</span>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Selected Day Bookings Detail Drawer */}
+                <div className="rounded-2xl border-2 border-[#d4af37]/40 bg-[#120e0a] p-5 shadow-2xl animate-fadeIn">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#d4af37]/20">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h4 className="text-base font-bold text-white">
+                          تفاصيل تشغيل ومواعيد: {formatArabicFriendlyDate(selectedCalendarDateStr)}
+                        </h4>
+                        {selectedCalendarDateStr === todayStr && (
+                          <span className="rounded-md bg-[#38ef7d]/20 px-2 py-0.5 text-[10px] font-bold text-[#38ef7d]">
+                            اليوم
                           </span>
-                        </td>
-                        <td className="px-4 py-3 whitespace-nowrap">
-                          <div className="flex items-center gap-2">
+                        )}
+                        {selectedCalendarDateStr === tomorrowStr && (
+                          <span className="rounded-md bg-[#d4af37]/20 px-2 py-0.5 text-[10px] font-bold text-[#fae48c]">
+                            غداً
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-[#a69883] mt-0.5">
+                        عدد الرحلات المسجلة: <strong className="text-white">{selectedDayBookings.length}</strong> | إجمالي القيمة: <strong className="text-[#fae48c]">{selectedDayRevenueEgp.toLocaleString('en-US')} ج.م</strong>
+                      </p>
+                    </div>
+
+                    <button
+                      onClick={() => handleOpenAddBookingForDate(selectedCalendarDateStr)}
+                      className="flex items-center gap-1.5 rounded-xl gold-gradient-bg px-4 py-2 text-xs font-bold text-black hover:opacity-95 transition-all cursor-pointer shadow-md self-start sm:self-auto"
+                    >
+                      <Plus className="h-4 w-4" />
+                      <span>إضافة حجز لهذا اليوم</span>
+                    </button>
+                  </div>
+
+                  {/* Day Bookings List */}
+                  {selectedDayBookings.length === 0 ? (
+                    <div className="py-10 text-center">
+                      <CalendarIcon className="mx-auto h-10 w-10 text-[#a69883]/40 mb-2" />
+                      <p className="text-sm font-semibold text-white">لا توجد حجوزات مسجلة في هذا اليوم</p>
+                      <p className="text-xs text-[#a69883] mt-1">
+                        يمكنك إضافة حجز جديد لهذا اليوم مباشرة بالضغط على الزر أعلاه.
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-5">
+                      {selectedDayBookings.map((b) => (
+                        <div
+                          key={b.id}
+                          className="rounded-xl border border-[#d4af37]/30 bg-[#18130d] p-4 hover:border-[#d4af37] transition-all space-y-3"
+                        >
+                          <div className="flex items-start justify-between gap-3">
+                            <div>
+                              <span className="font-mono text-xs font-bold text-[#fae48c] block mb-1">
+                                {b.reference}
+                              </span>
+                              <h5 className="text-sm font-bold text-white">{b.title}</h5>
+                              {b.flightNumber && (
+                                <span className="inline-block mt-0.5 rounded bg-[#d4af37]/20 px-2 py-0.5 text-[10px] text-[#fae48c] font-mono">
+                                  ✈️ رحلة طيران: {b.flightNumber}
+                                </span>
+                              )}
+                            </div>
+
+                            <div className="text-end">
+                              <span className="text-sm font-black text-[#fae48c] block">
+                                {b.amountEgp.toLocaleString('en-US')} ج.م
+                              </span>
+                              {/* Inline Status Changer Dropdown */}
+                              <select
+                                value={b.status}
+                                onChange={(e) => handleUpdateBookingStatus(b.id, e.target.value as any)}
+                                className={`mt-1.5 rounded-lg px-2 py-1 text-[11px] font-bold border cursor-pointer focus:outline-none ${
+                                  b.status === 'confirmed'
+                                    ? 'border-[#38ef7d]/40 bg-[#38ef7d]/15 text-[#38ef7d]'
+                                    : b.status === 'pending'
+                                    ? 'border-[#f5d34c]/40 bg-[#f5d34c]/15 text-[#f5d34c]'
+                                    : b.status === 'completed'
+                                    ? 'border-[#209cee]/40 bg-[#209cee]/15 text-[#209cee]'
+                                    : 'border-[#ff4757]/40 bg-[#ff4757]/15 text-[#ff4757]'
+                                }`}
+                              >
+                                <option value="pending">⏳ معلق</option>
+                                <option value="confirmed">✅ مؤكد</option>
+                                <option value="completed">🏁 مكتمل</option>
+                                <option value="cancelled">❌ ملغي</option>
+                              </select>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-2 text-xs border-y border-[#d4af37]/15 py-2.5">
+                            <div>
+                              <span className="text-[10px] text-[#a69883] block">العميل:</span>
+                              <strong className="text-white">{b.customerName}</strong>
+                              <p className="text-[#fae48c] font-mono text-[11px] mt-0.5">{b.customerPhone}</p>
+                            </div>
+                            <div>
+                              <span className="text-[10px] text-[#a69883] block">المركبة والموعد:</span>
+                              <strong className="text-[#ede3d1]">{b.vehicleName}</strong>
+                              <p className="text-[#fae48c] font-mono text-[11px] mt-0.5">⏰ {b.pickupTime}</p>
+                            </div>
+                          </div>
+
+                          <div className="text-xs text-[#a69883] space-y-1">
+                            <p className="truncate">📍 <strong>الانطلاق:</strong> {b.pickupLocation}</p>
+                            {b.dropoffLocation && (
+                              <p className="truncate">🏁 <strong>الوصول:</strong> {b.dropoffLocation}</p>
+                            )}
+                          </div>
+
+                          <div className="flex items-center justify-between pt-2 border-t border-[#d4af37]/10">
                             <a
                               href={`https://api.whatsapp.com/send?phone=${b.customerPhone.replace(/[^0-9]/g, '')}`}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="rounded-lg bg-[#25D366] p-1.5 text-white hover:opacity-90"
-                              title="محادثة واتساب"
+                              className="flex items-center gap-1.5 rounded-lg bg-[#25D366] px-3 py-1.5 text-xs font-bold text-white hover:opacity-90 transition-all"
                             >
                               <MessageCircle className="h-3.5 w-3.5" />
+                              <span>مراسلة العميل واتساب</span>
                             </a>
+
                             <button
-                              onClick={() => {
-                                if (confirm('هل أنت متأكد من حذف الحجز؟')) {
-                                  setBookings(bookings.filter(x => x.id !== b.id));
-                                }
-                              }}
-                              className="rounded-lg border border-[#ff4757]/40 p-1.5 text-[#ff4757] hover:bg-[#ff4757]/20"
+                              onClick={() => handleDeleteBooking(b.id, b.customerName)}
+                              className="flex items-center gap-1 text-xs text-[#ff4757] hover:underline p-1 cursor-pointer"
                             >
                               <Trash2 className="h-3.5 w-3.5" />
+                              <span>حذف</span>
                             </button>
                           </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
+            )}
+
+            {/* VIEW 2: FULL TABLE VIEW */}
+            {bookingViewMode === 'table' && (
+              <div className="rounded-2xl border border-[#d4af37]/30 bg-[#120e0a] overflow-hidden shadow-2xl">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-start text-xs">
+                    <thead className="border-b border-[#d4af37]/20 bg-[#17120c] text-[#fae48c] uppercase font-bold">
+                      <tr>
+                        <th className="px-4 py-3.5 text-start">الرقم المرجعي</th>
+                        <th className="px-4 py-3.5 text-start">العميل والتواصل</th>
+                        <th className="px-4 py-3.5 text-start">الخدمة / خط السير</th>
+                        <th className="px-4 py-3.5 text-start">المركبة</th>
+                        <th className="px-4 py-3.5 text-start">الموعد</th>
+                        <th className="px-4 py-3.5 text-start">السعر</th>
+                        <th className="px-4 py-3.5 text-start">الحالة</th>
+                        <th className="px-4 py-3.5 text-start">الإجراءات</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-[#d4af37]/10 text-[#ede3d1]">
+                      {filteredBookings.map((b) => (
+                        <tr key={b.id} className="hover:bg-[#18130d] transition-colors">
+                          <td className="px-4 py-3 font-mono font-bold text-[#fae48c] whitespace-nowrap">
+                            {b.reference}
+                          </td>
+                          <td className="px-4 py-3">
+                            <strong className="block text-white font-bold">{b.customerName}</strong>
+                            <span className="text-[11px] text-[#a69883] font-mono">{b.customerPhone}</span>
+                          </td>
+                          <td className="px-4 py-3">
+                            <span className="font-semibold text-white block">{b.title}</span>
+                            {b.flightNumber && (
+                              <span className="text-[10px] text-[#d4af37] font-mono">✈️ {b.flightNumber}</span>
+                            )}
+                          </td>
+                          <td className="px-4 py-3 whitespace-nowrap text-[#ede3d1]">
+                            {b.vehicleName}
+                          </td>
+                          <td className="px-4 py-3 whitespace-nowrap">
+                            <span className="block text-white font-medium">{b.pickupDate}</span>
+                            <span className="text-[11px] text-[#a69883] font-mono">{b.pickupTime}</span>
+                          </td>
+                          <td className="px-4 py-3 font-black text-[#fae48c] whitespace-nowrap text-sm">
+                            {b.amountEgp.toLocaleString('en-US')} ج.م
+                          </td>
+                          <td className="px-4 py-3 whitespace-nowrap">
+                            <select
+                              value={b.status}
+                              onChange={(e) => handleUpdateBookingStatus(b.id, e.target.value as any)}
+                              className={`rounded-lg px-2 py-1 text-xs font-bold border cursor-pointer focus:outline-none ${
+                                b.status === 'confirmed'
+                                  ? 'border-[#38ef7d]/40 bg-[#38ef7d]/20 text-[#38ef7d]'
+                                  : b.status === 'pending'
+                                  ? 'border-[#f5d34c]/40 bg-[#f5d34c]/20 text-[#f5d34c]'
+                                  : b.status === 'completed'
+                                  ? 'border-[#209cee]/40 bg-[#209cee]/20 text-[#209cee]'
+                                  : 'border-[#ff4757]/40 bg-[#ff4757]/20 text-[#ff4757]'
+                              }`}
+                            >
+                              <option value="pending">معلق</option>
+                              <option value="confirmed">مؤكد</option>
+                              <option value="completed">مكتمل</option>
+                              <option value="cancelled">ملغي</option>
+                            </select>
+                          </td>
+                          <td className="px-4 py-3 whitespace-nowrap">
+                            <div className="flex items-center gap-2">
+                              <a
+                                href={`https://api.whatsapp.com/send?phone=${b.customerPhone.replace(/[^0-9]/g, '')}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="rounded-lg bg-[#25D366] p-1.5 text-white hover:opacity-90"
+                                title="محادثة واتساب"
+                              >
+                                <MessageCircle className="h-3.5 w-3.5" />
+                              </a>
+                              <button
+                                onClick={() => handleDeleteBooking(b.id, b.customerName)}
+                                className="rounded-lg border border-[#ff4757]/40 p-1.5 text-[#ff4757] hover:bg-[#ff4757]/20 cursor-pointer"
+                                title="حذف الحجز"
+                              >
+                                <Trash2 className="h-3.5 w-3.5" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
@@ -2171,25 +3079,37 @@ export default function AdminDashboardPage() {
                 const rawPrice = route.prices[vehicle.slug as keyof typeof route.prices] || 800;
 
                 const newBooking: AdminBooking = {
-                  id: String(Date.now()),
+                  id: `b-${Date.now()}`,
                   reference: `ANB-${new Date().getMonth() + 1}${new Date().getDate()}-${Math.floor(1000 + Math.random() * 9000)}`,
                   type: 'transfer',
                   title: route.title.ar,
-                  customerName: newBookingForm.customerName,
-                  customerPhone: newBookingForm.customerPhone,
+                  customerName: newBookingForm.customerName.trim(),
+                  customerPhone: newBookingForm.customerPhone.trim(),
                   pickupDate: newBookingForm.pickupDate,
                   pickupTime: newBookingForm.pickupTime,
-                  pickupLocation: newBookingForm.pickupLocation || 'فندق العميل',
+                  pickupLocation: newBookingForm.pickupLocation.trim() || 'فندق العميل',
+                  dropoffLocation: newBookingForm.dropoffLocation.trim() || undefined,
                   vehicleName: vehicle.name.ar,
                   amountEgp: rawPrice,
                   status: 'pending',
-                  flightNumber: newBookingForm.flightNumber || undefined,
+                  flightNumber: newBookingForm.flightNumber.trim() || undefined,
                   createdAt: new Date().toISOString().replace('T', ' ').slice(0, 16)
                 };
 
-                setBookings([newBooking, ...bookings]);
+                persistBookings([newBooking, ...bookings]);
                 setIsAddBookingOpen(false);
-                alert('تمت إضافة الحجز بنجاح!');
+                setNewBookingForm({
+                  customerName: '',
+                  customerPhone: '',
+                  routeId: routesData[0]?.id || 1,
+                  vehicleSlug: 'sedan',
+                  pickupDate: new Date().toISOString().split('T')[0],
+                  pickupTime: '10:00',
+                  pickupLocation: '',
+                  dropoffLocation: '',
+                  flightNumber: ''
+                });
+                alert('تم تسجيل الحجز بنجاح ومزامنته مع التقويم!');
               }}
               className="space-y-3 text-xs"
             >
@@ -2216,7 +3136,7 @@ export default function AdminDashboardPage() {
               </div>
 
               <div>
-                <label className="block text-[#ede3d1] font-bold mb-1">المسار:</label>
+                <label className="block text-[#ede3d1] font-bold mb-1">المسار / الرحلة:</label>
                 <select
                   value={newBookingForm.routeId}
                   onChange={(e) => setNewBookingForm({ ...newBookingForm, routeId: Number(e.target.value) })}
@@ -2231,7 +3151,7 @@ export default function AdminDashboardPage() {
               </div>
 
               <div>
-                <label className="block text-[#ede3d1] font-bold mb-1">المركبة:</label>
+                <label className="block text-[#ede3d1] font-bold mb-1">فئة المركبة:</label>
                 <select
                   value={newBookingForm.vehicleSlug}
                   onChange={(e) => setNewBookingForm({ ...newBookingForm, vehicleSlug: e.target.value })}
@@ -2247,18 +3167,20 @@ export default function AdminDashboardPage() {
 
               <div className="grid grid-cols-2 gap-2.5">
                 <div>
-                  <label className="block text-[#ede3d1] font-bold mb-1">التاريخ:</label>
+                  <label className="block text-[#ede3d1] font-bold mb-1">تاريخ الرحلة:</label>
                   <input
                     type="date"
+                    required
                     value={newBookingForm.pickupDate}
                     onChange={(e) => setNewBookingForm({ ...newBookingForm, pickupDate: e.target.value })}
                     className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3 py-2 text-[#ede3d1] focus:outline-none"
                   />
                 </div>
                 <div>
-                  <label className="block text-[#ede3d1] font-bold mb-1">الوقت:</label>
+                  <label className="block text-[#ede3d1] font-bold mb-1">وقت التحرك:</label>
                   <input
                     type="time"
+                    required
                     value={newBookingForm.pickupTime}
                     onChange={(e) => setNewBookingForm({ ...newBookingForm, pickupTime: e.target.value })}
                     className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3 py-2 text-[#ede3d1] focus:outline-none"
@@ -2266,17 +3188,51 @@ export default function AdminDashboardPage() {
                 </div>
               </div>
 
+              <div className="grid grid-cols-2 gap-2.5">
+                <div>
+                  <label className="block text-[#ede3d1] font-bold mb-1">مكان الانطلاق:</label>
+                  <input
+                    type="text"
+                    placeholder="مثال: مطار القاهرة صالة 3"
+                    value={newBookingForm.pickupLocation}
+                    onChange={(e) => setNewBookingForm({ ...newBookingForm, pickupLocation: e.target.value })}
+                    className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3 py-2 text-[#ede3d1] focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[#ede3d1] font-bold mb-1">مكان الوصول:</label>
+                  <input
+                    type="text"
+                    placeholder="مثال: فندق ماريوت الزمالك"
+                    value={newBookingForm.dropoffLocation}
+                    onChange={(e) => setNewBookingForm({ ...newBookingForm, dropoffLocation: e.target.value })}
+                    className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3 py-2 text-[#ede3d1] focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[#ede3d1] font-bold mb-1">رقم رحلة الطيران (اختياري):</label>
+                <input
+                  type="text"
+                  placeholder="مثال: MS 777"
+                  value={newBookingForm.flightNumber}
+                  onChange={(e) => setNewBookingForm({ ...newBookingForm, flightNumber: e.target.value })}
+                  className="w-full rounded-xl border border-[#d4af37]/30 bg-[#1a140e] px-3.5 py-2 text-[#ede3d1] focus:outline-none font-mono"
+                />
+              </div>
+
               <div className="pt-2 flex items-center gap-3">
                 <button
                   type="submit"
-                  className="flex-1 rounded-xl gold-gradient-bg py-2.5 font-bold text-black hover:opacity-95 shadow-lg"
+                  className="flex-1 rounded-xl gold-gradient-bg py-2.5 font-bold text-black hover:opacity-95 shadow-lg cursor-pointer"
                 >
-                  حفظ الحجز
+                  حفظ وتثبيت الحجز
                 </button>
                 <button
                   type="button"
                   onClick={() => setIsAddBookingOpen(false)}
-                  className="rounded-xl border border-[#d4af37]/40 px-4 py-2.5 font-semibold text-[#ede3d1]"
+                  className="rounded-xl border border-[#d4af37]/40 px-4 py-2.5 font-semibold text-[#ede3d1] cursor-pointer"
                 >
                   إلغاء
                 </button>

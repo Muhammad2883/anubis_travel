@@ -24,7 +24,21 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { booking } = body;
+    const { booking, bookings: fullBookings } = body;
+
+    const dataDir = path.join(process.cwd(), 'data');
+    if (!fs.existsSync(dataDir)) {
+      fs.mkdirSync(dataDir, { recursive: true });
+    }
+
+    if (Array.isArray(fullBookings)) {
+      fs.writeFileSync(dataFilePath, JSON.stringify(fullBookings, null, 2), 'utf8');
+      return NextResponse.json({
+        success: true,
+        message: 'All bookings updated successfully',
+        bookings: fullBookings
+      });
+    }
 
     if (!booking) {
       return NextResponse.json(
@@ -44,11 +58,6 @@ export async function POST(request: Request) {
     // Prepend new booking
     const updatedBookings = [booking, ...bookings];
 
-    const dataDir = path.join(process.cwd(), 'data');
-    if (!fs.existsSync(dataDir)) {
-      fs.mkdirSync(dataDir, { recursive: true });
-    }
-
     fs.writeFileSync(dataFilePath, JSON.stringify(updatedBookings, null, 2), 'utf8');
 
     return NextResponse.json({
@@ -65,3 +74,8 @@ export async function POST(request: Request) {
     );
   }
 }
+
+export async function PUT(request: Request) {
+  return POST(request);
+}
+
