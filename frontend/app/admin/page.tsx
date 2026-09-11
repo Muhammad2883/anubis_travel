@@ -43,6 +43,7 @@ import {
   Calendar as CalendarIcon,
   CalendarDays,
   ChevronLeft,
+  ChevronDown,
   List,
   Plane
 } from 'lucide-react';
@@ -63,6 +64,113 @@ interface AdminBooking {
   status: 'pending' | 'confirmed' | 'completed' | 'cancelled';
   flightNumber?: string;
   createdAt: string;
+}
+
+// Executive Custom Status Dropdown (Eliminates ugly browser/OS default pale menus)
+function BookingStatusDropdown({
+  currentStatus,
+  onStatusChange
+}: {
+  currentStatus: AdminBooking['status'];
+  onStatusChange: (newStatus: AdminBooking['status']) => void;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = React.useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
+
+  const STATUS_CONFIG: Record<
+    AdminBooking['status'],
+    { label: string; dot: string; text: string; bg: string; border: string }
+  > = {
+    confirmed: {
+      label: 'مؤكد',
+      dot: 'bg-[#38ef7d]',
+      text: 'text-[#38ef7d]',
+      bg: 'bg-[#0e1d13]',
+      border: 'border-[#38ef7d]/50 hover:border-[#38ef7d]'
+    },
+    pending: {
+      label: 'معلق',
+      dot: 'bg-[#f5d34c]',
+      text: 'text-[#f5d34c]',
+      bg: 'bg-[#221a0b]',
+      border: 'border-[#f5d34c]/50 hover:border-[#f5d34c]'
+    },
+    completed: {
+      label: 'مكتمل',
+      dot: 'bg-[#209cee]',
+      text: 'text-[#209cee]',
+      bg: 'bg-[#0d1b26]',
+      border: 'border-[#209cee]/50 hover:border-[#209cee]'
+    },
+    cancelled: {
+      label: 'ملغي',
+      dot: 'bg-[#ff4757]',
+      text: 'text-[#ff4757]',
+      bg: 'bg-[#250d11]',
+      border: 'border-[#ff4757]/50 hover:border-[#ff4757]'
+    }
+  };
+
+  const curr = STATUS_CONFIG[currentStatus] || STATUS_CONFIG.pending;
+
+  return (
+    <div className="relative inline-block text-start" ref={dropdownRef}>
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-bold border transition-all cursor-pointer shadow-md ${curr.bg} ${curr.border} ${curr.text}`}
+      >
+        <span className={`h-2 w-2 rounded-full ${curr.dot} shadow-[0_0_8px_currentColor]`}></span>
+        <span>{curr.label}</span>
+        <ChevronDown className={`h-3 w-3 opacity-80 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+      </button>
+
+      {isOpen && (
+        <div className="absolute left-0 mt-1.5 w-36 rounded-xl border border-[#d4af37]/40 bg-[#140f0a] p-1 shadow-2xl z-50 animate-fadeIn backdrop-blur-md">
+          {(Object.keys(STATUS_CONFIG) as Array<AdminBooking['status']>).map((st) => {
+            const item = STATUS_CONFIG[st];
+            const isSelected = st === currentStatus;
+
+            return (
+              <button
+                key={st}
+                type="button"
+                onClick={() => {
+                  onStatusChange(st);
+                  setIsOpen(false);
+                }}
+                className={`w-full flex items-center justify-between gap-2 rounded-lg px-2.5 py-2 text-xs font-bold transition-all cursor-pointer ${
+                  isSelected
+                    ? `${item.bg} ${item.text} border border-[#d4af37]/40 shadow-sm`
+                    : 'text-[#ede3d1] hover:bg-[#201810] hover:text-white'
+                }`}
+              >
+                <div className="flex items-center gap-2">
+                  <span className={`h-2 w-2 rounded-full ${item.dot}`}></span>
+                  <span className={item.text}>{item.label}</span>
+                </div>
+                {isSelected && <Check className="h-3.5 w-3.5 text-[#fae48c]" />}
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default function AdminDashboardPage() {
@@ -1635,25 +1743,13 @@ export default function AdminDashboardPage() {
                               <span className="text-sm font-black text-[#fae48c] block">
                                 {b.amountEgp.toLocaleString('en-US')} ج.م
                               </span>
-                              {/* Inline Status Changer Dropdown */}
-                              <select
-                                value={b.status}
-                                onChange={(e) => handleUpdateBookingStatus(b.id, e.target.value as any)}
-                                className={`mt-1.5 rounded-lg px-2 py-1 text-[11px] font-bold border cursor-pointer focus:outline-none ${
-                                  b.status === 'confirmed'
-                                    ? 'border-[#38ef7d]/40 bg-[#38ef7d]/15 text-[#38ef7d]'
-                                    : b.status === 'pending'
-                                    ? 'border-[#f5d34c]/40 bg-[#f5d34c]/15 text-[#f5d34c]'
-                                    : b.status === 'completed'
-                                    ? 'border-[#209cee]/40 bg-[#209cee]/15 text-[#209cee]'
-                                    : 'border-[#ff4757]/40 bg-[#ff4757]/15 text-[#ff4757]'
-                                }`}
-                              >
-                                <option value="pending">⏳ معلق</option>
-                                <option value="confirmed">✅ مؤكد</option>
-                                <option value="completed">🏁 مكتمل</option>
-                                <option value="cancelled">❌ ملغي</option>
-                              </select>
+                              {/* Custom Luxury Status Dropdown */}
+                              <div className="mt-1.5 flex justify-end">
+                                <BookingStatusDropdown
+                                  currentStatus={b.status}
+                                  onStatusChange={(newStatus) => handleUpdateBookingStatus(b.id, newStatus)}
+                                />
+                              </div>
                             </div>
                           </div>
 
@@ -1748,24 +1844,10 @@ export default function AdminDashboardPage() {
                             {b.amountEgp.toLocaleString('en-US')} ج.م
                           </td>
                           <td className="px-4 py-3 whitespace-nowrap">
-                            <select
-                              value={b.status}
-                              onChange={(e) => handleUpdateBookingStatus(b.id, e.target.value as any)}
-                              className={`rounded-lg px-2 py-1 text-xs font-bold border cursor-pointer focus:outline-none ${
-                                b.status === 'confirmed'
-                                  ? 'border-[#38ef7d]/40 bg-[#38ef7d]/20 text-[#38ef7d]'
-                                  : b.status === 'pending'
-                                  ? 'border-[#f5d34c]/40 bg-[#f5d34c]/20 text-[#f5d34c]'
-                                  : b.status === 'completed'
-                                  ? 'border-[#209cee]/40 bg-[#209cee]/20 text-[#209cee]'
-                                  : 'border-[#ff4757]/40 bg-[#ff4757]/20 text-[#ff4757]'
-                              }`}
-                            >
-                              <option value="pending">معلق</option>
-                              <option value="confirmed">مؤكد</option>
-                              <option value="completed">مكتمل</option>
-                              <option value="cancelled">ملغي</option>
-                            </select>
+                            <BookingStatusDropdown
+                              currentStatus={b.status}
+                              onStatusChange={(newStatus) => handleUpdateBookingStatus(b.id, newStatus)}
+                            />
                           </td>
                           <td className="px-4 py-3 whitespace-nowrap">
                             <div className="flex items-center gap-2">

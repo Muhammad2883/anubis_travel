@@ -82,8 +82,26 @@ body {
 }
 ::-webkit-scrollbar-thumb {
   background: #3a2e16;
-  border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #d4af37;
 }
+
+/* Force Dark Mode on native form controls and dropdowns */
+select, input, textarea {
+  color-scheme: dark;
+}
+
+select option {
+  background-color: #16110b !important;
+  color: #ede3d1 !important;
+  padding: 8px 12px;
+}
+
+select option:hover,
+select option:focus,
+select option:checked {
+  background-color: #241b12 !important;
+  color: #fae48c !important;
+}
+
