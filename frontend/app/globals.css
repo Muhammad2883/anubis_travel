@@ -21,16 +21,23 @@
   --text-gold: #f7e099;
   --text-muted: #a69883;
 
-  --font-arabic: 'Cairo', system-ui, sans-serif;
+  --font-arabic: 'Outfit', 'Cairo', system-ui, sans-serif;
   --font-pharaonic: 'Amiri', serif;
   --font-title-en: 'Cinzel Decorative', 'Cinzel', serif;
   --font-body-en: 'Outfit', sans-serif;
+}
+
+*, *::before, *::after {
+  font-variant-numeric: lining-nums tabular-nums;
+  -webkit-font-feature-settings: "lnum" 1, "tnum" 1;
+  font-feature-settings: "lnum" 1, "tnum" 1;
 }
 
 body {
   background-color: var(--bg-void);
   color: var(--text-parchment);
   font-family: var(--font-arabic);
+  font-variant-numeric: lining-nums tabular-nums;
   overflow-x: hidden;
 }
 

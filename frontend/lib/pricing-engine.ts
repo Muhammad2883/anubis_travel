@@ -13,7 +13,7 @@ export function convertPrice(amountInEgp: number, targetCurrency: Currency): num
 }
 
 export function formatPrice(amount: number, currency: Currency, locale: Locale): string {
-  const formatted = new Intl.NumberFormat(locale === 'ar' ? 'ar-EG' : 'en-US', {
+  const formatted = new Intl.NumberFormat('en-US', {
     maximumFractionDigits: 0
   }).format(amount);
 

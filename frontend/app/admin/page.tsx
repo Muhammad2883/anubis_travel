@@ -448,10 +448,10 @@ export default function AdminDashboardPage() {
                   <TrendingUp className="h-4 w-4 text-[#d4af37]" />
                 </div>
                 <div className="mt-3 text-2xl sm:text-3xl font-black text-[#fae48c]">
-                  {stats.totalRevenueEgp.toLocaleString()} ج.م
+                  {stats.totalRevenueEgp.toLocaleString('en-US')} ج.م
                 </div>
                 <p className="mt-1 text-[11px] text-[#a69883]">
-                  ≈ ${stats.totalRevenueUsd.toLocaleString()} USD | €{stats.totalRevenueEur.toLocaleString()} EUR
+                  ≈ ${stats.totalRevenueUsd.toLocaleString('en-US')} USD | €{stats.totalRevenueEur.toLocaleString('en-US')} EUR
                 </p>
               </div>
             </div>
@@ -681,7 +681,7 @@ export default function AdminDashboardPage() {
                             <span className="text-[11px] text-[#a69883] font-mono">{b.pickupTime}</span>
                           </td>
                           <td className="px-4 py-3 font-black text-[#fae48c] whitespace-nowrap text-sm">
-                            {b.amountEgp.toLocaleString()} ج.م
+                            {b.amountEgp.toLocaleString('en-US')} ج.م
                           </td>
                           <td className="px-4 py-3 whitespace-nowrap">
                             <select
