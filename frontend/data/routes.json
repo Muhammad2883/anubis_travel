@@ -255,7 +255,7 @@
       ]
     },
     "isPopular": true,
-    "showInCatalog": false
+    "showInCatalog": true
   },
   {
     "id": 3,
@@ -382,7 +382,7 @@
       ]
     },
     "isPopular": true,
-    "showInCatalog": false
+    "showInCatalog": true
   },
   {
     "id": 4,
@@ -520,7 +520,7 @@
       ]
     },
     "isPopular": false,
-    "showInCatalog": false
+    "showInCatalog": true
   },
   {
     "id": 5,
@@ -621,7 +621,7 @@
       ]
     },
     "isPopular": false,
-    "showInCatalog": false
+    "showInCatalog": true
   },
   {
     "id": 6,
@@ -737,7 +737,7 @@
       ]
     },
     "isPopular": true,
-    "showInCatalog": false
+    "showInCatalog": true
   },
   {
     "id": 7,
@@ -781,7 +781,7 @@
       ]
     },
     "isPopular": true,
-    "showInCatalog": false
+    "showInCatalog": true
   },
   {
     "id": 8,
@@ -825,7 +825,7 @@
       ]
     },
     "isPopular": true,
-    "showInCatalog": false
+    "showInCatalog": true
   },
   {
     "id": 9,
@@ -965,7 +965,7 @@
       ]
     },
     "isPopular": true,
-    "showInCatalog": false
+    "showInCatalog": true
   },
   {
     "id": 10,
@@ -1091,7 +1091,7 @@
       ]
     },
     "isPopular": true,
-    "showInCatalog": false
+    "showInCatalog": true
   },
   {
     "id": 11,
@@ -1207,7 +1207,7 @@
       ]
     },
     "isPopular": false,
-    "showInCatalog": false
+    "showInCatalog": true
   },
   {
     "id": 12,
@@ -1336,7 +1336,7 @@
       ]
     },
     "isPopular": false,
-    "showInCatalog": false
+    "showInCatalog": true
   },
   {
     "id": 13,
@@ -1380,7 +1380,7 @@
       ]
     },
     "isPopular": false,
-    "showInCatalog": false
+    "showInCatalog": true
   },
   {
     "id": 14,
@@ -1424,7 +1424,7 @@
       ]
     },
     "isPopular": false,
-    "showInCatalog": false
+    "showInCatalog": true
   },
   {
     "id": 15,
@@ -1468,7 +1468,7 @@
       ]
     },
     "isPopular": false,
-    "showInCatalog": false
+    "showInCatalog": true
   },
   {
     "id": 16,
@@ -1512,7 +1512,7 @@
       ]
     },
     "isPopular": false,
-    "showInCatalog": false
+    "showInCatalog": true
   },
   {
     "id": 17,
@@ -1619,7 +1619,7 @@
       ]
     },
     "isPopular": true,
-    "showInCatalog": false
+    "showInCatalog": true
   },
   {
     "id": 18,
@@ -1726,7 +1726,7 @@
       ]
     },
     "isPopular": true,
-    "showInCatalog": false
+    "showInCatalog": true
   },
   {
     "id": 19,
@@ -1842,6 +1842,6 @@
       ]
     },
     "isPopular": false,
-    "showInCatalog": false
+    "showInCatalog": true
   }
 ]
