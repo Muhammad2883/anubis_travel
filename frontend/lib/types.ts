@@ -59,6 +59,50 @@ export interface Route {
   isPopular?: boolean;
 }
 
+export interface Tour {
+  id: number;
+  slug: string;
+  category: 'day_trip' | 'cultural' | 'adventure' | 'nile_cruise' | 'multiday';
+  title: {
+    ar: string;
+    en: string;
+  };
+  subtitle: {
+    ar: string;
+    en: string;
+  };
+  overview: {
+    ar: string;
+    en: string;
+  };
+  duration: {
+    ar: string;
+    en: string;
+  };
+  basePriceEgp: number;
+  rating: number;
+  reviewsCount: number;
+  imageUrl: string;
+  highlights: {
+    ar: string[];
+    en: string[];
+  };
+  itinerary: {
+    time: string;
+    title: { ar: string; en: string };
+    description: { ar: string; en: string };
+  }[];
+  inclusions: {
+    ar: string[];
+    en: string[];
+  };
+  exclusions: {
+    ar: string[];
+    en: string[];
+  };
+  isFeatured?: boolean;
+}
+
 export interface ClientTrip {
   id: string;
   date: string;

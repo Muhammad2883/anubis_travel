@@ -53,11 +53,11 @@ export const Hero: React.FC<HeroProps> = ({ locale, onNavigate }) => {
               </button>
 
               <button
-                onClick={() => onNavigate('fleet')}
+                onClick={() => onNavigate('tours')}
                 className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-xl border border-[#d4af37]/50 bg-[#120e0a]/90 px-6 py-3.5 text-sm font-semibold text-[#fae48c] hover:bg-[#1a140e] hover:border-[#d4af37] transition-all cursor-pointer"
               >
-                <Car className="h-4 w-4 text-[#d4af37]" />
-                <span>{locale === 'ar' ? 'استعراض أسطول المركبات' : 'Explore Elite Fleet'}</span>
+                <Compass className="h-4 w-4 text-[#d4af37]" />
+                <span>{t.hero.ctaTours}</span>
               </button>
             </div>
 

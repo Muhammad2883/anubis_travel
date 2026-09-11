@@ -82,6 +82,12 @@ export const Navbar: React.FC<NavbarProps> = ({
             {t.nav.transfers}
           </button>
           <button
+            onClick={() => onNavigate('tours')}
+            className="text-[#ede3d1] hover:text-[#fae48c] transition-colors cursor-pointer"
+          >
+            {t.nav.tours}
+          </button>
+          <button
             onClick={() => onNavigate('fleet')}
             className="text-[#ede3d1] hover:text-[#fae48c] transition-colors cursor-pointer"
           >

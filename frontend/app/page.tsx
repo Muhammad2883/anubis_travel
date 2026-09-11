@@ -5,6 +5,7 @@ import { Locale, Currency } from '@/lib/types';
 import { Navbar } from '@/components/Navbar';
 import { Hero } from '@/components/Hero';
 import { TransferBookingEngine } from '@/components/TransferBookingEngine';
+import { ToursCatalog } from '@/components/ToursCatalog';
 import { FleetSection } from '@/components/FleetSection';
 import { TrustFeatures } from '@/components/TrustFeatures';
 import { Footer } from '@/components/Footer';
@@ -55,6 +56,11 @@ export default function HomePage() {
         />
 
         <TransferBookingEngine
+          locale={locale}
+          currency={currency}
+        />
+
+        <ToursCatalog
           locale={locale}
           currency={currency}
         />
