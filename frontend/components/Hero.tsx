@@ -82,24 +82,38 @@ export const Hero: React.FC<HeroProps> = ({ locale, onNavigate }) => {
             </div>
           </div>
 
-          {/* Hero Visual Card / Brand Showcase - Large, Sharp & Clear Logo */}
+          {/* Hero Visual Card / Brand Showcase - Adopted Official Logo */}
           <div className="lg:col-span-5 relative flex flex-col items-center justify-center">
             {/* Ambient Golden Halo Glow */}
-            <div className="absolute -inset-3 rounded-3xl bg-gradient-to-r from-[#d4af37]/35 via-[#fae48c]/20 to-[#d4af37]/35 blur-2xl opacity-75 pointer-events-none transition-all duration-700 group-hover:opacity-100" />
+            <div className="absolute -inset-4 rounded-3xl bg-gradient-to-r from-[#d4af37]/30 via-[#fae48c]/15 to-[#d4af37]/30 blur-3xl opacity-80 pointer-events-none transition-all duration-700 group-hover:opacity-100" />
 
-            <div className="relative w-full overflow-hidden rounded-3xl border-2 border-[#d4af37]/60 bg-gradient-to-b from-[#18120b] via-[#0d0905] to-[#050302] p-3 sm:p-4 shadow-2xl shadow-[#d4af37]/25 group">
-              {/* Grand Logo Showcase Canvas */}
-              <div className="relative aspect-square w-full max-w-[440px] mx-auto overflow-hidden rounded-2xl bg-gradient-to-b from-[#0a0704] to-[#040302] border border-[#d4af37]/30 flex items-center justify-center shadow-inner">
-                <Image
-                  src="/anubis-hero-logo.png"
-                  alt="ANUBIS Travel Tours Egypt"
-                  fill
-                  className="object-contain p-3 sm:p-4 transition-transform duration-700 group-hover:scale-105 filter drop-shadow-[0_12px_24px_rgba(212,175,55,0.3)]"
-                  priority
-                />
+            <div className="relative w-full overflow-hidden rounded-3xl border-2 border-[#d4af37]/50 bg-gradient-to-b from-[#16110a] via-[#0d0905] to-[#040302] p-4 sm:p-6 shadow-2xl shadow-[#d4af37]/25 group">
+              {/* Grand Emblem Canvas */}
+              <div className="relative aspect-square w-full max-w-[420px] mx-auto flex flex-col items-center justify-center">
+                <div className="relative w-full h-[76%] flex items-center justify-center">
+                  <Image
+                    src="/anubis-logo.png"
+                    alt="ANUBIS TRAVEL TOURS"
+                    fill
+                    className="object-contain filter drop-shadow-[0_12px_28px_rgba(212,175,55,0.4)] transition-transform duration-700 group-hover:scale-105"
+                    priority
+                  />
+                </div>
+
+                {/* Typography Block */}
+                <div className="text-center pt-2 pb-1">
+                  <h3 className="text-3xl sm:text-4xl font-black font-serif tracking-[0.25em] gold-gradient-text uppercase">
+                    ANUBIS
+                  </h3>
+                  <div className="flex items-center justify-center gap-2 text-xs sm:text-sm font-bold tracking-[0.3em] text-[#fae48c] mt-0.5">
+                    <span className="text-[#38ef7d]">★</span>
+                    <span>TRAVEL TOURS</span>
+                    <span className="text-[#38ef7d]">★</span>
+                  </div>
+                </div>
               </div>
 
-              {/* Luxury Bottom Tag - Cleanly Placed Below, NOT covering the logo */}
+              {/* Luxury Bottom Tag */}
               <div className="mt-3 rounded-2xl border border-[#d4af37]/30 bg-[#0e0a06]/95 px-4 py-3 backdrop-blur-md flex items-center justify-between">
                 <div>
                   <p className="text-[10px] sm:text-xs font-mono uppercase tracking-widest text-[#d4af37]">

@@ -53,13 +53,13 @@ export const Navbar: React.FC<NavbarProps> = ({
           onClick={() => onNavigate('hero')}
           className="flex items-center gap-3 text-start group cursor-pointer"
         >
-          <div className="relative h-11 w-11 overflow-hidden rounded-full border border-[#d4af37]/40 p-0.5 shadow-md shadow-[#d4af37]/10 group-hover:border-[#d4af37] transition-all">
+          <div className="relative h-12 w-12 p-0.5 group-hover:scale-105 transition-all shrink-0">
             <Image
               src="/anubis-logo.png"
               alt="ANUBIS TRAVEL"
-              width={44}
-              height={44}
-              className="h-full w-full object-contain rounded-full"
+              width={48}
+              height={48}
+              className="h-full w-full object-contain filter drop-shadow-[0_4px_12px_rgba(212,175,55,0.4)]"
               priority
             />
           </div>

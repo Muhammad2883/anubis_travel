@@ -21,13 +21,13 @@ export const Footer: React.FC<FooterProps> = ({ locale, onNavigate }) => {
           {/* Brand Info (5 cols) */}
           <div className="md:col-span-5 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="relative h-12 w-12 overflow-hidden rounded-full border border-[#d4af37]/50 p-0.5 shadow-md">
+              <div className="relative h-12 w-12 p-0.5 shrink-0">
                 <Image
                   src="/anubis-logo.png"
                   alt="ANUBIS TRAVEL"
                   width={48}
                   height={48}
-                  className="h-full w-full object-contain rounded-full"
+                  className="h-full w-full object-contain drop-shadow-[0_3px_10px_rgba(212,175,55,0.35)]"
                 />
               </div>
               <div>

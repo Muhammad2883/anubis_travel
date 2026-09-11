@@ -986,13 +986,13 @@ export default function AdminDashboardPage() {
         <div className="mx-auto flex max-w-7xl items-center justify-between">
           <div className="flex items-center gap-3">
             <Link href="/" className="flex items-center gap-3 group">
-              <div className="relative h-10 w-10 overflow-hidden rounded-full border border-[#d4af37]/50 p-0.5 shadow-md group-hover:border-[#d4af37]">
+              <div className="relative h-11 w-11 p-0.5 group-hover:scale-105 transition-all shrink-0">
                 <Image
                   src="/anubis-logo.png"
                   alt="ANUBIS"
-                  width={40}
-                  height={40}
-                  className="h-full w-full object-contain rounded-full"
+                  width={44}
+                  height={44}
+                  className="h-full w-full object-contain drop-shadow-[0_2px_8px_rgba(212,175,55,0.4)]"
                 />
               </div>
               <div>
