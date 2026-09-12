@@ -628,14 +628,14 @@ export const GENERAL_TERMS = {
   ar: {
     airportOverday: 'أي فندق داخل المطار يُحسب أوفر داي.',
     farHotels: 'الفنادق البعيدة (أكتوبر / مدينة نصر / التجمع / مصر الجديدة): يُضاف 200 ج.م للملاكي و7 راكب، ويُضاف 500 ج.م للـ H1 والهاي إس.',
-    dayTourHours: 'اليومية تبدأ من الساعة 8 صباحاً حتى الساعة 5 مساءً (مدة 9 ساعات)، وأي ساعة إضافية تحسب بتكلفة منفصلة.',
+    dayTourHours: 'اليومية تبدأ من الساعة 8 صباحاً حتى الساعة 4 مساءً (مدة 8 ساعات أو حتى الانتهاء من المزارات، وأي تفاصيل أخرى التواصل على الواتساب)، وأي ساعة إضافية تحسب بتكلفة منفصلة.',
     advanceNotice: 'تنبيه هام: حجز مركبات H1 وهاي إس (HiAce) يتطلب إشعاراً وتأكيداً مسبقاً قبل الموعد بيومين على الأقل.',
     management: 'إدارة / جهاد حسين (Gihad Hussien) - هاتف وواتساب: 01091501160'
   },
   en: {
     airportOverday: 'Any hotel located within the Cairo Airport zone is billed as an Overday rate.',
     farHotels: 'Outer-zone hotels (6th of October, New Cairo / 5th Settlement, Nasr City, Heliopolis): add 200 EGP for Sedan & 7-Seater, add 500 EGP for H1 & HiAce.',
-    dayTourHours: 'Full-day tours run from 8:00 AM to 5:00 PM (9 hours duration); additional hours are billed separately.',
+    dayTourHours: 'Full-day tours run from 8:00 AM to 4:00 PM (Duration: 8 hours or upon completing sights; contact WhatsApp for details); additional hours are billed separately.',
     advanceNotice: 'Important Notice: Booking H1 Luxury Van or Toyota HiAce requires at least 2 days advance reservation.',
     management: 'Management: Gihad Hussien - Phone & WhatsApp: +20 109 150 1160'
   }

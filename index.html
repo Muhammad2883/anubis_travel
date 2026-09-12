@@ -2476,7 +2476,7 @@
           </div>
           <div class="note-body" id="note-body-2">
             <ul>
-              <li><strong>مواعيد اليومية الرسمية:</strong> اليومية من الساعة <strong class="rate-highlight">8:00 صباحاً</strong> وحتى الساعة <strong class="rate-highlight">5:00 مساءً</strong> (مدة اليومية 9 ساعات).</li>
+              <li><strong>مواعيد اليومية الرسمية:</strong> اليومية من الساعة <strong class="rate-highlight">8:00 صباحاً</strong> وحتى الساعة <strong class="rate-highlight">4:00 مساءً</strong> (مدة اليومية 8 ساعات أو حتى الانتهاء من المزارات، وأي تفاصيل أخرى التواصل على الواتساب).</li>
               <li><strong>ساعات الانتظار الإضافية:</strong> أي ساعة إضافية تحسب بتكلفة منفصلة: <strong class="rate-highlight">200 ج.م / للساعة</strong>.</li>
               <li>يتم احتساب كسر الساعة بما يتناسب مع وقت الانتظار الفعلي.</li>
             </ul>
@@ -3095,7 +3095,7 @@
           </ul>`;
         box2.innerHTML = `
           <ul>
-            <li><strong>مواعيد اليومية الرسمية:</strong> اليومية من الساعة <strong class="rate-highlight">8:00 صباحاً</strong> وحتى الساعة <strong class="rate-highlight">5:00 مساءً</strong> (مدة اليومية 9 ساعات).</li>
+            <li><strong>مواعيد اليومية الرسمية:</strong> اليومية من الساعة <strong class="rate-highlight">8:00 صباحاً</strong> وحتى الساعة <strong class="rate-highlight">4:00 مساءً</strong> (مدة اليومية 8 ساعات أو حتى الانتهاء من المزارات، وأي تفاصيل أخرى التواصل على الواتساب).</li>
             <li><strong>ساعات الانتظار الإضافية:</strong> أي ساعة إضافية تحسب بتكلفة منفصلة: <strong class="rate-highlight">200 ج.م / للساعة</strong>.</li>
             <li>يتم احتساب كسر الساعة بما يتناسب مع وقت الانتظار الفعلي.</li>
           </ul>`;
@@ -3116,7 +3116,7 @@
           </ul>`;
         box2.innerHTML = `
           <ul>
-            <li><strong>Official Tour Hours:</strong> Day tours run from <strong class="rate-highlight">8:00 AM</strong> to <strong class="rate-highlight">5:00 PM</strong> (Total official duration: 9 hours).</li>
+            <li><strong>Official Tour Hours:</strong> Day tours run from <strong class="rate-highlight">8:00 AM</strong> to <strong class="rate-highlight">4:00 PM</strong> (Duration: 8 hours or upon completing the sights; for any other details, contact via WhatsApp).</li>
             <li><strong>Overtime / Extra Waiting:</strong> Any additional waiting hour is billed separately at: <strong class="rate-highlight">200 EGP / hour</strong>.</li>
             <li>Fractional hours are prorated based on actual waiting duration.</li>
           </ul>`;
@@ -3173,7 +3173,7 @@
         `;
 
         overtimeSelect.innerHTML = `
-          <option value="0">بدون وقت إضافي (ضمن البرنامج 9 ساعات)</option>
+          <option value="0">بدون وقت إضافي (ضمن البرنامج 8 ساعات)</option>
           <option value="1">+ 1 ساعة انتظار (200 ج.م)</option>
           <option value="2">+ 2 ساعة انتظار (400 ج.م)</option>
           <option value="3">+ 3 ساعات انتظار (600 ج.م)</option>
@@ -3209,7 +3209,7 @@
         `;
 
         overtimeSelect.innerHTML = `
-          <option value="0">Standard Schedule (Within 9 hours)</option>
+          <option value="0">Standard Schedule (Within 8 hours)</option>
           <option value="1">+ 1 Extra Hour (200 EGP)</option>
           <option value="2">+ 2 Extra Hours (400 EGP)</option>
           <option value="3">+ 3 Extra Hours (600 EGP)</option>
@@ -3619,7 +3619,7 @@
 
       let message = "";
       if (isAr) {
-        let overtimeDesc = overtimeHours === 0 ? "ضمن البرنامج الرسمي (9 ساعات)" : `+ ${overtimeHours} ساعة انتظار إضافية (${overtimeCost} ج.م)`;
+        let overtimeDesc = overtimeHours === 0 ? "ضمن البرنامج الرسمي (8 ساعات)" : `+ ${overtimeHours} ساعة انتظار إضافية (${overtimeCost} ج.م)`;
         let priceBreakdown = total !== null 
           ? `\n💵 *السعر الأساسي:* ${basePrice.toLocaleString()} ج.م` +
             (locationSurcharge > 0 ? `\n📍 *رسوم المنطقة البعيدة:* +${locationSurcharge} ج.م` : '') +
@@ -3642,7 +3642,7 @@
           ? `\n⏳ *Advance Notice:* 48-hour advance booking policy acknowledged.`
           : '';
 
-        let overtimeDesc = overtimeHours === 0 ? "Standard schedule (within 9 hrs)" : `+ ${overtimeHours} Extra waiting hrs (+${overtimeCost} EGP)`;
+        let overtimeDesc = overtimeHours === 0 ? "Standard schedule (within 8 hrs)" : `+ ${overtimeHours} Extra waiting hrs (+${overtimeCost} EGP)`;
         let priceBreakdown = total !== null 
           ? `\n💵 *Base Rate:* ${basePrice.toLocaleString()} EGP` +
             (locationSurcharge > 0 ? `\n📍 *Distant Hotel Fee:* +${locationSurcharge} EGP` : '') +
