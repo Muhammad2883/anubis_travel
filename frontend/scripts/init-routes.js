@@ -160,11 +160,11 @@ const routes = [
       en: 'Egyptian Museum, Saladin Citadel, Alabaster Mosque & Khan El Khalili'
     },
     overview: {
-      ar: 'جولة كلاسيكية يوم كامل لاستكشاف تاريخ القاهرة من العصر الفرعوني في المتحف المصري بميدان التحرير، ثم العصر الأيوبي والمملوكي في قلعة الجبل ومسجد محمد علي، وختام اليوم في أزقة خان الخليلي التاريخية.',
-      en: 'Immerse in Cairo’s multi-layered history visiting Tahrir Egyptian Museum, Citadel of Saladin, and Khan El Khalili bazaar.'
+      ar: 'جولة كلاسيكية لاستكشاف تاريخ القاهرة من العصر الفرعوني في المتحف المصري بميدان التحرير، ثم العصر الأيوبي والمملوكي في قلعة الجبل ومسجد محمد علي، وختام اليوم في أزقة خان الخليلي التاريخية. (مدة اليومية 8 ساعات فقط أو عند الانتهاء من الـ 3 مزارات، ولأي تفاصيل أخرى خاصة باليومية تواصل على الواتساب).',
+      en: 'Immerse in Cairo’s multi-layered history visiting Tahrir Egyptian Museum, Citadel of Saladin, and Khan El Khalili bazaar. (Duration: 8 hours only or upon completing the 3 sights. For any other day tour details, please contact via WhatsApp).'
     },
     category: 'day_tour',
-    estimatedDuration: { ar: '9 ساعات (8 ص - 5 م)', en: '9 Hours (8 AM - 5 PM)' },
+    estimatedDuration: { ar: '8 ساعات فقط أو عند الانتهاء من الـ 3 مزارات (لأي تفاصيل أخرى خاصة باليومية تواصل على الواتساب)', en: '8 Hours only or upon completing 3 sights (contact WhatsApp for details)' },
     prices: { sedan: 1000, '7seater': 1500, h1: 2300, hiace: 2600 },
     imageUrl: '/hero-pyramids.jpg',
     rating: 4.8,
@@ -205,14 +205,14 @@ const routes = [
         description: { ar: 'جولة تسوق وتصوير في أقدم شوارع القاهرة الفاطمية.', en: 'Stroll through 1,000-year-old historic architecture.' }
       },
       {
-        time: '05:00 PM',
+        time: '04:30 PM',
         title: { ar: 'العودة للفندق', en: 'Hotel Drop-off' },
         description: { ar: 'توصيل مريح إلى مقر إقامتك.', en: 'Drop-off at your hotel.' }
       }
     ],
     inclusions: {
-      ar: ['سيارة خاصة مكيفة طوال اليوم (9 ساعات)', 'سائق محترف ومياه معدنية', 'رسوم الانتظار والباركينج'],
-      en: ['Private air-conditioned car for 9 hours', 'Chauffeur and bottled water', 'Parking fees']
+      ar: ['سيارة خاصة مكيفة (8 ساعات فقط أو عند الانتهاء من الـ 3 مزارات)', 'سائق محترف ومياه معدنية', 'رسوم الانتظار والباركينج'],
+      en: ['Private air-conditioned car (8 hours only or upon completing 3 sights)', 'Chauffeur and bottled water', 'Parking fees']
     },
     exclusions: {
       ar: ['تذاكر المزارات', 'الوجبات والمشروبات', 'الإكراميات'],

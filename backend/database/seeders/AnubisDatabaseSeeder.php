@@ -70,7 +70,7 @@ class AnubisDatabaseSeeder extends Seeder
         $routes = [
             ['id' => 1, 'origin' => ['ar' => 'القاهرة / الجيزة', 'en' => 'Cairo / Giza'], 'destination' => ['ar' => 'هرم - ممفيس - سقارة', 'en' => 'Pyramids - Memphis - Saqqara'], 'cat' => 'day_tour', 'dur' => 540],
             ['id' => 2, 'origin' => ['ar' => 'القاهرة / الجيزة', 'en' => 'Cairo / Giza'], 'destination' => ['ar' => 'هرم - ممفيس - سقارة - دهشور', 'en' => 'Pyramids - Memphis - Saqqara - Dahshur'], 'cat' => 'day_tour', 'dur' => 600],
-            ['id' => 3, 'origin' => ['ar' => 'القاهرة', 'en' => 'Cairo'], 'destination' => ['ar' => 'يومية بلد 3 مزارات بالقاهرة', 'en' => 'Cairo City Tour (3 Sights)'], 'cat' => 'day_tour', 'dur' => 540],
+            ['id' => 3, 'origin' => ['ar' => 'القاهرة', 'en' => 'Cairo'], 'destination' => ['ar' => 'يومية بلد 3 مزارات بالقاهرة', 'en' => 'Cairo City Tour (3 Sights)'], 'cat' => 'day_tour', 'dur' => 480],
             ['id' => 4, 'origin' => ['ar' => 'القاهرة', 'en' => 'Cairo'], 'destination' => ['ar' => 'يومية بلد 4 مزارات بالقاهرة', 'en' => 'Cairo City Tour (4 Sights)'], 'cat' => 'day_tour', 'dur' => 540],
             ['id' => 5, 'origin' => ['ar' => 'القاهرة', 'en' => 'Cairo'], 'destination' => ['ar' => 'نصف يومية مزار فقط', 'en' => 'Half Day Sightseeing Tour'], 'cat' => 'day_tour', 'dur' => 300],
             ['id' => 6, 'origin' => ['ar' => 'القاهرة / النيل', 'en' => 'Cairo'], 'destination' => ['ar' => 'سهرة عشاء (مركب نيلي / مطعم)', 'en' => 'Evening Dinner Tour'], 'cat' => 'day_tour', 'dur' => 300],
