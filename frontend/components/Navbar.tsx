@@ -48,28 +48,21 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Main Navbar */}
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
-        {/* Brand Logo & Name */}
+        {/* Brand Logo */}
         <button
           onClick={() => onNavigate('hero')}
-          className="flex items-center gap-3 text-start group cursor-pointer"
+          className="flex items-center group cursor-pointer"
+          title="أنوبيس ترافيل | ANUBIS TRAVEL"
         >
-          <div className="relative h-12 w-12 p-0.5 group-hover:scale-105 transition-all shrink-0">
+          <div className="relative h-12 w-12 sm:h-16 sm:w-16 p-0.5 group-hover:scale-105 transition-transform duration-300 shrink-0">
             <Image
               src="/anubis-logo.png"
-              alt="ANUBIS TRAVEL"
-              width={48}
-              height={48}
-              className="h-full w-full object-contain filter drop-shadow-[0_4px_12px_rgba(212,175,55,0.4)]"
+              alt="أنوبيس ترافيل - ANUBIS TRAVEL"
+              width={64}
+              height={64}
+              className="h-full w-full object-contain filter drop-shadow-[0_4px_16px_rgba(212,175,55,0.55)]"
               priority
             />
-          </div>
-          <div className="flex flex-col">
-            <span className="text-lg font-black tracking-wider text-[#fae48c] font-serif">
-              {locale === 'ar' ? 'أنوبيس ترافيل' : 'ANUBIS TRAVEL'}
-            </span>
-            <span className="text-[10px] tracking-widest text-[#a69883] uppercase font-mono">
-              TOURS & TRANSFERS
-            </span>
           </div>
         </button>
 
@@ -101,22 +94,8 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
         </nav>
 
-        {/* Action Controls: Currency + Language + WhatsApp CTA */}
+        {/* Action Controls: Language + WhatsApp CTA */}
         <div className="flex items-center gap-3">
-          {/* Currency Selector */}
-          <div className="relative">
-            <select
-              value={currency}
-              onChange={(e) => setCurrency(e.target.value as Currency)}
-              aria-label="Currency Selector"
-              className="appearance-none rounded-lg border border-[#d4af37]/30 bg-[#120e0a] px-2.5 py-1.5 text-xs font-semibold text-[#fae48c] shadow-inner focus:border-[#d4af37] focus:outline-none cursor-pointer"
-            >
-              <option value="EGP">EGP (ج.م)</option>
-              <option value="USD">USD ($)</option>
-              <option value="EUR">EUR (€)</option>
-            </select>
-          </div>
-
           {/* Language Toggle */}
           <button
             onClick={() => setLocale(locale === 'ar' ? 'en' : 'ar')}

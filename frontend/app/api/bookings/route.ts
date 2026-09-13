@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
+import { sendAutomatedAdminWhatsApp } from '@/lib/whatsapp-notifier';
 
 const dataFilePath = path.join(process.cwd(), 'data', 'bookings.json');
 
@@ -55,16 +56,30 @@ export async function POST(request: Request) {
       } catch {}
     }
 
-    // Prepend new booking
-    const updatedBookings = [booking, ...bookings];
+    // Prepend new booking with source method
+    const enrichedBooking = {
+      ...booking,
+      bookingMethod: booking.bookingMethod || 'website',
+      source: booking.source || (booking.bookingMethod === 'whatsapp' ? 'WhatsApp Direct' : 'Website Form'),
+      status: booking.status || 'pending',
+      createdAt: booking.createdAt || new Date().toISOString().replace('T', ' ').slice(0, 16)
+    };
+
+    const updatedBookings = [enrichedBooking, ...bookings];
 
     fs.writeFileSync(dataFilePath, JSON.stringify(updatedBookings, null, 2), 'utf8');
 
+    // -------------------------------------------------------------
+    // Automated Server-side Management WhatsApp Notification Dispatch
+    // -------------------------------------------------------------
+    const dispatchResult = await sendAutomatedAdminWhatsApp(enrichedBooking);
+
     return NextResponse.json({
       success: true,
-      message: 'Booking saved successfully',
-      booking,
-      bookings: updatedBookings
+      message: 'Booking saved successfully and automated notification dispatched',
+      booking: enrichedBooking,
+      bookings: updatedBookings,
+      whatsappDispatch: dispatchResult
     });
   } catch (error) {
     console.error('Error saving booking to bookings.json:', error);

@@ -51,7 +51,8 @@ export const TransferBookingEngine: React.FC<TransferBookingEngineProps> = ({ lo
   const [notes, setNotes] = useState<string>('');
 
   // Confirmation Modal State
-  const [bookingSuccessPayload, setBookingSuccessPayload] = useState<BookingPayload | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [bookingSuccessModal, setBookingSuccessModal] = useState<any>(null);
 
   // Active Route
   const activeRoute = useMemo(() => {
@@ -87,10 +88,78 @@ export const TransferBookingEngine: React.FC<TransferBookingEngineProps> = ({ lo
     return convertPrice(currentTotalEgp, currency);
   }, [currentTotalEgp, currency]);
 
-  // Handle Booking - Automatically dispatches to Management WhatsApp and saves to CRM
-  const handleBooking = async () => {
+  // 1. Direct Website Booking Handler (Golden Button - Saves to Dashboard & triggers automated WhatsApp notification)
+  const handleSiteBooking = async () => {
     if (!customerName.trim() || !customerPhone.trim()) {
-      alert(locale === 'ar' ? 'يرجى إدخال اسم العميل ورقم الهاتف / الواتساب للمتابعة.' : 'Please provide your name and phone/WhatsApp number.');
+      alert(locale === 'ar' ? 'يرجى إدخال اسم العميل ورقم الهاتف / الواتساب أولاً للمتابعة.' : 'Please provide your name and phone/WhatsApp number.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    const ref = generateBookingReference();
+
+    const newBookingAdmin = {
+      id: String(Date.now()),
+      reference: ref,
+      type: 'transfer' as const,
+      bookingMethod: 'website' as const,
+      source: 'حجز مباشر عبر الموقع',
+      title: `${activeRoute.title.ar} (${activeVehicle.name.ar})`,
+      customerName: customerName.trim(),
+      customerPhone: customerPhone.trim(),
+      pickupDate,
+      pickupTime,
+      pickupLocation: pickupLocation.trim() || (locale === 'ar' ? 'فندق العميل' : 'Hotel Lobby'),
+      dropoffLocation: dropoffLocation.trim() || undefined,
+      vehicleName: activeVehicle.name.ar,
+      vehicleSlug: activeVehicle.slug,
+      passengersCount,
+      luggageCount,
+      amountEgp: currentTotalEgp,
+      status: 'pending' as const,
+      flightNumber: flightNumber.trim() || undefined,
+      notes: notes.trim() || undefined,
+      createdAt: new Date().toISOString().replace('T', ' ').slice(0, 16)
+    };
+
+    try {
+      // Dispatch to /api/bookings to persist and trigger automated WhatsApp alert
+      await fetch('/api/bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ booking: newBookingAdmin })
+      });
+
+      // Update Local Dashboard Cache
+      const existingCached = localStorage.getItem('anubis_bookings');
+      const list = existingCached ? JSON.parse(existingCached) : [];
+      localStorage.setItem('anubis_bookings', JSON.stringify([newBookingAdmin, ...list]));
+      window.dispatchEvent(new Event('anubis_bookings_updated'));
+    } catch (e) {
+      console.warn('Booking save error:', e);
+    } finally {
+      setIsSubmitting(false);
+    }
+
+    try {
+      confetti({
+        particleCount: 90,
+        spread: 75,
+        origin: { y: 0.6 }
+      });
+    } catch {}
+
+    setBookingSuccessModal({
+      ...newBookingAdmin,
+      method: 'website',
+      totalFormatted: formatPrice(currentTotalConverted, currency, locale)
+    });
+  };
+
+  // 2. Direct WhatsApp Booking Handler (Green Button)
+  const handleWhatsAppBooking = async () => {
+    if (!customerName.trim() || !customerPhone.trim()) {
+      alert(locale === 'ar' ? 'يرجى إدخال اسم العميل ورقم الهاتف / الواتساب أولاً للمتابعة.' : 'Please provide your name and phone/WhatsApp number.');
       return;
     }
 
@@ -116,11 +185,12 @@ export const TransferBookingEngine: React.FC<TransferBookingEngineProps> = ({ lo
       notes: notes.trim() || undefined
     };
 
-    // 1. Prepare Admin CRM record
     const newBookingAdmin = {
       id: String(Date.now()),
       reference: ref,
       type: 'transfer' as const,
+      bookingMethod: 'whatsapp' as const,
+      source: 'طلب عبر الواتساب',
       title: `${activeRoute.title.ar} (${activeVehicle.name.ar})`,
       customerName: customerName.trim(),
       customerPhone: customerPhone.trim(),
@@ -129,41 +199,48 @@ export const TransferBookingEngine: React.FC<TransferBookingEngineProps> = ({ lo
       pickupLocation: pickupLocation.trim() || (locale === 'ar' ? 'فندق العميل' : 'Hotel Lobby'),
       dropoffLocation: dropoffLocation.trim() || undefined,
       vehicleName: activeVehicle.name.ar,
+      vehicleSlug: activeVehicle.slug,
+      passengersCount,
+      luggageCount,
       amountEgp: currentTotalEgp,
       status: 'pending' as const,
       flightNumber: flightNumber.trim() || undefined,
+      notes: notes.trim() || undefined,
       createdAt: new Date().toISOString().replace('T', ' ').slice(0, 16)
     };
 
-    // 2. Persist booking to /api/bookings and local sync
     try {
       fetch('/api/bookings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ booking: newBookingAdmin })
-      }).catch(e => console.warn('Could not POST /api/bookings:', e));
+      }).catch(e => console.warn('Could not sync booking:', e));
 
       const existingCached = localStorage.getItem('anubis_bookings');
       const list = existingCached ? JSON.parse(existingCached) : [];
       localStorage.setItem('anubis_bookings', JSON.stringify([newBookingAdmin, ...list]));
       window.dispatchEvent(new Event('anubis_bookings_updated'));
     } catch (e) {
-      console.error('Booking sync error:', e);
+      console.warn('Booking sync error:', e);
     }
-
-    setBookingSuccessPayload(payload);
 
     try {
       confetti({
-        particleCount: 80,
-        spread: 70,
+        particleCount: 65,
+        spread: 60,
         origin: { y: 0.6 }
       });
     } catch {}
 
-    // 3. AUTOMATIC DISPATCH TO MANAGEMENT WHATSAPP (+20 109 150 1160)
     const link = buildWhatsAppLink(payload, locale);
     window.open(link, '_blank');
+
+    setBookingSuccessModal({
+      ...newBookingAdmin,
+      method: 'whatsapp',
+      totalFormatted: formatPrice(currentTotalConverted, currency, locale),
+      waLink: link
+    });
   };
 
   return (
@@ -443,79 +520,123 @@ export const TransferBookingEngine: React.FC<TransferBookingEngineProps> = ({ lo
 
               {/* Action Buttons */}
               <div className="mt-5 space-y-3">
+                {/* 1. Golden Primary CTA: Direct Website Booking */}
                 <button
                   type="button"
-                  onClick={handleBooking}
-                  className="w-full flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#25D366] to-[#1ebe5d] px-5 py-4 text-sm sm:text-base font-bold text-white shadow-xl shadow-[#25D366]/20 hover:opacity-95 active:scale-[0.98] transition-all cursor-pointer"
+                  onClick={handleSiteBooking}
+                  disabled={isSubmitting}
+                  className="w-full flex items-center justify-center gap-2.5 rounded-xl gold-gradient-bg px-5 py-4 text-sm sm:text-base font-black text-[#0c0906] shadow-xl shadow-[#d4af37]/25 hover:brightness-110 active:scale-[0.98] transition-all cursor-pointer disabled:opacity-60"
                 >
-                  <MessageCircle className="h-5 w-5" />
-                  <span>{locale === 'ar' ? 'تأكيد الحجز والإرسال المباشر لواتساب الإدارة' : 'Confirm & Send to Management WhatsApp'}</span>
+                  <CheckCircle className="h-5 w-5 text-black shrink-0" />
+                  <span>
+                    {isSubmitting
+                      ? (locale === 'ar' ? 'جاري تسجيل وتأكيد الحجز...' : 'Confirming Reservation...')
+                      : (locale === 'ar' ? 'تأكيد الحجز مباشرة عبر الموقع' : 'Confirm Direct Website Booking')}
+                  </span>
+                </button>
+
+                {/* 2. Secondary CTA: Direct WhatsApp Chat Booking */}
+                <button
+                  type="button"
+                  onClick={handleWhatsAppBooking}
+                  className="w-full flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#25D366] to-[#1ebe5d] px-5 py-3.5 text-xs sm:text-sm font-bold text-white shadow-md shadow-[#25D366]/20 hover:opacity-95 active:scale-[0.98] transition-all cursor-pointer"
+                >
+                  <MessageCircle className="h-4 w-4" />
+                  <span>{locale === 'ar' ? 'طلب الحجز عبر محادثة الواتساب مباشرة' : 'Book via Direct WhatsApp Chat'}</span>
                 </button>
               </div>
 
-              <p className="mt-3 text-center text-[11px] text-[#a69883]">
-                {GENERAL_TERMS[locale].management}
+              <p className="mt-3 text-center text-[11px] text-[#a69883] leading-relaxed">
+                {locale === 'ar'
+                  ? '✓ عند اختيار الحجز المباشر عبر الموقع، يتم تسجيل طلبك فوراً في لوحة الإدارة وإرسال إشعار آلي لواتساب الإدارة بدون أي تأخير.'
+                  : '✓ Direct website bookings are stored immediately and our system notifies management automatically.'}
               </p>
             </div>
           </div>
         </div>
 
         {/* Confirmation Modal */}
-        {bookingSuccessPayload && (
+        {bookingSuccessModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4 backdrop-blur-sm animate-fadeIn">
             <div className="relative w-full max-w-lg rounded-2xl border-2 border-[#d4af37] bg-[#120e0a] p-6 shadow-2xl text-start">
               <div className="flex items-center gap-3 text-[#38ef7d] mb-4">
-                <Sparkles className="h-6 w-6" />
+                <CheckCircle className="h-6 w-6 shrink-0" />
                 <h3 className="text-lg font-bold text-white">
-                  {locale === 'ar' ? 'تم إرسال طلب الحجز لواتساب الإدارة بنجاح!' : 'Booking Sent to Management WhatsApp!'}
+                  {bookingSuccessModal.method === 'website'
+                    ? (locale === 'ar' ? '🎉 تم تأكيد طلب حجزك مباشرة عبر الموقع بنجاح!' : '🎉 Reservation Confirmed Successfully!')
+                    : (locale === 'ar' ? 'تم فتح محادثة الواتساب وتجهيز الحجز!' : 'WhatsApp Chat Opened!')}
                 </h3>
               </div>
 
               <div className="rounded-xl border border-[#d4af37]/30 bg-[#1a140e] p-4 space-y-2 text-xs text-[#ede3d1] mb-5">
                 <div className="flex justify-between border-b border-[#d4af37]/15 pb-2">
                   <span className="text-[#a69883]">{t.transfers.bookingRef}</span>
-                  <span className="font-mono font-bold text-[#fae48c] text-sm">{bookingSuccessPayload.bookingReference}</span>
+                  <span className="font-mono font-bold text-[#fae48c] text-sm">{bookingSuccessModal.reference}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[#a69883]">{locale === 'ar' ? 'الخدمة:' : 'Service:'}</span>
-                  <span className="font-medium text-white">{bookingSuccessPayload.itemName}</span>
+                  <span className="text-[#a69883]">{locale === 'ar' ? 'الخدمة / المسار:' : 'Service / Route:'}</span>
+                  <span className="font-medium text-white">{bookingSuccessModal.title}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[#a69883]">{locale === 'ar' ? 'المركبة:' : 'Vehicle:'}</span>
-                  <span className="font-medium text-white">{bookingSuccessPayload.selectedVehicle}</span>
+                  <span className="text-[#a69883]">{locale === 'ar' ? 'المركبة المطلوبة:' : 'Vehicle:'}</span>
+                  <span className="font-medium text-white">{bookingSuccessModal.vehicleName}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[#a69883]">{locale === 'ar' ? 'الموعد:' : 'Pickup:'}</span>
-                  <span className="font-medium text-white">{bookingSuccessPayload.pickupDate} ({bookingSuccessPayload.pickupTime})</span>
+                  <span className="text-[#a69883]">{locale === 'ar' ? 'تاريخ ووقت الرحلة:' : 'Pickup:'}</span>
+                  <span className="font-medium text-white">{bookingSuccessModal.pickupDate} ({bookingSuccessModal.pickupTime})</span>
                 </div>
+                {bookingSuccessModal.pickupLocation && (
+                  <div className="flex justify-between">
+                    <span className="text-[#a69883]">{locale === 'ar' ? 'مكان الانطلاق:' : 'Pickup:'}</span>
+                    <span className="font-medium text-white">{bookingSuccessModal.pickupLocation}</span>
+                  </div>
+                )}
+                {bookingSuccessModal.dropoffLocation && (
+                  <div className="flex justify-between">
+                    <span className="text-[#a69883]">{locale === 'ar' ? 'مكان الوصول:' : 'Dropoff:'}</span>
+                    <span className="font-medium text-white">{bookingSuccessModal.dropoffLocation}</span>
+                  </div>
+                )}
+                {bookingSuccessModal.flightNumber && (
+                  <div className="flex justify-between">
+                    <span className="text-[#a69883]">{locale === 'ar' ? 'رقم الرحلة الجوية:' : 'Flight Number:'}</span>
+                    <span className="font-medium text-white font-mono">{bookingSuccessModal.flightNumber}</span>
+                  </div>
+                )}
                 <div className="flex justify-between border-t border-[#d4af37]/15 pt-2">
-                  <span className="text-[#a69883]">{locale === 'ar' ? 'الإجمالي التقديري:' : 'Total:'}</span>
-                  <span className="font-bold text-[#fae48c] text-sm">{bookingSuccessPayload.totalAmount} {bookingSuccessPayload.currency}</span>
+                  <span className="text-[#a69883]">{locale === 'ar' ? 'المبلغ التقديري:' : 'Total Cost:'}</span>
+                  <span className="font-bold text-[#fae48c] text-sm">{bookingSuccessModal.totalFormatted}</span>
                 </div>
               </div>
 
-              <p className="text-xs text-[#a69883] mb-6">
-                {locale === 'ar'
-                  ? 'تم فتح تطبيق واتساب وتجهيز تفاصيل الحجز بالكامل لإرسالها مباشرة لرقم إدارة أنوبيس ترافيل (01091501160) للمتابعة والتأكيد الفوري.'
-                  : 'WhatsApp has been opened with your full reservation details addressed to ANUBIS Travel management (+20 109 150 1160).'}
+              <p className="text-xs text-[#a69883] leading-relaxed mb-6">
+                {bookingSuccessModal.method === 'website'
+                  ? (locale === 'ar'
+                      ? 'تم تسجيل طلب حجزك بنجاح في قاعدة بيانات أنوبيس ترافيل (لوحة الإدارة)، وقام النظام بإرسال إشعار فوري وتفاصيل الرحلة آلياً لواتساب الإدارة. سيتواصل معك كابتن العمليات لتأكيد كافة الترتيبات.'
+                      : 'Your reservation has been stored in our system and an automated notification was dispatched directly to management. Our team will contact you shortly.')
+                  : (locale === 'ar'
+                      ? 'تم فتح تطبيق واتساب وتجهيز تفاصيل الحجز بالكامل لإرسالها مباشرة لرقم إدارة أنوبيس ترافيل (01091501160) للمتابعة والتأكيد الفوري.'
+                      : 'WhatsApp has been opened with your reservation details.')}
               </p>
 
               <div className="flex items-center gap-3">
-                <a
-                  href={buildWhatsAppLink(bookingSuccessPayload, locale)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#25D366] to-[#1ebe5d] py-3 text-xs font-bold text-white shadow-md hover:opacity-95"
-                >
-                  <MessageCircle className="h-4 w-4" />
-                  <span>{locale === 'ar' ? 'إعادة فتح محادثة الواتساب الآن' : 'Re-open WhatsApp Chat'}</span>
-                </a>
+                {bookingSuccessModal.method === 'whatsapp' && (
+                  <a
+                    href={bookingSuccessModal.waLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#25D366] to-[#1ebe5d] py-3 text-xs font-bold text-white shadow-md hover:opacity-95"
+                  >
+                    <MessageCircle className="h-4 w-4" />
+                    <span>{locale === 'ar' ? 'إعادة فتح محادثة الواتساب الآن' : 'Re-open WhatsApp Chat'}</span>
+                  </a>
+                )}
 
                 <button
-                  onClick={() => setBookingSuccessPayload(null)}
-                  className="rounded-xl border border-[#d4af37]/40 bg-[#1a140e] px-4 py-3 text-xs font-semibold text-[#ede3d1] hover:bg-[#241c14] cursor-pointer"
+                  onClick={() => setBookingSuccessModal(null)}
+                  className="flex-1 rounded-xl border border-[#d4af37]/40 bg-[#1a140e] px-4 py-3 text-xs font-semibold text-[#ede3d1] hover:bg-[#241c14] cursor-pointer"
                 >
-                  {locale === 'ar' ? 'إغلاق' : 'Close'}
+                  {locale === 'ar' ? 'إغلاق ومتابعة التصفح' : 'Close'}
                 </button>
               </div>
             </div>

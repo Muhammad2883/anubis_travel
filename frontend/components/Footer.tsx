@@ -20,22 +20,22 @@ export const Footer: React.FC<FooterProps> = ({ locale, onNavigate }) => {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
           {/* Brand Info (5 cols) */}
           <div className="md:col-span-5 space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="relative h-12 w-12 p-0.5 shrink-0">
+            <div className="flex items-center gap-3.5">
+              <div className="relative h-14 w-14 p-0.5 shrink-0">
                 <Image
                   src="/anubis-logo.png"
                   alt="ANUBIS TRAVEL"
-                  width={48}
-                  height={48}
-                  className="h-full w-full object-contain drop-shadow-[0_3px_10px_rgba(212,175,55,0.35)]"
+                  width={56}
+                  height={56}
+                  className="h-full w-full object-contain drop-shadow-[0_4px_14px_rgba(212,175,55,0.4)]"
                 />
               </div>
               <div>
-                <span className="text-lg font-black text-[#fae48c] font-serif block">
-                  {t.brandName}
+                <span className="text-xl font-black gold-gradient-text font-serif block tracking-[0.15em] uppercase">
+                  ANUBIS TRAVEL
                 </span>
-                <span className="text-[10px] uppercase tracking-widest text-[#a69883] font-mono">
-                  {t.brandTagline}
+                <span className="text-[11px] text-[#a69883] font-medium block mt-0.5">
+                  {t.brandSub}
                 </span>
               </div>
             </div>

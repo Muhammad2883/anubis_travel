@@ -22,10 +22,6 @@ export const FleetSection: React.FC<FleetSectionProps> = ({ locale, onSelectVehi
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-12">
-          <div className="inline-flex items-center gap-2 rounded-full border border-[#d4af37]/30 bg-[#140f0a] px-3.5 py-1 text-xs font-semibold text-[#fae48c] mb-3">
-            <Sparkles className="h-3.5 w-3.5 text-[#d4af37]" />
-            <span>{locale === 'ar' ? 'أسطول أنوبيس الملكي' : 'Royal Fleet Selection'}</span>
-          </div>
           <h2 className="text-2xl sm:text-4xl font-extrabold text-white font-serif tracking-tight">
             {t.fleet.title}
           </h2>

@@ -5,3 +5,14 @@ Desktop.ini
 *.tmp
 *.log
 .vscode/
+
+# Environment files
+.env*
+!.env.example
+
+# Node / Next.js
+node_modules/
+.next/
+dist/
+build/
+
