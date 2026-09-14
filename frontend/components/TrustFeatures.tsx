@@ -54,7 +54,7 @@ export const TrustFeatures: React.FC<TrustFeaturesProps> = ({ locale }) => {
         </div>
 
         {/* Executive Management Banner */}
-        <div className="mt-12 rounded-2xl border-2 border-[#d4af37]/40 bg-gradient-to-r from-[#16110b] via-[#1c150c] to-[#16110b] p-6 sm:p-8 text-center sm:text-start flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl">
+        <div className="mt-12 rounded-2xl border-2 border-[#d4af37]/40 bg-gradient-to-r from-[#16110b] via-[#1c150c] to-[#16110b] p-6 sm:p-8 text-center sm:text-start flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl management-vip-banner">
           <div className="space-y-1">
             <span className="text-xs uppercase tracking-widest text-[#d4af37] font-mono">
               ANUBIS VIP TRAVEL MANAGEMENT

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
-import { sendAutomatedAdminWhatsApp } from '@/lib/whatsapp-notifier';
+import { sendBookingTelegramAlert } from '@/lib/telegram-notifier';
 
 const dataFilePath = path.join(process.cwd(), 'data', 'bookings.json');
 
@@ -60,7 +60,7 @@ export async function POST(request: Request) {
     const enrichedBooking = {
       ...booking,
       bookingMethod: booking.bookingMethod || 'website',
-      source: booking.source || (booking.bookingMethod === 'whatsapp' ? 'WhatsApp Direct' : 'Website Form'),
+      source: booking.source || 'Website Form',
       status: booking.status || 'pending',
       createdAt: booking.createdAt || new Date().toISOString().replace('T', ' ').slice(0, 16)
     };
@@ -70,16 +70,16 @@ export async function POST(request: Request) {
     fs.writeFileSync(dataFilePath, JSON.stringify(updatedBookings, null, 2), 'utf8');
 
     // -------------------------------------------------------------
-    // Automated Server-side Management WhatsApp Notification Dispatch
+    // Automated Telegram Bot Notification Dispatch
     // -------------------------------------------------------------
-    const dispatchResult = await sendAutomatedAdminWhatsApp(enrichedBooking);
+    const telegramResult = await sendBookingTelegramAlert(enrichedBooking);
 
     return NextResponse.json({
       success: true,
-      message: 'Booking saved successfully and automated notification dispatched',
+      message: 'Booking saved successfully',
       booking: enrichedBooking,
       bookings: updatedBookings,
-      whatsappDispatch: dispatchResult
+      telegramDispatch: telegramResult
     });
   } catch (error) {
     console.error('Error saving booking to bookings.json:', error);
@@ -93,4 +93,3 @@ export async function POST(request: Request) {
 export async function PUT(request: Request) {
   return POST(request);
 }
-

@@ -115,7 +115,7 @@ export const FleetSection: React.FC<FleetSectionProps> = ({ locale, onSelectVehi
                 {activeCategory.models.map((model) => (
                   <div
                     key={model.id}
-                    className="rounded-2xl border border-[#d4af37]/25 bg-[#17120c] p-4 flex flex-col justify-between hover:border-[#d4af37]/60 transition-all"
+                    className="fleet-car-card rounded-2xl border border-[#d4af37]/25 bg-[#17120c] p-4 flex flex-col justify-between hover:border-[#d4af37]/60 transition-all"
                   >
                     <div>
                       <div className="flex items-center justify-between">

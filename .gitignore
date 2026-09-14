@@ -1,18 +1,59 @@
-# Temporary and port files
-.active_port
+# ========================================================
+# ANUBIS TRAVEL - WORKSPACE ROOT GITIGNORE
+# ========================================================
+
+# Operating System Files
 Thumbs.db
 Desktop.ini
 *.tmp
 *.log
+.DS_Store
+.active_port
+
+# IDE & Editor Settings
 .vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
 
-# Environment files
-.env*
+# Environment Configuration Files
+.env
+.env.local
+.env.*.local
 !.env.example
+backend/.env
+backend/.env.*.local
+!backend/.env.example
 
-# Node / Next.js
+# Frontend (Node.js & Next.js)
 node_modules/
-.next/
-dist/
-build/
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/dist/
+frontend/.turbo/
+*.tsbuildinfo
 
+# Backend (PHP & Laravel 11)
+vendor/
+backend/vendor/
+backend/storage/*.key
+backend/storage/app/*
+!backend/storage/app/.gitignore
+backend/storage/framework/cache/*
+!backend/storage/framework/cache/.gitignore
+backend/storage/framework/sessions/*
+!backend/storage/framework/sessions/.gitignore
+backend/storage/framework/views/*
+!backend/storage/framework/views/.gitignore
+backend/storage/logs/*
+!backend/storage/logs/.gitignore
+backend/bootstrap/cache/*
+!backend/bootstrap/cache/.gitignore
+
+# Database & Local Volumes
+postgres_data/
+redis_data/
+*.sqlite
+*.sqlite-journal

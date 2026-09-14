@@ -21,23 +21,17 @@ export const Hero: React.FC<HeroProps> = ({ locale, onNavigate }) => {
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-          {/* Hero Visual Card / Brand Showcase - Order 1 on mobile to appear first! */}
+          {/* Pure Brand Logo (PNG without background/cards/boxes) - Order 1 on mobile */}
           <div className="order-1 lg:order-2 lg:col-span-5 relative flex flex-col items-center justify-center">
-            {/* Ambient Golden Halo Glow */}
-            <div className="absolute -inset-4 rounded-3xl bg-gradient-to-r from-[#d4af37]/30 via-[#fae48c]/15 to-[#d4af37]/30 blur-3xl opacity-80 pointer-events-none transition-all duration-700 group-hover:opacity-100" />
-
-            <div className="relative w-full max-w-[340px] sm:max-w-[420px] lg:max-w-none overflow-hidden rounded-3xl border-2 border-[#d4af37]/50 bg-gradient-to-b from-[#16110a] via-[#0d0905] to-[#040302] p-4 sm:p-6 lg:p-8 shadow-2xl shadow-[#d4af37]/25 group flex items-center justify-center">
-              {/* Pure Large & Clear Emblem */}
-              <div className="relative w-full aspect-square max-w-[260px] sm:max-w-[340px] lg:max-w-[400px] flex items-center justify-center">
-                <Image
-                  src="/anubis-logo.png"
-                  alt="ANUBIS TRAVEL"
-                  width={400}
-                  height={400}
-                  className="w-full h-full object-contain filter drop-shadow-[0_12px_28px_rgba(212,175,55,0.45)] transition-transform duration-700 group-hover:scale-105"
-                  priority
-                />
-              </div>
+            <div className="relative w-full max-w-[280px] sm:max-w-[360px] lg:max-w-[420px] aspect-square flex items-center justify-center">
+              <Image
+                src="/anubis-clean-logo.png"
+                alt="ANUBIS TRAVEL"
+                width={440}
+                height={440}
+                className="w-full h-full object-contain filter drop-shadow-[0_12px_32px_rgba(212,175,55,0.4)] transition-transform duration-700 hover:scale-105"
+                priority
+              />
             </div>
           </div>
 

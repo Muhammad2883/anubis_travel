@@ -1,25 +1,5 @@
 [
   {
-    "id": "1789261305845",
-    "reference": "ANB-SITE-8257",
-    "type": "transfer",
-    "bookingMethod": "website",
-    "source": "حجز مباشر عبر الموقع",
-    "title": "مطار القاهرة الدولي (صالة 3) - سيارة خاصة سيدان",
-    "customerName": "طارق إبراهيم",
-    "customerPhone": "01099887766",
-    "pickupDate": "2026-10-01",
-    "pickupTime": "11:00 AM",
-    "pickupLocation": "مطار القاهرة - صالة 3 وصول",
-    "dropoffLocation": "فندق النيل ريتز كارلتون",
-    "vehicleName": "ملاكي سيدان فاخرة",
-    "amountEgp": 950,
-    "passengersCount": 2,
-    "flightNumber": "MS 800",
-    "status": "pending",
-    "createdAt": "2026-09-13 01:01"
-  },
-  {
     "id": "1789254333981",
     "reference": "ANB-696823",
     "type": "tour",
@@ -33,7 +13,7 @@
     "pickupLocation": "فندق الإقامة",
     "vehicleName": "ملاكي سيدان فاخرة",
     "amountEgp": 1000,
-    "status": "pending",
+    "status": "confirmed",
     "createdAt": "2026-09-12 23:05"
   },
   {
@@ -53,25 +33,8 @@
     "passengersCount": 6,
     "amountEgp": 3200,
     "notes": "طلب خاص: سيارة مكيفة بالكامل",
-    "status": "pending",
+    "status": "confirmed",
     "createdAt": "2026-09-12 22:39"
-  },
-  {
-    "id": "1789247709587",
-    "reference": "ANB-0913-8382",
-    "type": "transfer",
-    "bookingMethod": "website",
-    "source": "حجز مباشر عبر الموقع",
-    "title": "هرم - ممفيس - سقارة (ملاكي سيدان (سيارة خاصة فاخرة))",
-    "customerName": "final test",
-    "customerPhone": "01555356010",
-    "pickupDate": "2026-09-30",
-    "pickupTime": "09:00",
-    "pickupLocation": "فندق العميل",
-    "vehicleName": "ملاكي سيدان (سيارة خاصة فاخرة)",
-    "amountEgp": 1000,
-    "status": "pending",
-    "createdAt": "2026-09-12 21:15"
   },
   {
     "id": "1789246776009",
@@ -87,7 +50,7 @@
     "pickupLocation": "مطار القاهرة صالة 3",
     "bookingMethod": "website",
     "source": "Website Form",
-    "status": "pending",
+    "status": "confirmed",
     "createdAt": "2026-09-12 20:59"
   },
   {
@@ -109,7 +72,7 @@
     "vehicleSlug": "sedan",
     "amountEgp": 2000,
     "notes": "مقعد أطفال",
-    "status": "pending",
+    "status": "confirmed",
     "createdAt": "2026-09-12 20:00"
   },
   {
@@ -125,7 +88,7 @@
     "pickupLocation": "فندق شيراتون القاهرة",
     "bookingMethod": "website",
     "source": "Website Form",
-    "status": "pending",
+    "status": "confirmed",
     "createdAt": "2026-09-12 19:56"
   },
   {
@@ -141,7 +104,7 @@
     "pickupLocation": "فندق الفور سيزونز",
     "bookingMethod": "website",
     "source": "Website Form",
-    "status": "pending",
+    "status": "confirmed",
     "createdAt": "2026-09-12 19:49"
   },
   {
@@ -156,7 +119,7 @@
     "pickupLocation": "فندق الإقامة",
     "vehicleName": "ملاكي سيدان فاخرة",
     "amountEgp": 5500,
-    "status": "pending",
+    "status": "confirmed",
     "createdAt": "2026-09-12 19:48",
     "bookingMethod": "website",
     "source": "Website Form"
@@ -174,7 +137,7 @@
     "pickupLocation": "فندق ريتز كارلتون",
     "bookingMethod": "website",
     "source": "Website Form",
-    "status": "pending",
+    "status": "confirmed",
     "createdAt": "2026-09-12 19:46"
   },
   {
@@ -189,23 +152,8 @@
     "pickupLocation": "فندق العميل",
     "vehicleName": "ملاكي سيدان (سيارة خاصة فاخرة)",
     "amountEgp": 1000,
-    "status": "pending",
+    "status": "confirmed",
     "createdAt": "2026-09-12 19:42"
-  },
-  {
-    "id": "1789134879978",
-    "reference": "ANB-0911-9513",
-    "type": "transfer",
-    "title": "برنامج: هرم - ممفيس - سقارة",
-    "customerName": "عميل واتساب مباشر",
-    "customerPhone": "طلب عبر الواتساب",
-    "pickupDate": "2026-09-11",
-    "pickupTime": "حسب الرغبة",
-    "pickupLocation": "فندق الإقامة",
-    "vehicleName": "ملاكي سيدان فاخرة",
-    "amountEgp": 1000,
-    "status": "pending",
-    "createdAt": "2026-09-11 13:54"
   },
   {
     "id": "1789134834631",
@@ -219,56 +167,8 @@
     "pickupLocation": "فندق الإقامة",
     "vehicleName": "ملاكي سيدان فاخرة",
     "amountEgp": 1000,
-    "status": "pending",
-    "createdAt": "2026-09-11 13:53"
-  },
-  {
-    "id": "b-1789134780479",
-    "reference": "ANB-911-8100",
-    "type": "transfer",
-    "title": "هرم - ممفيس - سقارة",
-    "customerName": "mohamed",
-    "customerPhone": "015555356010",
-    "pickupDate": "2026-09-22",
-    "pickupTime": "10:00",
-    "pickupLocation": "فندق العميل",
-    "vehicleName": "ملاكي سيدان (سيارة خاصة فاخرة)",
-    "amountEgp": 1000,
-    "status": "pending",
-    "createdAt": "2026-09-11 13:53"
-  },
-  {
-    "id": "b-today-1",
-    "reference": "ANB-0911-9921",
-    "type": "transfer",
-    "title": "مطار القاهرة الدولي (صالة 3 وصول)",
-    "customerName": "المستشار عصام الشريف",
-    "customerPhone": "01012345678",
-    "pickupDate": "2026-09-11",
-    "pickupTime": "15:45",
-    "pickupLocation": "مطار القاهرة - صالة 3",
-    "dropoffLocation": "كمبوند قطامية ديونز - التجمع الخامس",
-    "vehicleName": "ملاكي سيدان فاخرة",
-    "amountEgp": 950,
-    "status": "pending",
-    "flightNumber": "MS 880",
-    "createdAt": "2026-09-11 08:30"
-  },
-  {
-    "id": "b-today-2",
-    "reference": "ANB-0911-4432",
-    "type": "transfer",
-    "title": "جولة الأهرامات والمتحف المصري الكبير",
-    "customerName": "وفد شركة إعمار للاستثمار",
-    "customerPhone": "01234567890",
-    "pickupDate": "2026-09-11",
-    "pickupTime": "18:00",
-    "pickupLocation": "فندق الفورسيزونز نايل بلازا",
-    "dropoffLocation": "المتحف الكبير ومنطقة الأهرامات",
-    "vehicleName": "ميني باص سياحي هيونداي H1",
-    "amountEgp": 2800,
     "status": "confirmed",
-    "createdAt": "2026-09-11 11:20"
+    "createdAt": "2026-09-11 13:53"
   },
   {
     "id": "b-tomorrow-1",
@@ -302,22 +202,6 @@
     "amountEgp": 2900,
     "status": "confirmed",
     "createdAt": "2026-09-11 12:40"
-  },
-  {
-    "id": "b-2",
-    "reference": "ANB-0913-5420",
-    "type": "transfer",
-    "title": "أوفر داي إسكندرية (رحلة يوم كامل)",
-    "customerName": "عائلة المهندس أحمد فؤاد",
-    "customerPhone": "01122334455",
-    "pickupDate": "2026-09-13",
-    "pickupTime": "07:00",
-    "pickupLocation": "مدينتي - التجمع",
-    "dropoffLocation": "كورنيش الإسكندرية وقايتباي",
-    "vehicleName": "7 راكب عائلي (SUV)",
-    "amountEgp": 3700,
-    "status": "cancelled",
-    "createdAt": "2026-09-11 11:30"
   },
   {
     "id": "b-3",
@@ -364,7 +248,7 @@
     "dropoffLocation": "مرسى البواخر بالمعادي",
     "vehicleName": "ملاكي سيدان فاخرة",
     "amountEgp": 1100,
-    "status": "pending",
+    "status": "confirmed",
     "createdAt": "2026-09-11 14:10"
   }
 ]

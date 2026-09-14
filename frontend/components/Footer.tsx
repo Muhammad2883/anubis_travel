@@ -23,7 +23,7 @@ export const Footer: React.FC<FooterProps> = ({ locale, onNavigate }) => {
             <div className="flex items-center gap-3.5">
               <div className="relative h-14 w-14 p-0.5 shrink-0">
                 <Image
-                  src="/anubis-logo.png"
+                  src="/anubis-clean-logo.png"
                   alt="ANUBIS TRAVEL"
                   width={56}
                   height={56}

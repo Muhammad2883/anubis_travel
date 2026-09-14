@@ -4,7 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import { Currency, Locale } from '@/lib/types';
 import { translations } from '@/lib/translations';
-import { Globe, Phone, MessageCircle, ShieldCheck, Sparkles } from 'lucide-react';
+import { Globe, Phone, MessageCircle, ShieldCheck, Sparkles, Sun, Moon } from 'lucide-react';
 
 interface NavbarProps {
   locale: Locale;
@@ -22,6 +22,35 @@ export const Navbar: React.FC<NavbarProps> = ({
   onNavigate
 }) => {
   const t = translations[locale];
+  const [theme, setTheme] = React.useState<'dark' | 'light'>('dark');
+
+  React.useEffect(() => {
+    // Check saved theme or default to Dark Mode
+    const savedTheme = localStorage.getItem('anubis-theme') as 'dark' | 'light' | null;
+    if (savedTheme === 'light') {
+      setTheme('light');
+      document.documentElement.classList.add('light');
+      document.documentElement.setAttribute('data-theme', 'light');
+    } else {
+      // Default: Dark Mode
+      setTheme('dark');
+      document.documentElement.classList.remove('light');
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const nextTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(nextTheme);
+    localStorage.setItem('anubis-theme', nextTheme);
+    if (nextTheme === 'light') {
+      document.documentElement.classList.add('light');
+      document.documentElement.setAttribute('data-theme', 'light');
+    } else {
+      document.documentElement.classList.remove('light');
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-[#d4af37]/20 bg-[#070503]/90 backdrop-blur-md transition-all">
@@ -56,7 +85,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         >
           <div className="relative h-12 w-12 sm:h-16 sm:w-16 p-0.5 group-hover:scale-105 transition-transform duration-300 shrink-0">
             <Image
-              src="/anubis-logo.png"
+              src="/anubis-clean-logo.png"
               alt="أنوبيس ترافيل - ANUBIS TRAVEL"
               width={64}
               height={64}
@@ -94,8 +123,22 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
         </nav>
 
-        {/* Action Controls: Language + WhatsApp CTA */}
-        <div className="flex items-center gap-3">
+        {/* Action Controls: Theme + Language + WhatsApp CTA */}
+        <div className="flex items-center gap-2.5">
+          {/* Theme Toggle (Dark Mode is Default) */}
+          <button
+            onClick={toggleTheme}
+            className="flex items-center justify-center h-8 w-8 rounded-lg border border-[#d4af37]/30 bg-[#120e0a] text-[#ede3d1] hover:text-[#fae48c] hover:border-[#d4af37] transition-all cursor-pointer shadow-sm"
+            title={theme === 'dark' ? 'تفعيل الوضع الفاتح / Switch to Light Mode' : 'تفعيل الوضع الداكن / Switch to Dark Mode'}
+            aria-label="Toggle Theme Mode"
+          >
+            {theme === 'dark' ? (
+              <Sun className="h-4 w-4 text-[#fae48c] hover:rotate-90 transition-transform duration-300" />
+            ) : (
+              <Moon className="h-4 w-4 text-[#b8860b] hover:-rotate-12 transition-transform duration-300" />
+            )}
+          </button>
+
           {/* Language Toggle */}
           <button
             onClick={() => setLocale(locale === 'ar' ? 'en' : 'ar')}
